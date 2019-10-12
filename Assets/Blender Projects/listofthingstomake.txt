@@ -1,0 +1,19 @@
+tent
+
+truck *
+van
+bus
+guardhouse
+guardhouse gate
+traffic light
+billboard
+entrance sign (subdivision)
+
+smooth out ramp up
+make bumps for overall terrain
+static colliders
+
+virtual joystick x
+
+enemy
+enemy animations

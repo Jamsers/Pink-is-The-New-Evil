@@ -1,0 +1,18 @@
+// HIGH PRIORITY
+
+grass blocking credits button
+joystick under training pop up
+switch to idle animation when transitioning levels
+disable control when training pop up and when paused
+enemy 1 tongue attack double plays sound
+sound doesn't pause when game is paused
+volume slider
+volume ajustment for all sounds
+play poof sound only when weapon is successfully bought, play click sound when cannot afford weapon
+mute audio when loading
+if you have a higher end device try to enable shadows in settings
+
+// MEDIUM PRIORITY
+player speed attack doesn't run immedietly, especially on lower framerates
+
+// LOW PRIORITY

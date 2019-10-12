@@ -1,0 +1,951 @@
+fileFormatVersion: 2
+guid: 764c6ca2c7b632740bcfc4cd0bd21f6f
+timeCreated: 1464637007
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: ArmHigh1_L
+    100004: ArmHigh1_R
+    100006: ArmHigh2_L
+    100008: ArmHigh2_R
+    100010: ArmHigh3_L
+    100012: ArmHigh3_R
+    100014: ArmHigh4_L
+    100016: ArmHigh4_R
+    100018: ArmHigh5_L
+    100020: ArmHigh5_R
+    100022: ArmLow1_L
+    100024: ArmLow1_R
+    100026: ArmLow2_L
+    100028: ArmLow2_R
+    100030: ArmLow3_L
+    100032: ArmLow3_R
+    100034: ArmLow4_L
+    100036: ArmLow4_R
+    100038: ArmLow5_L
+    100040: ArmLow5_R
+    100042: Body1
+    100044: Body2
+    100046: Body3
+    100048: Body4
+    100050: Cube
+    100052: //RootNode
+    100054: Tail1
+    100056: Tail2
+    100058: Tail3
+    100060: Tail4
+    100062: Tail5
+    100064: Tail6
+    100066: Tail7
+    400000: Armature
+    400002: ArmHigh1_L
+    400004: ArmHigh1_R
+    400006: ArmHigh2_L
+    400008: ArmHigh2_R
+    400010: ArmHigh3_L
+    400012: ArmHigh3_R
+    400014: ArmHigh4_L
+    400016: ArmHigh4_R
+    400018: ArmHigh5_L
+    400020: ArmHigh5_R
+    400022: ArmLow1_L
+    400024: ArmLow1_R
+    400026: ArmLow2_L
+    400028: ArmLow2_R
+    400030: ArmLow3_L
+    400032: ArmLow3_R
+    400034: ArmLow4_L
+    400036: ArmLow4_R
+    400038: ArmLow5_L
+    400040: ArmLow5_R
+    400042: Body1
+    400044: Body2
+    400046: Body3
+    400048: Body4
+    400050: Cube
+    400052: //RootNode
+    400054: Tail1
+    400056: Tail2
+    400058: Tail3
+    400060: Tail4
+    400062: Tail5
+    400064: Tail6
+    400066: Tail7
+    4300000: Cube
+    7400000: Default Take
+    7400002: Attack
+    7400004: Death
+    7400006: Idle
+    7400008: Spawning
+    7400010: Special_Attack
+    7400012: Walk_Forward
+    9500000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: 0
+      lastFrame: 44
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Attack
+      takeName: Attack
+      firstFrame: 0
+      lastFrame: 36
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.17299579
+        functionName: attackDamageTick
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.99578065
+        functionName: attackDoneTick
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.09243698
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 3
+        messageOptions: 0
+      - time: 0
+        functionName: StopSound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Death
+      takeName: Death
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.9493671
+        functionName: StartDecomposing
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 4
+        messageOptions: 0
+      - time: 0.8739496
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 5
+        messageOptions: 0
+      - time: 0
+        functionName: StopSound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle
+      takeName: Idle
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Spawning
+      takeName: Spawning
+      firstFrame: 0
+      lastFrame: 37
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.9957806
+        functionName: SetIsSpawning
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Special_Attack
+      takeName: Special_Attack
+      firstFrame: 0
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0
+        functionName: StopSound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.28991598
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
+      - time: 0.29957807
+        functionName: specialAttackPhaseSet
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
+      - time: 0.72151893
+        functionName: specialAttackPhaseSet
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 4
+        messageOptions: 0
+      - time: 1
+        functionName: specialAttackPhaseSet
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 5
+        messageOptions: 0
+      - time: 0
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 6
+        messageOptions: 0
+      - time: 0.7899159
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 6
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walk_Forward
+      takeName: Walk_Forward
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body1
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_L/ArmLow2_L/ArmLow3_L/ArmLow4_L/ArmLow5_L
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R
+        weight: 1
+      - path: Armature/Body1/ArmLow1_R/ArmLow2_R/ArmLow3_R/ArmLow4_R/ArmLow5_R
+        weight: 1
+      - path: Armature/Body1/Body2
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_L/ArmHigh2_L/ArmHigh3_L/ArmHigh4_L/ArmHigh5_L
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R
+        weight: 1
+      - path: Armature/Body1/Body2/ArmHigh1_R/ArmHigh2_R/ArmHigh3_R/ArmHigh4_R/ArmHigh5_R
+        weight: 1
+      - path: Armature/Body1/Body2/Body3
+        weight: 1
+      - path: Armature/Body1/Body2/Body3/Body4
+        weight: 1
+      - path: Armature/Body1/Tail1
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6
+        weight: 1
+      - path: Armature/Body1/Tail1/Tail2/Tail3/Tail4/Tail5/Tail6/Tail7
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

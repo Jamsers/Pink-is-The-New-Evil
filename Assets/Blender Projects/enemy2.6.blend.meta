@@ -1,0 +1,147 @@
+fileFormatVersion: 2
+guid: 4264cade6e8331241ac6aaf1de4ef9b9
+timeCreated: 1464635544
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: ArmHigh1_L
+    100004: ArmHigh1_R
+    100006: ArmHigh2_L
+    100008: ArmHigh2_R
+    100010: ArmHigh3_L
+    100012: ArmHigh3_R
+    100014: ArmHigh4_L
+    100016: ArmHigh4_R
+    100018: ArmHigh5_L
+    100020: ArmHigh5_R
+    100022: ArmLow1_L
+    100024: ArmLow1_R
+    100026: ArmLow2_L
+    100028: ArmLow2_R
+    100030: ArmLow3_L
+    100032: ArmLow3_R
+    100034: ArmLow4_L
+    100036: ArmLow4_R
+    100038: ArmLow5_L
+    100040: ArmLow5_R
+    100042: Body1
+    100044: Body2
+    100046: Body3
+    100048: Body4
+    100050: Cube
+    100052: //RootNode
+    100054: Tail1
+    100056: Tail2
+    100058: Tail3
+    100060: Tail4
+    100062: Tail5
+    100064: Tail6
+    100066: Tail7
+    400000: Armature
+    400002: ArmHigh1_L
+    400004: ArmHigh1_R
+    400006: ArmHigh2_L
+    400008: ArmHigh2_R
+    400010: ArmHigh3_L
+    400012: ArmHigh3_R
+    400014: ArmHigh4_L
+    400016: ArmHigh4_R
+    400018: ArmHigh5_L
+    400020: ArmHigh5_R
+    400022: ArmLow1_L
+    400024: ArmLow1_R
+    400026: ArmLow2_L
+    400028: ArmLow2_R
+    400030: ArmLow3_L
+    400032: ArmLow3_R
+    400034: ArmLow4_L
+    400036: ArmLow4_R
+    400038: ArmLow5_L
+    400040: ArmLow5_R
+    400042: Body1
+    400044: Body2
+    400046: Body3
+    400048: Body4
+    400050: Cube
+    400052: //RootNode
+    400054: Tail1
+    400056: Tail2
+    400058: Tail3
+    400060: Tail4
+    400062: Tail5
+    400064: Tail6
+    400066: Tail7
+    4300000: Cube
+    7400000: Default Take
+    7400002: Attack
+    7400004: Idle
+    7400006: Special_Attack
+    7400008: Walk_Forward
+    9500000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
