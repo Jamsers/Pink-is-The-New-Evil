@@ -111,13 +111,6 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
 
-        if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
-            GameObject.Find("Directional Light").GetComponent<Light>().shadows = LightShadows.Hard;
-        }
-        else {
-            GameObject.Find("Directional Light").GetComponent<Light>().shadows = LightShadows.None;
-        }
-
         //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
         //UnityPurchasing.Initialize(this, builder);
