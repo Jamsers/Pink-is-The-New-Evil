@@ -122,6 +122,7 @@ public class EnemySpawner : MonoBehaviour {
 
         if (level == 29) {
             currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
+            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(true);
             RenderSettings.skybox = altsky;
@@ -382,6 +383,7 @@ public class EnemySpawner : MonoBehaviour {
                 }
                 else {
                     currentLight.GetComponent<Light>().color = Color.Lerp(begColor, endColor, Mathf.SmoothStep(0f, 1f, lerpNum));
+                    RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
                     currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(begRotation, endRotation, Mathf.SmoothStep(0f, 1f, lerpNum));
                     if (TransitionLevelObjective == 28 || TransitionLevelObjective == 29) {
                         nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(nightBegColor, nightEndColor, Mathf.SmoothStep(0f, 1f, lerpNum));
