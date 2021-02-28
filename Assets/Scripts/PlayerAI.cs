@@ -734,6 +734,7 @@ public class PlayerAI : MonoBehaviour {
     void Update() {
         if (Time.timeScale == 0) {
             AudioListener.volume = 0;
+
         }
         else {
             AudioListener.volume = 1;
@@ -779,7 +780,8 @@ public class PlayerAI : MonoBehaviour {
             else {
                 if (isControlOn == true) {
                     MovePlayer(VirtualJoystick());
-                    PlayerSpecialAttack();
+                    if (Time.timeScale != 0)
+                        PlayerSpecialAttack();
                 }
                 else if (isControlOn == false) {
                     AnimSwitchTo("goToIdle3");
@@ -1352,7 +1354,7 @@ public class PlayerAI : MonoBehaviour {
                             if (isSpecAttack2 == true) {
                                 redCircle.SetActive(true);
                                 redTarget.SetActive(false);
-                                redAim.SetActive(true);
+                                redAim.SetActive(false);
                                 redAim.GetComponent<RectTransform>().position = blueJoystickAim.GetComponent<RectTransform>().position;
                                 redAim.GetComponent<RectTransform>().localRotation = blueJoystickAim.GetComponent<RectTransform>().localRotation;
                             }
@@ -1378,7 +1380,7 @@ public class PlayerAI : MonoBehaviour {
                         canShowNormJoystick = false;
                     }
                     else {
-                        greenCircle.SetActive(true);
+                        //greenCircle.SetActive(true);
                     }
                 }
                 else {
@@ -1387,7 +1389,7 @@ public class PlayerAI : MonoBehaviour {
                             if (isSpecAttack2 == true) {
                                 redCircle.SetActive(true);
                                 redTarget.SetActive(false);
-                                redAim.SetActive(true);
+                                redAim.SetActive(false);
                                 redAim.GetComponent<RectTransform>().position = blueJoystickAim.GetComponent<RectTransform>().position;
                                 redAim.GetComponent<RectTransform>().localRotation = blueJoystickAim.GetComponent<RectTransform>().localRotation;
                             }
@@ -1548,48 +1550,15 @@ public class PlayerAI : MonoBehaviour {
     public GameObject gameCamera;
 
     Vector3 VirtualJoystick() {
-        if (Input.GetMouseButton(0) == true && isControlOff == false) {
-            if (initialPressStored == true) {
-                Vector3 virtualJoystickDirection = initialPressPosition - Input.mousePosition;
+        if (isControlOff == false) {
+            Vector3 virtualJoystickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-                blueJoystickAim.GetComponent<RectTransform>().position = greenCircle.GetComponent<RectTransform>().position;
-                float y = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
-                //Debug.Log(gameCamera.GetComponent<Camera>().pixelHeight + " * " + "0.0707290533f = " + y );
-                blueJoystickAim.GetComponent<RectTransform>().position = blueJoystickAim.GetComponent<RectTransform>().position + (new Vector3(-virtualJoystickDirection.x, -virtualJoystickDirection.y, 0).normalized * y);
-                blueJoystickAim.GetComponent<RectTransform>().LookAt(blueJoystickAim.GetComponent<RectTransform>().position + (new Vector3(-virtualJoystickDirection.x, -virtualJoystickDirection.y, 0).normalized * (y + 10)));
-                //Debug.Log(blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles);
-                if (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.y > 95) {
-                    blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x + 90);
-                }
-                else {
-                    //EXTREMEM MEME
-                    //blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x + 0);
-                    if (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x <= 90 && (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x >= 0 || blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x == 360)) {
-                        blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x + Mathf.Lerp(270, 90, (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x / 90)));
-                    }
-                    else if (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x >= 270 && blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x <= 315) {
-                        blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x + Mathf.Lerp(90, 0, ((blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x - 270) / 45)));
-                    }
-                    else if (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x >= 315 && (blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x <= 360 || blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x == 0 )) {
-                        blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x - Mathf.Lerp(0, 90, ((blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x - 315) / 45)));
-                    }
-                }
-                //Debug.Log(blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles);
-                //blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, blueJoystickAim.GetComponent<RectTransform>().rotation.eulerAngles.x + 90);
-                //blueJoystickAim.GetComponent<RectTransform>().rotation = Quaternion.Euler(0,0,45);
+            virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
+            virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
+            return virtualJoystickDirection;
 
-                virtualJoystickDirection = new Vector3(-virtualJoystickDirection.x, 0, -virtualJoystickDirection.y);
-                virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
-                return virtualJoystickDirection.normalized;
-            }
-            else {
-                initialPressStored = true;
-                initialPressPosition = Input.mousePosition;
-                return new Vector3(0, 0, 0);
-            }
         }
         else {
-            initialPressStored = false;
             return new Vector3(0, 0, 0);
         }
     }
@@ -1657,7 +1626,6 @@ public class PlayerAI : MonoBehaviour {
         if (direction != new Vector3(0,0,0)) {
             if (prevBlueArrow == false) {
                 if (SpecialPhase2 != true) {
-                    blueJoystickAim.SetActive(true);
                 }
                 else {
 
@@ -1667,7 +1635,6 @@ public class PlayerAI : MonoBehaviour {
         }
         else {
             if (prevBlueArrow == true) {
-                blueJoystickAim.SetActive(false);
             }
             prevBlueArrow = false;
         }
