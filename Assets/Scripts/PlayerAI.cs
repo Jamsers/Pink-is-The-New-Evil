@@ -16,6 +16,7 @@ public class PlayerAI : MonoBehaviour {
     public GameObject leburhighsc;
     public GameObject newname;
     public GameObject leburhighscnum;
+    public GameObject pinklight;
 
     public Transform cube;
 
@@ -682,6 +683,7 @@ public class PlayerAI : MonoBehaviour {
             buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
             pinkCaner.SetActive(false);
             modeltoRepl.GetComponent<Renderer>().sharedMaterial = pinkCancer;
+            pinklight.SetActive(true);
         }
     }
 

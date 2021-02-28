@@ -111,6 +111,8 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
 
+        
+
         //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
         //UnityPurchasing.Initialize(this, builder);
@@ -193,14 +195,8 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             }*/
             //TODO: ELSE iap not initializeD yet pop up bla bla
 
-            if (GameObject.Find("Directional Light").GetComponent<Light>().shadows == LightShadows.None) {
-                GameObject.Find("Directional Light").GetComponent<Light>().shadows = LightShadows.Hard;
-                PlayerPrefs.SetInt("Is Shadows On", 1);
-            }
-            else {
-                GameObject.Find("Directional Light").GetComponent<Light>().shadows = LightShadows.None;
-                PlayerPrefs.SetInt("Is Shadows On", 0);
-            }
+
+            GetComponent<EnemySpawner>().ToggleLighting();
         }
         else if (mode == 7)
         {

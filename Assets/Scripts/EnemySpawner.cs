@@ -90,6 +90,7 @@ public class EnemySpawner : MonoBehaviour {
     public bool isCheckingForTransition = false;
 
     public Material altsky;
+    public Material normsky;
 
     public GameObject resetHighScoresButton;
 
@@ -120,13 +121,47 @@ public class EnemySpawner : MonoBehaviour {
             resetHighScoresButton.GetComponent<Button>().interactable = false;
         }
 
+        RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
         if (level == 29) {
+            GetComponent<SystemsProcess>().removeAdsButton.SetActive(true);
+            if (PlayerPrefs.GetInt("Is Shadows On") == 1)
+            {
+                currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
+                RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+                currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
+            }
+            else
+            {
+                currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
+                RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+                currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
+                nightmareUnderlight.SetActive(true);
+                RenderSettings.skybox = altsky;
+            }
+            weapon10.SetActive(true);
+        }
+    }
+
+    public void ToggleLighting()
+    {
+        if (PlayerPrefs.GetInt("Is Shadows On") == 1)
+        {
+            
+            PlayerPrefs.SetInt("Is Shadows On", 0);
             currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
             RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(true);
             RenderSettings.skybox = altsky;
-            weapon10.SetActive(true);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Is Shadows On", 1);
+            currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
+            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+            currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
+            nightmareUnderlight.SetActive(false);
+            RenderSettings.skybox = normsky;
         }
     }
 
@@ -347,7 +382,7 @@ public class EnemySpawner : MonoBehaviour {
                 begColor = currentLight.GetComponent<Light>().color;
                 begRotation = currentLight.GetComponent<Transform>().rotation;
                 
-                if (TransitionLevelObjective == 28) {
+                if (TransitionLevelObjective == 28 || (TransitionLevelObjective == 29 && PlayerPrefs.GetInt("Is Shadows On") == 1)) {
                     endColor = nightmareLight.GetComponent<Light>().color;
                     endRotation = nightmareLight.GetComponent<Transform>().rotation;
                     nightmareUnderlight.SetActive(true);
@@ -378,7 +413,10 @@ public class EnemySpawner : MonoBehaviour {
                     createdSourceAndDest = false;
                     isTransitioningBigCockTranny = false;
                     if (TransitionLevelObjective == 29) {
-                        nightmareUnderlight.SetActive(false);
+                        if (PlayerPrefs.GetInt("Is Shadows On") == 1)
+                            nightmareUnderlight.SetActive(true);
+                        else
+                            nightmareUnderlight.SetActive(false);
                     }
                 }
                 else {
