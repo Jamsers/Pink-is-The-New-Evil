@@ -559,7 +559,7 @@ public class EnemySpawner : MonoBehaviour {
             // buy a fire pillar to ascend into eternity and end the game!
         }
         else if (level == 29) {
-            Invoke("ShowTutorial", 4);
+            //Invoke("ShowTutorial", 0.5f);
             // survive as long as you can and get the highest score! Fire pillars have now become perks - buy them with pink points!
         }
 
@@ -936,7 +936,7 @@ public class EnemySpawner : MonoBehaviour {
         }
     }
 
-    void ShowTutorial() {
+    public void ShowTutorial() {
         if (level == 1) {
             tutorialScreen1.SetActive(true);
             Time.timeScale = 0;
@@ -959,7 +959,7 @@ public class EnemySpawner : MonoBehaviour {
         }
         else if (level == 29) {
             tutorialScreen6.SetActive(true);
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
         }
     }
 

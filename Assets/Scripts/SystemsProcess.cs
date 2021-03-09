@@ -264,7 +264,8 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (mode == 18) {
             tutorialScreen6.SetActive(false);
-            Time.timeScale = 1;
+            //Time.timeScale = 1;
+            GoToSettings(4);
         }
         else
         {
@@ -366,6 +367,9 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     bool firstObjective4 = true;
 
+    bool level29TutStop = true;
+    bool level29TutStopCamOverride = false;
+
     public void GoToSettings (int objective)
     {
         GameObject.Find("Player").GetComponent<PlaySoundEffect>().PlaySound(16);
@@ -390,21 +394,37 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 4)
         {
-            if (firstObjective4 == true) {
-                //Debug.Log("Transition to current level lighting");
-                GetComponent<EnemySpawner>().isTransitioningBigCockTranny = true;
-                GetComponent<EnemySpawner>().TrannyStart = Time.time;
-                GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().ResumeSkyfall();
+            if (GetComponent<EnemySpawner>().level == 29 && level29TutStop == true)
+            {
+                GetComponent<EnemySpawner>().ShowTutorial();
+                level29TutStop = false;
+                level29TutStopCamOverride = true;
+                objectiveCamera = mainMenuCamera;
+                objectiveMenu = mainMenu;
+                mainMenu.transform.position = mainMenu.transform.position + new Vector3(0,-9999,0);
+                GetComponent<EnemySpawner>().ShowTutorial();
             }
-            //Debug.Log("if you can't figure out how to make objective 4 work, make a new objective (sigh)");
-            objectiveCamera = gameCamera;
-            objectiveMenu = null;
-            switchingToGame = true;
-            //switchLength = switchToGameLength;
-            //gamePause.tag = "Active Menu";
-            //logo.SetActive(false);
-            firstObjective4 = false;
+            else
+            {
+                if (firstObjective4 == true)
+                {
+                    //Debug.Log("Transition to current level lighting");
+                    GetComponent<EnemySpawner>().isTransitioningBigCockTranny = true;
+                    GetComponent<EnemySpawner>().TrannyStart = Time.time;
+                    GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().ResumeSkyfall();
+                }
+                //Debug.Log("if you can't figure out how to make objective 4 work, make a new objective (sigh)");
+                objectiveCamera = gameCamera;
+                objectiveMenu = null;
+                switchingToGame = true;
+                //switchLength = switchToGameLength;
+                //gamePause.tag = "Active Menu";
+                //logo.SetActive(false);
+                firstObjective4 = false;
+            }
+                
+            
         }
         else if (objective == 5)
         {
@@ -568,7 +588,15 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
         fromMenuCam = GameObject.FindWithTag("MainCamera");
         if (objective == 4) {
-            toMenuCam = gameCamera;
+            if (level29TutStopCamOverride == true)
+            {
+                level29TutStopCamOverride = false;
+                toMenuCam = objectiveCamera;
+            }
+            else
+            {
+                toMenuCam = gameCamera;
+            }
         }
         else {
             toMenuCam = objectiveCamera;
