@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 //using UnityEngine.Advertisements;
 //using UnityEngine.Purchasing;
+using UnityEngine.PostProcessing;
 
 public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
@@ -19,6 +20,13 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
     public GameObject leburhighsc;
     public GameObject newname;
     public GameObject leburhighscnum;
+
+    public Button highsetting;
+    public Button lowsetting;
+    public Light[] lightsforscalability;
+    public PostProcessingBehaviour[] camerasForScalability;
+    public PostProcessingProfile lowsettings;
+    public PostProcessingProfile highsettings;
 
     public GameObject resetProgress;
     public GameObject progressReset;
@@ -103,6 +111,49 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     //IStoreController storeController;
 
+    void togglescalability()
+    {
+        if (PlayerPrefs.GetInt("LowQuality") == 1)
+        {
+            PlayerPrefs.SetInt("LowQuality", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("LowQuality", 1);
+        }
+        setscalability();
+    }
+
+    void setscalability()
+    {
+        if (PlayerPrefs.GetInt("LowQuality") == 1)
+        {
+            highsetting.interactable = true;
+            lowsetting.interactable = false;
+            foreach (Light light in lightsforscalability)
+            {
+                light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
+            }
+            foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
+            {
+                cameraobject.profile = lowsettings;
+            }
+        }
+        else
+        {
+            highsetting.interactable = false;
+            lowsetting.interactable = true;
+            foreach (Light light in lightsforscalability)
+            {
+                light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Medium;
+            }
+            foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
+            {
+                cameraobject.profile = highsettings;
+            }
+        }
+    }
+
     void Start () {
         //ShowAd();
         logo.gameObject.SetActive(true);
@@ -110,20 +161,21 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenu.gameObject.tag = "Active Menu";
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
+        setscalability();
 
-        
 
-        //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
-        //UnityPurchasing.Initialize(this, builder);
 
-        //playerStartPos = GameObject.FindWithTag("Player").transform.position;
-        //playerStartRot = GameObject.FindWithTag("Player").transform.rotation;
+            //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+            //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
+            //UnityPurchasing.Initialize(this, builder);
 
-        //playerCamStartPos = GameObject.Find("Game Camera").transform.position;
-        //playerCamStartRot = GameObject.Find("Game Camera").transform.rotation;
-        //playerCamStartFOV = GameObject.Find("Game Camera").GetComponent<Camera>().fieldOfView;
-    }
+            //playerStartPos = GameObject.FindWithTag("Player").transform.position;
+            //playerStartRot = GameObject.FindWithTag("Player").transform.rotation;
+
+            //playerCamStartPos = GameObject.Find("Game Camera").transform.position;
+            //playerCamStartRot = GameObject.Find("Game Camera").transform.rotation;
+            //playerCamStartFOV = GameObject.Find("Game Camera").GetComponent<Camera>().fieldOfView;
+        }
 	
 	void Update () {
         if (isSwitching == true)
@@ -266,6 +318,10 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             tutorialScreen6.SetActive(false);
             //Time.timeScale = 1;
             GoToSettings(4);
+        }
+        else if (mode == 19)
+        {
+            togglescalability();
         }
         else
         {
