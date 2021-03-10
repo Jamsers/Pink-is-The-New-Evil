@@ -11,8 +11,7 @@ public class PlaySoundEffect : MonoBehaviour {
     public AudioSource[] audioClipsHit;
 
     void Start () {
-		
-	}
+    }
 	
 	void Update () {
 		if (isFading == true) {
@@ -26,7 +25,49 @@ public class PlaySoundEffect : MonoBehaviour {
                 sourcetofade.volume = Mathf.Lerp(origVol, 0, lerp);
             }
         }
-	}
+        if (isinFading == true)
+        {
+            float lerpin = ((Time.time - startinTime) / fadeinTime);
+            if (lerpin > 1)
+            {
+                sourcetofadein.volume = originVol;
+                isinFading = false;
+            }
+            else
+            {
+                sourcetofadein.volume = Mathf.Lerp(0, originVol, lerpin);
+            }
+        }
+    }
+
+    public enum MusicMood
+    {
+        None = 0,
+        MainMenu = 17,
+        BridgeSection = 18,
+        WorldOpenUp = 19,
+        NorthernPart = 20,
+        Nightmare = 21,
+        Ascend = 22
+    };
+
+    MusicMood currentlyPlayingMusic = MusicMood.None;
+
+    public void MusicManager(MusicMood mood)
+    {
+        if (currentlyPlayingMusic != mood)
+        {
+            if (currentlyPlayingMusic != MusicMood.None)
+            {
+                FadeSound((int)currentlyPlayingMusic);
+            }
+            if (mood != MusicMood.None)
+            {
+                FadeInSound((int)mood);
+            }
+            currentlyPlayingMusic = mood;
+        }
+    }
 
     public void PlaySound (int arrayIndex) {
         if (enemyType == 1 && arrayIndex == 1 && audioClips[1].isPlaying == true) {
@@ -57,12 +98,30 @@ public class PlaySoundEffect : MonoBehaviour {
     bool isFading = false;
     AudioSource sourcetofade;
 
+    public float fadeinTime;
+    float originVol;
+    float startinTime;
+    bool isinFading = false;
+    AudioSource sourcetofadein;
+
     public void FadeSound(int arrayIndex) {
         if (audioClips[arrayIndex].isPlaying == true) {
             sourcetofade = audioClips[arrayIndex];
             origVol = audioClips[arrayIndex].volume;
             startTime = Time.time;
             isFading = true;
+        }
+    }
+
+    public void FadeInSound(int arrayIndex)
+    {
+        if (audioClips[arrayIndex].isPlaying == false)
+        {
+            sourcetofadein = audioClips[arrayIndex];
+            originVol = audioClips[arrayIndex].volume;
+            startinTime = Time.time;
+            isinFading = true;
+            sourcetofadein.Play();
         }
     }
 

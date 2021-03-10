@@ -579,6 +579,7 @@ public class PlayerAI : MonoBehaviour {
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
                 isAscending = true;
+                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Ascend);
             }
             else {
                 backgroundNotEnough.SetActive(true);
@@ -624,6 +625,7 @@ public class PlayerAI : MonoBehaviour {
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
                 isAscending = true;
+                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Ascend);
             }
             else {
                 backgroundNotEnough.SetActive(true);
@@ -669,6 +671,7 @@ public class PlayerAI : MonoBehaviour {
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
                 isAscending = true;
+                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Ascend);
             }
             else {
                 backgroundNotEnough.SetActive(true);

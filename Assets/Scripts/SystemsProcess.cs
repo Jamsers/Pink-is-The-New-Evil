@@ -162,20 +162,20 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
         setscalability();
-
+        GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.MainMenu);
 
 
             //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
             //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
             //UnityPurchasing.Initialize(this, builder);
 
-            //playerStartPos = GameObject.FindWithTag("Player").transform.position;
-            //playerStartRot = GameObject.FindWithTag("Player").transform.rotation;
+        //playerStartPos = GameObject.FindWithTag("Player").transform.position;
+        //playerStartRot = GameObject.FindWithTag("Player").transform.rotation;
 
-            //playerCamStartPos = GameObject.Find("Game Camera").transform.position;
-            //playerCamStartRot = GameObject.Find("Game Camera").transform.rotation;
-            //playerCamStartFOV = GameObject.Find("Game Camera").GetComponent<Camera>().fieldOfView;
-        }
+        //playerCamStartPos = GameObject.Find("Game Camera").transform.position;
+        //playerCamStartRot = GameObject.Find("Game Camera").transform.rotation;
+        //playerCamStartFOV = GameObject.Find("Game Camera").GetComponent<Camera>().fieldOfView;
+    }
 	
 	void Update () {
         if (isSwitching == true)

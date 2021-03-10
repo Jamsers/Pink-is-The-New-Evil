@@ -539,6 +539,34 @@ public class EnemySpawner : MonoBehaviour {
         isAyying = true;
         beginAyyTime = Time.time;
 
+        if (level < 7)
+        {
+            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.BridgeSection);
+        }
+        else if (level < 20) {
+            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
+        }
+        else if (level < 28)
+        {
+            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.NorthernPart);
+        }
+        else if (level == 28)
+        {
+            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Nightmare);
+        }
+        else if (level == 29)
+        {
+            if (PlayerPrefs.GetInt("Is Shadows On") == 1)
+            {
+                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Nightmare);
+            }
+            else
+            {
+                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
+            }
+            
+        }
+
         if (level == 1) {
             Invoke("ShowTutorial", 4);
         }
