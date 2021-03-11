@@ -98,8 +98,7 @@ public class EnemySpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-        Debug.Log("UPDATED PROBE!");
+        
         //Debug.Log(PlayerPrefs.HasKey("Level"));
         if (PlayerPrefs.HasKey("Level")) {
             level = PlayerPrefs.GetInt("Level");
@@ -156,7 +155,6 @@ public class EnemySpawner : MonoBehaviour {
             nightmareUnderlight.SetActive(true);
             RenderSettings.skybox = altsky;
             GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-            Debug.Log("UPDATED PROBE!");
         }
         else
         {
@@ -167,7 +165,6 @@ public class EnemySpawner : MonoBehaviour {
             nightmareUnderlight.SetActive(false);
             RenderSettings.skybox = normsky;
             GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-            Debug.Log("UPDATED PROBE!");
         }
     }
 
