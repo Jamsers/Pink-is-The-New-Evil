@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: 4ec490ef70c3cc64aa1d10fda3cd0412
+timeCreated: 1615461429
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: ArmIK_L
+    100004: ArmIK_L_end
+    100006: ArmIK_R
+    100008: ArmIK_R_end
+    100010: ArmPT_L
+    100012: ArmPT_L_end
+    100014: ArmPT_R
+    100016: ArmPT_R_end
+    100018: BodyIK
+    100020: BodyIK_end
+    100022: BodyPT
+    100024: BodyPT_end
+    100026: Cube
+    100028: HeadIK
+    100030: HeadIK_end
+    100032: HeadPT
+    100034: HeadPT_end
+    100036: LArm_L
+    100038: LArm_L_end
+    100040: LArm_R
+    100042: LArm_R_end
+    100044: LBody
+    100046: LegIK_L
+    100048: LegIK_L_end
+    100050: LegIK_R
+    100052: LegIK_R_end
+    100054: LegPT_L
+    100056: LegPT_L_end
+    100058: LegPT_R
+    100060: LegPT_R_end
+    100062: LHead
+    100064: LLeg_L
+    100066: LLeg_L_end
+    100068: LLeg_R
+    100070: LLeg_R_end
+    100072: //RootNode
+    100074: UArm_L
+    100076: UArm_R
+    100078: UBody
+    100080: UHead
+    100082: UHead_end
+    100084: ULeg_L
+    100086: ULeg_R
+    400000: Armature
+    400002: ArmIK_L
+    400004: ArmIK_L_end
+    400006: ArmIK_R
+    400008: ArmIK_R_end
+    400010: ArmPT_L
+    400012: ArmPT_L_end
+    400014: ArmPT_R
+    400016: ArmPT_R_end
+    400018: BodyIK
+    400020: BodyIK_end
+    400022: BodyPT
+    400024: BodyPT_end
+    400026: Cube
+    400028: HeadIK
+    400030: HeadIK_end
+    400032: HeadPT
+    400034: HeadPT_end
+    400036: LArm_L
+    400038: LArm_L_end
+    400040: LArm_R
+    400042: LArm_R_end
+    400044: LBody
+    400046: LegIK_L
+    400048: LegIK_L_end
+    400050: LegIK_R
+    400052: LegIK_R_end
+    400054: LegPT_L
+    400056: LegPT_L_end
+    400058: LegPT_R
+    400060: LegPT_R_end
+    400062: LHead
+    400064: LLeg_L
+    400066: LLeg_L_end
+    400068: LLeg_R
+    400070: LLeg_R_end
+    400072: //RootNode
+    400074: UArm_L
+    400076: UArm_R
+    400078: UBody
+    400080: UHead
+    400082: UHead_end
+    400084: ULeg_L
+    400086: ULeg_R
+    4300000: Cube
+    7400000: Armature|ArmatureAction
+    7400002: Armature|Idle
+    7400004: Armature|IdleToRunningF
+    7400006: Armature|RunningF
+    9500000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

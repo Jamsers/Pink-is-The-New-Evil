@@ -27,6 +27,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
     public PostProcessingBehaviour[] camerasForScalability;
     public PostProcessingProfile lowsettings;
     public PostProcessingProfile highsettings;
+    public ReflectionProbe reflectionprobe;
 
     public GameObject resetProgress;
     public GameObject progressReset;
@@ -128,6 +129,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
     {
         if (PlayerPrefs.GetInt("LowQuality") == 1)
         {
+            reflectionprobe.resolution = 16;
             highsetting.interactable = true;
             lowsetting.interactable = false;
             foreach (Light light in lightsforscalability)
@@ -141,6 +143,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else
         {
+            reflectionprobe.resolution = 128;
             highsetting.interactable = false;
             lowsetting.interactable = true;
             foreach (Light light in lightsforscalability)
@@ -152,6 +155,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
                 cameraobject.profile = highsettings;
             }
         }
+        reflectionprobe.RenderProbe();
     }
 
     void Start () {
@@ -163,7 +167,6 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenuCamera.gameObject.tag = "MainCamera";
         setscalability();
         GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.MainMenu);
-
 
             //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
             //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);

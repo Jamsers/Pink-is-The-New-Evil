@@ -1,0 +1,236 @@
+fileFormatVersion: 2
+guid: 0bfcc559aa58c0140a7d64dfb6bee75a
+timeCreated: 1615466788
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: ArmHigh1_L
+    100004: ArmHigh1_R
+    100006: ArmHigh2_L
+    100008: ArmHigh2_R
+    100010: ArmHigh3_L
+    100012: ArmHigh3_R
+    100014: ArmHigh4_L
+    100016: ArmHigh4_R
+    100018: ArmHigh5_L
+    100020: ArmHigh5_L_end
+    100022: ArmHigh5_R
+    100024: ArmHigh5_R_end
+    100026: ArmHighIK_L
+    100028: ArmHighIK_L_end
+    100030: ArmHighIK_R
+    100032: ArmHighIK_R_end
+    100034: ArmHighIKAim_L
+    100036: ArmHighIKAim_L_end
+    100038: ArmHighIKAim_R
+    100040: ArmHighIKAim_R_end
+    100042: ArmLow1_L
+    100044: ArmLow1_R
+    100046: ArmLow2_L
+    100048: ArmLow2_R
+    100050: ArmLow3_L
+    100052: ArmLow3_R
+    100054: ArmLow4_L
+    100056: ArmLow4_R
+    100058: ArmLow5_L
+    100060: ArmLow5_L_end
+    100062: ArmLow5_R
+    100064: ArmLow5_R_end
+    100066: ArmLowIK_L
+    100068: ArmLowIK_L_end
+    100070: ArmLowIK_R
+    100072: ArmLowIK_R_end
+    100074: ArmLowIKAim_L
+    100076: ArmLowIKAim_L_end
+    100078: ArmLowIKAim_R
+    100080: ArmLowIKAim_R_end
+    100082: Body1
+    100084: Body2
+    100086: Body2IK
+    100088: Body2IK_end
+    100090: Body2IKAim
+    100092: Body2IKAim_end
+    100094: Body3
+    100096: Body4
+    100098: Body4_end
+    100100: Body4IK
+    100102: Body4IK_end
+    100104: Body4IKAim
+    100106: Body4IKAim_end
+    100108: Cube
+    100110: //RootNode
+    100112: Tail1
+    100114: Tail2
+    100116: Tail2IK
+    100118: Tail2IK_end
+    100120: Tail2IKAim
+    100122: Tail2IKAim_end
+    100124: Tail3
+    100126: Tail4
+    100128: Tail4IK
+    100130: Tail4IK_end
+    100132: Tail4IKAim
+    100134: Tail4IKAim_end
+    100136: Tail5
+    100138: Tail6
+    100140: Tail7
+    100142: Tail7_end
+    100144: Tail7IK
+    100146: Tail7IK_end
+    100148: Tail7IKAim
+    100150: Tail7IKAim_end
+    400000: Armature
+    400002: ArmHigh1_L
+    400004: ArmHigh1_R
+    400006: ArmHigh2_L
+    400008: ArmHigh2_R
+    400010: ArmHigh3_L
+    400012: ArmHigh3_R
+    400014: ArmHigh4_L
+    400016: ArmHigh4_R
+    400018: ArmHigh5_L
+    400020: ArmHigh5_L_end
+    400022: ArmHigh5_R
+    400024: ArmHigh5_R_end
+    400026: ArmHighIK_L
+    400028: ArmHighIK_L_end
+    400030: ArmHighIK_R
+    400032: ArmHighIK_R_end
+    400034: ArmHighIKAim_L
+    400036: ArmHighIKAim_L_end
+    400038: ArmHighIKAim_R
+    400040: ArmHighIKAim_R_end
+    400042: ArmLow1_L
+    400044: ArmLow1_R
+    400046: ArmLow2_L
+    400048: ArmLow2_R
+    400050: ArmLow3_L
+    400052: ArmLow3_R
+    400054: ArmLow4_L
+    400056: ArmLow4_R
+    400058: ArmLow5_L
+    400060: ArmLow5_L_end
+    400062: ArmLow5_R
+    400064: ArmLow5_R_end
+    400066: ArmLowIK_L
+    400068: ArmLowIK_L_end
+    400070: ArmLowIK_R
+    400072: ArmLowIK_R_end
+    400074: ArmLowIKAim_L
+    400076: ArmLowIKAim_L_end
+    400078: ArmLowIKAim_R
+    400080: ArmLowIKAim_R_end
+    400082: Body1
+    400084: Body2
+    400086: Body2IK
+    400088: Body2IK_end
+    400090: Body2IKAim
+    400092: Body2IKAim_end
+    400094: Body3
+    400096: Body4
+    400098: Body4_end
+    400100: Body4IK
+    400102: Body4IK_end
+    400104: Body4IKAim
+    400106: Body4IKAim_end
+    400108: Cube
+    400110: //RootNode
+    400112: Tail1
+    400114: Tail2
+    400116: Tail2IK
+    400118: Tail2IK_end
+    400120: Tail2IKAim
+    400122: Tail2IKAim_end
+    400124: Tail3
+    400126: Tail4
+    400128: Tail4IK
+    400130: Tail4IK_end
+    400132: Tail4IKAim
+    400134: Tail4IKAim_end
+    400136: Tail5
+    400138: Tail6
+    400140: Tail7
+    400142: Tail7_end
+    400144: Tail7IK
+    400146: Tail7IK_end
+    400148: Tail7IKAim
+    400150: Tail7IKAim_end
+    4300000: Cube
+    7400000: Armature|Attack
+    7400002: Armature|Death
+    7400004: Armature|Idle
+    7400006: Armature|Spawning
+    7400008: Armature|Special Attack
+    7400010: Armature|Walk Forward
+    9500000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
