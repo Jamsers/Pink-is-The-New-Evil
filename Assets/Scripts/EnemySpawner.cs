@@ -98,6 +98,8 @@ public class EnemySpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+        Debug.Log("UPDATED PROBE!");
         //Debug.Log(PlayerPrefs.HasKey("Level"));
         if (PlayerPrefs.HasKey("Level")) {
             level = PlayerPrefs.GetInt("Level");
@@ -153,6 +155,8 @@ public class EnemySpawner : MonoBehaviour {
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(true);
             RenderSettings.skybox = altsky;
+            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+            Debug.Log("UPDATED PROBE!");
         }
         else
         {
@@ -162,6 +166,8 @@ public class EnemySpawner : MonoBehaviour {
             currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(false);
             RenderSettings.skybox = normsky;
+            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+            Debug.Log("UPDATED PROBE!");
         }
     }
 
@@ -412,6 +418,8 @@ public class EnemySpawner : MonoBehaviour {
                 if (lerpNum > 1) {
                     createdSourceAndDest = false;
                     isTransitioningBigCockTranny = false;
+                    GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+                    Debug.Log("UPDATED PROBE!");
                     if (TransitionLevelObjective == 29) {
                         if (PlayerPrefs.GetInt("Is Shadows On") == 1)
                             nightmareUnderlight.SetActive(true);
