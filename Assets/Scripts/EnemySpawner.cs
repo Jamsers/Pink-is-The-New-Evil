@@ -427,6 +427,11 @@ public class EnemySpawner : MonoBehaviour {
                             RenderSettings.skybox = normsky;
                         }
                     }
+                    else if (TransitionLevelObjective == 28)
+                    {
+                        nightmareUnderlight.SetActive(true);
+                        RenderSettings.skybox = altsky;
+                    }
                     GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
                 }
                 else {
