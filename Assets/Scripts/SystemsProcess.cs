@@ -8,6 +8,9 @@ using UnityEngine.PostProcessing;
 
 public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
+    public bool IsDebugMenuOn = false;
+    public GameObject DebugMenu;
+
     public GameObject blockAllInput;
 
     public GameObject[] highScoreName;
@@ -160,6 +163,10 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     void Start () {
         //ShowAd();
+        if (IsDebugMenuOn == true)
+        {
+            DebugMenu.SetActive(true);
+        }
         logo.gameObject.SetActive(true);
         mainMenu.gameObject.SetActive(true);
         mainMenu.gameObject.tag = "Active Menu";
@@ -211,6 +218,9 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
     public void OnInitializeFailed(InitializationFailureReason reason) {
         Debug.Log("IAP INITIALIZATION FAILED!!!!!! REASON: " + reason);
     }*/
+
+    public Text debuglevel;
+    public Text debugweapon;
 
     public void OpenPrompt (int mode)
     {
@@ -325,6 +335,42 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         else if (mode == 19)
         {
             togglescalability();
+        }
+        else if (mode == 20)
+        {
+            int leveltoswitchto = 0;
+            bool isParseSucc = int.TryParse(debuglevel.text, out leveltoswitchto);
+            if (leveltoswitchto > 29)
+            {
+                leveltoswitchto = 29;
+            }
+            else if (leveltoswitchto < 1)
+            {
+                leveltoswitchto = 1;
+            }
+
+            if (isParseSucc == true)
+            {
+                PlayerPrefs.SetInt("Level", leveltoswitchto);
+            }
+        }
+        else if (mode == 21)
+        {
+            int weapontoswitchto = 0;
+            bool isParseSucc = int.TryParse(debugweapon.text, out weapontoswitchto);
+            if (weapontoswitchto > 8)
+            {
+                weapontoswitchto = 8;
+            }
+            else if (weapontoswitchto < 1)
+            {
+                weapontoswitchto = 1;
+            }
+
+            if (isParseSucc == true)
+            {
+                PlayerPrefs.SetInt("Weapon", weapontoswitchto);
+            }
         }
         else
         {
