@@ -415,14 +415,19 @@ public class EnemySpawner : MonoBehaviour {
                 if (lerpNum > 1) {
                     createdSourceAndDest = false;
                     isTransitioningBigCockTranny = false;
-                    GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-                    Debug.Log("UPDATED PROBE!");
                     if (TransitionLevelObjective == 29) {
                         if (PlayerPrefs.GetInt("Is Shadows On") == 1)
+                        {
                             nightmareUnderlight.SetActive(true);
+                            RenderSettings.skybox = altsky;
+                        }
                         else
+                        {
                             nightmareUnderlight.SetActive(false);
+                            RenderSettings.skybox = normsky;
+                        }
                     }
+                    GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
                 }
                 else {
                     currentLight.GetComponent<Light>().color = Color.Lerp(begColor, endColor, Mathf.SmoothStep(0f, 1f, lerpNum));

@@ -57,13 +57,20 @@ public class PlaySoundEffect : MonoBehaviour {
     {
         if (currentlyPlayingMusic != mood)
         {
-            if (currentlyPlayingMusic != MusicMood.None)
+            if (mood == MusicMood.MainMenu)
             {
-                FadeSound((int)currentlyPlayingMusic);
+                PlaySound((int)mood);
             }
-            if (mood != MusicMood.None)
+            else
             {
-                FadeInSound((int)mood);
+                if (currentlyPlayingMusic != MusicMood.None)
+                {
+                    FadeSound((int)currentlyPlayingMusic);
+                }
+                if (mood != MusicMood.None)
+                {
+                    FadeInSound((int)mood);
+                }
             }
             currentlyPlayingMusic = mood;
         }
