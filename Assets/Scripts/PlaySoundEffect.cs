@@ -65,8 +65,8 @@ public class PlaySoundEffect : MonoBehaviour {
             {
                 if (mood == MusicMood.Ascend)
                 {
-                    fadeTime = 1;
-                    fadeinTime = 1;
+                    fadeTime = 0.5f;
+                    fadeinTime = 0.5f;
                 }
 
                 if (currentlyPlayingMusic != MusicMood.None)
