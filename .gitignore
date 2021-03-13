@@ -35,4 +35,11 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Generated installer
 PinkIsTheNewEvil_Installer.exe
+
+# Substance painter .spp files (too big, maybe add to LFS when can afford?)
+Assets/SubstanceFiles/
+
+## Base level (too big, maybe add to LFS when can afford?)
+#Assets/Scenes/Level1.unity
