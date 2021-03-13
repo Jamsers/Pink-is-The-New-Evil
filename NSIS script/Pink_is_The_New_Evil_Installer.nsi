@@ -67,6 +67,7 @@ Section "install"
 	CreateDirectory "$SMPROGRAMS\Pink is The New Evil"
 	CreateShortcut "$SMPROGRAMS\Pink is The New Evil\Pink is The New Evil.lnk" "$INSTDIR\Pink_is_The_New_Evil.exe"
     CreateShortcut "$SMPROGRAMS\Pink is The New Evil\Uninstall Pink is The New Evil.lnk" "$INSTDIR\PinkIsTheNewEvil_Uninstaller.exe"
+	CreateShortcut "$DESKTOP\Pink is The New Evil.lnk" "$INSTDIR\Pink_is_The_New_Evil.exe"
 SectionEnd
 
 Section "uninstall"
@@ -80,6 +81,7 @@ Section "uninstall"
  
     # Delete shortcuts
 	RMDir /r  "$SMPROGRAMS\Pink is The New Evil"
+	Delete "$DESKTOP\Pink is The New Evil.lnk"
 	
 	# Delete uninstaller and install dir
     Delete "$INSTDIR\PinkIsTheNewEvil_Uninstaller.exe"
