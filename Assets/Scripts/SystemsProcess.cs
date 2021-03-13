@@ -221,6 +221,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     public Text debuglevel;
     public Text debugweapon;
+    public Text debugpoints;
 
     public void OpenPrompt (int mode)
     {
@@ -370,6 +371,24 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             if (isParseSucc == true)
             {
                 PlayerPrefs.SetInt("Weapon", weapontoswitchto);
+            }
+        }
+        else if (mode == 22)
+        {
+            int pointstoswitchto = 0;
+            bool isParseSucc = int.TryParse(debugpoints.text, out pointstoswitchto);
+            if (pointstoswitchto > 1000000)
+            {
+                pointstoswitchto = 1000000;
+            }
+            else if (pointstoswitchto < 0)
+            {
+                pointstoswitchto = 0;
+            }
+
+            if (isParseSucc == true)
+            {
+                PlayerPrefs.SetInt("Upgrade Points", pointstoswitchto);
             }
         }
         else
