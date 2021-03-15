@@ -132,6 +132,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
     {
         if (PlayerPrefs.GetInt("LowQuality") == 1)
         {
+            QualitySettings.vSyncCount = 0;
             reflectionprobe.resolution = 16;
             highsetting.interactable = true;
             lowsetting.interactable = false;
@@ -146,6 +147,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else
         {
+            QualitySettings.vSyncCount = 1;
             reflectionprobe.resolution = 128;
             highsetting.interactable = false;
             lowsetting.interactable = true;
@@ -163,6 +165,8 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     void Start () {
         //ShowAd();
+        
+
         if (IsDebugMenuOn == true)
         {
             DebugMenu.SetActive(true);
@@ -390,6 +394,22 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             {
                 PlayerPrefs.SetInt("Upgrade Points", pointstoswitchto);
             }
+        }
+        else if (mode == 23)
+        {
+            Application.Quit();
+        }
+        else if (mode == 24)
+        {
+            if (Screen.fullScreen == true)
+            {
+                Screen.SetResolution(1024, 768, false);
+            }
+            else
+            {
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+            }
+            
         }
         else
         {
