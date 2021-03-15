@@ -238,6 +238,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         {
             loadingScreen.SetActive(true);
             PlayerPrefs.DeleteAll();
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             //resetProgress.gameObject.SetActive(false);
             //progressReset.gameObject.SetActive(true);
