@@ -271,15 +271,21 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (mode == 7)
         {
-            hud.SetActive(false);
-            gamePause.SetActive(true);
-            Time.timeScale = 0;
+            if (Time.timeScale != 0)
+            {
+                hud.SetActive(false);
+                gamePause.SetActive(true);
+                Time.timeScale = 0;
+            }
         }
         else if (mode == 8)
         {
-            hud.SetActive(true);
-            gamePause.SetActive(false);
-            Time.timeScale = 1;
+            if (Time.timeScale == 0)
+            {
+                hud.SetActive(true);
+                gamePause.SetActive(false);
+                Time.timeScale = 1;
+            }
         }
         else if (mode == 9)
         {
