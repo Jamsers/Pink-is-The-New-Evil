@@ -410,7 +410,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             {
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             }
-            
+            setscalability();
         }
         else
         {
