@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 
 public class changeversion : EditorWindow
@@ -35,3 +36,4 @@ public class changeversion : EditorWindow
         }
     }
 }
+#endif
