@@ -10,7 +10,44 @@ public class PlaySoundEffect : MonoBehaviour {
 
     public AudioSource[] audioClipsHit;
 
+    public void AllowMusicToPlayWhilePaused(bool can)
+    {
+        if (can)
+        {
+            audioClips[(int)MusicMood.MainMenu].ignoreListenerPause = true;
+            audioClips[(int)MusicMood.BridgeSection].ignoreListenerPause = true;
+            audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerPause = true;
+            audioClips[(int)MusicMood.NorthernPart].ignoreListenerPause = true;
+            audioClips[(int)MusicMood.Nightmare].ignoreListenerPause = true;
+            audioClips[(int)MusicMood.Ascend].ignoreListenerPause = true;
+
+            audioClips[(int)MusicMood.MainMenu].ignoreListenerVolume = true;
+            audioClips[(int)MusicMood.BridgeSection].ignoreListenerVolume = true;
+            audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerVolume = true;
+            audioClips[(int)MusicMood.NorthernPart].ignoreListenerVolume = true;
+            audioClips[(int)MusicMood.Nightmare].ignoreListenerVolume = true;
+            audioClips[(int)MusicMood.Ascend].ignoreListenerVolume = true;
+        }
+        else
+        {
+            audioClips[(int)MusicMood.MainMenu].ignoreListenerPause = false;
+            audioClips[(int)MusicMood.BridgeSection].ignoreListenerPause = false;
+            audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerPause = false;
+            audioClips[(int)MusicMood.NorthernPart].ignoreListenerPause = false;
+            audioClips[(int)MusicMood.Nightmare].ignoreListenerPause = false;
+            audioClips[(int)MusicMood.Ascend].ignoreListenerPause = false;
+
+            audioClips[(int)MusicMood.MainMenu].ignoreListenerVolume = false;
+            audioClips[(int)MusicMood.BridgeSection].ignoreListenerVolume = false;
+            audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerVolume = false;
+            audioClips[(int)MusicMood.NorthernPart].ignoreListenerVolume = false;
+            audioClips[(int)MusicMood.Nightmare].ignoreListenerVolume = false;
+            audioClips[(int)MusicMood.Ascend].ignoreListenerVolume = false;
+        }
+    }
+
     void Start () {
+        AllowMusicToPlayWhilePaused(true);
     }
 	
 	void Update () {

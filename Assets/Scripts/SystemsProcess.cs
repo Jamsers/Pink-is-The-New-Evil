@@ -273,6 +273,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         {
             if (Time.timeScale != 0)
             {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlaySoundEffect>().AllowMusicToPlayWhilePaused(false);
                 hud.SetActive(false);
                 gamePause.SetActive(true);
                 Time.timeScale = 0;
@@ -282,6 +283,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         {
             if (Time.timeScale == 0)
             {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlaySoundEffect>().AllowMusicToPlayWhilePaused(true);
                 hud.SetActive(true);
                 gamePause.SetActive(false);
                 Time.timeScale = 1;
