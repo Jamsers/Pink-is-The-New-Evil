@@ -740,10 +740,19 @@ public class PlayerAI : MonoBehaviour {
 
     void SpecialAttackManual(int mode)
     {
-        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.5f, 0);
+        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
 
         isSpecialAttackUnderWay = true;
-        specialAttackAim = Input.mousePosition;
+
+        if (orangeCircle.GetComponent<Transform>().position == startLocationOfMouseDown && orangeCircle.activeSelf == false)
+        {
+            specialAttackAim = Input.mousePosition;
+        }
+        else
+        {
+            specialAttackAim = orangeCircle.GetComponent<Transform>().position;
+        }
+
         orangeCircle.GetComponent<Transform>().position = specialAttackAim;
         SpecialPhase1 = false;
         SpecialPhase1_5 = false;
@@ -789,15 +798,85 @@ public class PlayerAI : MonoBehaviour {
         }
     }
 
+    void updateJoystickAim()
+    {
+        int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
+        int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
+
+        Vector3 screenCenter = new Vector3(screenWidth * 0.5f, screenHeight * 0.65f, 0);
+
+        float aimHorizontal = Input.GetAxis("HorizontalAim");
+        float aimVertical = Input.GetAxis("VerticalAim");
+
+        Vector3 virtualJoystickDirection = new Vector3(aimHorizontal, aimVertical, 0);
+
+        virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
+        virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
+
+        float joystickAimMoveSpeed = 400f;
+        float resetTime = 0.5f;
+
+        if (aimHorizontal == 0 && aimVertical == 0)
+        {
+            Invoke("VanishAndResetOrangeCircle", resetTime);
+        }
+        else
+        {
+            CancelInvoke("VanishAndResetOrangeCircle");
+            orangeCircle.SetActive(true);
+            orangeCircle.GetComponent<Transform>().position = orangeCircle.GetComponent<Transform>().position + ((virtualJoystickDirection * joystickAimMoveSpeed) * Time.fixedDeltaTime);
+
+            Vector3 finalPostion = orangeCircle.GetComponent<Transform>().position;
+
+            if (finalPostion.x > screenWidth)
+            {
+                finalPostion.x = screenWidth;
+            }
+            else if (finalPostion.x < 0)
+            {
+                finalPostion.x = 0;
+            }
+
+            if (finalPostion.y > screenHeight)
+            {
+                finalPostion.y = screenHeight;
+            }
+            else if (finalPostion.y < 0)
+            {
+                finalPostion.y = 0;
+            }
+
+            orangeCircle.GetComponent<Transform>().position = finalPostion;
+        }
+
+    }
+
+    void VanishAndResetOrangeCircle()
+    {
+        int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
+        int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
+
+        Vector3 screenCenter = new Vector3(screenWidth * 0.5f, screenHeight * 0.65f, 0);
+
+        orangeCircle.GetComponent<Transform>().position = screenCenter;
+        orangeCircle.SetActive(false);
+    }
+
     void Update() {
-        if (Input.GetButtonDown("Fire2") == true && isSpecAttack1 == true && isControlOn == true && isControlOff == false)
+        if ((Input.GetButtonDown("Fire2") == true || Input.GetAxis("Fire2") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false)
         {
             SpecialAttackManual(2);
         }
-        else if (Input.GetButtonDown("Fire1") == true && isSpecAttack2 == true && isControlOn == true && isControlOff == false)
+        else if ((Input.GetButtonDown("Fire1") == true || Input.GetAxis("Fire1") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false)
         {
             SpecialAttackManual(1);
         }
+
+        if (isControlOn == true && isControlOff == false)
+        {
+            updateJoystickAim();
+        }
+        
 
         if (Time.timeScale == 0) {
             AudioListener.volume = 0;
@@ -1098,7 +1177,8 @@ public class PlayerAI : MonoBehaviour {
     void PlayerSpecialAttackLogic1 () {
         if (specialAttackPhase == 1) {
             //gameObject.GetComponent<NavMeshAgent>().enabled = true;
-            Vector3 virtualJoystickDirection = startLocationOfMouseDown - Input.mousePosition;
+            // Vector3 virtualJoystickDirection = startLocationOfMouseDown - Input.mousePosition;
+            Vector3 virtualJoystickDirection = startLocationOfMouseDown - orangeCircle.GetComponent<Transform>().position;
             virtualJoystickDirection = new Vector3(-virtualJoystickDirection.x, 0, -virtualJoystickDirection.y);
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
             transform.LookAt(transform.position + virtualJoystickDirection.normalized);
@@ -1618,7 +1698,72 @@ public class PlayerAI : MonoBehaviour {
 
     Vector3 VirtualJoystick() {
         if (isControlOff == false) {
-            Vector3 virtualJoystickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            float horizontalAxisKeyboard = Input.GetAxis("HorizontalKeyboard");
+            float verticalAxisKeyboard = Input.GetAxis("VerticalKeyboard");
+            float horizontalAxisJoystick = Input.GetAxis("HorizontalJoystick");
+            float verticalAxisJoystick = Input.GetAxis("VerticalJoystick");
+
+            float joystickAxisLowerLimit = 0.5f;
+
+            if (horizontalAxisJoystick > 0f && horizontalAxisJoystick < joystickAxisLowerLimit) {
+                horizontalAxisJoystick = joystickAxisLowerLimit;
+            }
+            else if (horizontalAxisJoystick < 0f && horizontalAxisJoystick > -joystickAxisLowerLimit) {
+                horizontalAxisJoystick = -joystickAxisLowerLimit;
+            }
+
+            if (verticalAxisJoystick > 0f && verticalAxisJoystick < joystickAxisLowerLimit) {
+                verticalAxisJoystick = joystickAxisLowerLimit;
+            }
+            else if (verticalAxisJoystick < 0f && verticalAxisJoystick > -joystickAxisLowerLimit)
+            {
+                verticalAxisJoystick = -joystickAxisLowerLimit;
+            }
+
+            float horizontalAxis = 0f;
+            float verticalAxis = 0f;
+
+            if (horizontalAxisJoystick > 0 && horizontalAxisKeyboard > 0)
+            {
+                horizontalAxis = Mathf.Max(horizontalAxisJoystick, horizontalAxisKeyboard);
+            }
+            else if (horizontalAxisJoystick < 0 && horizontalAxisKeyboard < 0)
+            {
+                horizontalAxis = Mathf.Min(horizontalAxisJoystick, horizontalAxisKeyboard);
+            }
+            else
+            {
+                if (horizontalAxisJoystick != 0)
+                {
+                    horizontalAxis = horizontalAxisJoystick;
+                }
+                else
+                {
+                    horizontalAxis = horizontalAxisKeyboard;
+                }
+            }
+
+            if (verticalAxisJoystick > 0 && verticalAxisKeyboard > 0)
+            {
+                verticalAxis = Mathf.Max(verticalAxisJoystick, verticalAxisKeyboard);
+            }
+            else if (verticalAxisJoystick < 0 && verticalAxisKeyboard < 0)
+            {
+                verticalAxis = Mathf.Min(verticalAxisJoystick, verticalAxisKeyboard);
+            }
+            else
+            {
+                if (verticalAxisJoystick != 0)
+                {
+                    verticalAxis = verticalAxisJoystick;
+                }
+                else
+                {
+                    verticalAxis = verticalAxisKeyboard;
+                }
+            }
+
+            Vector3 virtualJoystickDirection = new Vector3(horizontalAxis, 0, verticalAxis);
 
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
             virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
