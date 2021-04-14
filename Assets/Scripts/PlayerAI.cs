@@ -742,11 +742,11 @@ public class PlayerAI : MonoBehaviour {
     {
         startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
 
-        isSpecialAttackUnderWay = true;
-
         if (orangeCircle.GetComponent<Transform>().position == startLocationOfMouseDown && orangeCircle.activeSelf == false)
         {
             specialAttackAim = Input.mousePosition;
+            CancelInvoke("VanishAndResetOrangeCircle");
+            orangeCircle.SetActive(true);
         }
         else
         {
@@ -754,6 +754,8 @@ public class PlayerAI : MonoBehaviour {
         }
 
         orangeCircle.GetComponent<Transform>().position = specialAttackAim;
+
+        isSpecialAttackUnderWay = true;
         SpecialPhase1 = false;
         SpecialPhase1_5 = false;
         SpecialPhase2 = false;
@@ -872,7 +874,7 @@ public class PlayerAI : MonoBehaviour {
             SpecialAttackManual(1);
         }
 
-        if (isControlOn == true && isControlOff == false)
+        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true))
         {
             updateJoystickAim();
         }
@@ -1293,6 +1295,7 @@ public class PlayerAI : MonoBehaviour {
             if (lerpPoint <= 0) {
                 isThereNoTargetForJump = false;
                 orangeCircle.SetActive(false);
+                VanishAndResetOrangeCircle();
                 redCancelIcon.SetActive(false);
 
                 isFadingOrange = false;
