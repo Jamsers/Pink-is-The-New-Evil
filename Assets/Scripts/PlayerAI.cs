@@ -213,7 +213,9 @@ public class PlayerAI : MonoBehaviour {
         Invoke("HealthRegeneration", healthRegenTick);
     }
 
+    float mouseSpecDistanceThresholdreplace;
     void Start() {
+        mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
         fillInHighScores();
         if (PlayerPrefs.HasKey("Upgrade Points"))
             upgradePoints = PlayerPrefs.GetInt("Upgrade Points");
@@ -736,7 +738,67 @@ public class PlayerAI : MonoBehaviour {
         isFallingFromSky = false;
     }
 
+    void SpecialAttackManual(int mode)
+    {
+        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.5f, 0);
+
+        isSpecialAttackUnderWay = true;
+        specialAttackAim = Input.mousePosition;
+        orangeCircle.GetComponent<Transform>().position = specialAttackAim;
+        SpecialPhase1 = false;
+        SpecialPhase1_5 = false;
+        SpecialPhase2 = false;
+        SpecialPhase2_5 = false;
+        if (mode == 1)
+        {
+            specialAttackMode = 1;
+            powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
+            if (isSpecAttack2 == true)
+            {
+                speedAttackLastTrig = Time.time;
+            }
+        }
+        else
+        {
+            specialAttackMode = 2;
+            powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
+            if (isSpecAttack1 == true)
+            {
+                jumpAttackLastTrig = Time.time;
+            }
+        }
+        isFadingOrange = true;
+        fadingOrangeTimeStart = Time.time;
+
+        powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
+        powerUpIcon.SetActive(true);
+
+        if (isSpecAttack2 == false && specialAttackMode == 1)
+        {
+            isSpecialAttackUnderWay = false;
+            powerUpIcon.SetActive(false);
+            orangeCircle.SetActive(false);
+            CancelInvoke("removeOrangeCircle");
+        }
+        else if (isSpecAttack1 == false && specialAttackMode == 2)
+        {
+            isSpecialAttackUnderWay = false;
+            powerUpIcon.SetActive(false);
+            orangeCircle.SetActive(false);
+            CancelInvoke("removeOrangeCircle");
+        }
+    }
+
     void Update() {
+        if (Input.GetButtonDown("Fire2") == true && isSpecAttack1 == true && isControlOn == true && isControlOff == false)
+        {
+            SpecialAttackManual(2);
+        }
+        else if (Input.GetButtonDown("Fire1") == true && isSpecAttack2 == true && isControlOn == true && isControlOff == false)
+        {
+            SpecialAttackManual(1);
+        }
+
         if (Time.timeScale == 0) {
             AudioListener.volume = 0;
 
@@ -785,8 +847,8 @@ public class PlayerAI : MonoBehaviour {
             else {
                 if (isControlOn == true) {
                     MovePlayer(VirtualJoystick());
-                    if (Time.timeScale != 0)
-                        PlayerSpecialAttack();
+                    //if (Time.timeScale != 0)
+                        //PlayerSpecialAttack();
                 }
                 else if (isControlOn == false) {
                     AnimSwitchTo("goToIdle3");
@@ -1300,7 +1362,7 @@ public class PlayerAI : MonoBehaviour {
     }
 
     void PlayerSpecialAttack () {
-        float mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
+        
 
         if (isControlOff == false) {
             if (Input.GetMouseButton(0) == true) {
