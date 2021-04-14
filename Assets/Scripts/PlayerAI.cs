@@ -815,8 +815,8 @@ public class PlayerAI : MonoBehaviour {
         virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
         virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
 
-        float joystickAimMoveSpeed = 400f;
-        float resetTime = 0.5f;
+        float joystickAimMoveSpeed = 1500f;
+        float resetTime = 0.75f;
 
         if (aimHorizontal == 0 && aimVertical == 0)
         {
@@ -825,29 +825,30 @@ public class PlayerAI : MonoBehaviour {
         else
         {
             CancelInvoke("VanishAndResetOrangeCircle");
+
+            Vector3 finalPostion = orangeCircle.GetComponent<Transform>().position + ((virtualJoystickDirection * joystickAimMoveSpeed) * Time.deltaTime);
+
+            if (finalPostion.x > screenWidth-10)
+            {
+                finalPostion.x = screenWidth-10;
+            }
+            else if (finalPostion.x < 10)
+            {
+                finalPostion.x = 10;
+            }
+
+            if (finalPostion.y > screenHeight-10)
+            {
+                finalPostion.y = screenHeight-10;
+            }
+            else if (finalPostion.y < 10)
+            {
+                finalPostion.y = 10;
+            }
+
+            finalPostion.z = 0;
+
             orangeCircle.SetActive(true);
-            orangeCircle.GetComponent<Transform>().position = orangeCircle.GetComponent<Transform>().position + ((virtualJoystickDirection * joystickAimMoveSpeed) * Time.fixedDeltaTime);
-
-            Vector3 finalPostion = orangeCircle.GetComponent<Transform>().position;
-
-            if (finalPostion.x > screenWidth)
-            {
-                finalPostion.x = screenWidth;
-            }
-            else if (finalPostion.x < 0)
-            {
-                finalPostion.x = 0;
-            }
-
-            if (finalPostion.y > screenHeight)
-            {
-                finalPostion.y = screenHeight;
-            }
-            else if (finalPostion.y < 0)
-            {
-                finalPostion.y = 0;
-            }
-
             orangeCircle.GetComponent<Transform>().position = finalPostion;
         }
 
@@ -865,16 +866,16 @@ public class PlayerAI : MonoBehaviour {
     }
 
     void Update() {
-        if ((Input.GetButtonDown("Fire2") == true || Input.GetAxis("Fire2") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false)
+        if ((Input.GetButtonDown("Fire2") == true || Input.GetAxis("Fire2") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
         {
             SpecialAttackManual(2);
         }
-        else if ((Input.GetButtonDown("Fire1") == true || Input.GetAxis("Fire1") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false)
+        else if ((Input.GetButtonDown("Fire1") == true || Input.GetAxis("Fire1") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
         {
             SpecialAttackManual(1);
         }
 
-        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true))
+        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true) && Time.timeScale != 0)
         {
             updateJoystickAim();
         }
@@ -927,7 +928,8 @@ public class PlayerAI : MonoBehaviour {
             }
             else {
                 if (isControlOn == true) {
-                    MovePlayer(VirtualJoystick());
+                    if (Time.timeScale != 0)
+                        MovePlayer(VirtualJoystick());
                     //if (Time.timeScale != 0)
                         //PlayerSpecialAttack();
                 }

@@ -11,4 +11,4 @@ NSIS 3.06.1: https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3
 Minimum specs:  
 Any CPU in the last decade  
 GeForce 940/Radeon 450 equivalent DX11 GPU  
-1.5GB RAM  
+1 GB RAM  

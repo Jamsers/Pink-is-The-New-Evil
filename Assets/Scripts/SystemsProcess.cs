@@ -7,8 +7,18 @@ using UnityEngine.UI;
 using UnityEngine.PostProcessing;
 
 public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
-
     public bool IsDebugMenuOn = false;
+
+    public Button MainMenuDefaultButton;
+    public Button SettingsDefaultButton;
+    public Button CreditsDefaultButton;
+    public Button HighScoreDefaultButton;
+    public Button ResetConfirmDefaultButton;
+    public Button HighScoreResetConfirmDefaultButton;
+    public Button HighScalabilitySelectSwitchToButton;
+    public Button LowScalabilitySelectSwitchToButton;
+    public Button PauseScreenDefaultButton;
+    
     public GameObject DebugMenu;
 
     public GameObject blockAllInput;
@@ -233,6 +243,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         if (mode == 1)
         {
             resetProgress.gameObject.SetActive(true);
+            ResetConfirmDefaultButton.Select();
         }
         else if (mode == 2)
         {
@@ -250,6 +261,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         else if (mode == 4)
         {
             resetProgress.gameObject.SetActive(false);
+            SettingsDefaultButton.Select();
         }
         else if (mode == 5)
         {
@@ -277,6 +289,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
                 hud.SetActive(false);
                 gamePause.SetActive(true);
                 Time.timeScale = 0;
+                PauseScreenDefaultButton.Select();
             }
         }
         else if (mode == 8)
@@ -297,6 +310,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (mode == 10) {
             resetScoreConfirm.SetActive(false);
+            HighScoreDefaultButton.Select();
         }
         else if (mode == 11) {
             loadingScreen.SetActive(true);
@@ -349,6 +363,14 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         else if (mode == 19)
         {
             togglescalability();
+            if (PlayerPrefs.GetInt("LowQuality") == 1)
+            {
+                LowScalabilitySelectSwitchToButton.Select();
+            }
+            else
+            {
+                HighScalabilitySelectSwitchToButton.Select();
+            }
         }
         else if (mode == 20)
         {
@@ -534,16 +556,19 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         {
             objectiveCamera = mainMenuCamera;
             objectiveMenu = mainMenu;
+            MainMenuDefaultButton.Select();
         }
         else if (objective == 2)
         {
             objectiveCamera = settingsMenuCamera;
             objectiveMenu = settingsMenu;
+            SettingsDefaultButton.Select();
         }
         else if (objective == 3)
         {
             objectiveCamera = creditsMenuCamera;
             objectiveMenu = creditsMenu;
+            CreditsDefaultButton.Select();
         }
         else if (objective == 4)
         {
@@ -605,11 +630,13 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         else if (objective == 6) {
             objectiveCamera = highscorecamera;
             objectiveMenu = highScoremenu;
+            HighScoreDefaultButton.Select();
         }
         else if (objective == 7) {
             objectiveCamera = highscorecamera;
             objectiveMenu = highScoremenu;
             resetScoreConfirm.SetActive(true);
+            HighScoreResetConfirmDefaultButton.Select();
         }
         else if (objective == 8) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().isControlOff = true;
