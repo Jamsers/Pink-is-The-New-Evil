@@ -966,7 +966,7 @@ public class PlayerAI : MonoBehaviour {
         //Debug.Log("mouseup = " + startDurationOfMouseUp + ", mouse down = " + startDurationOfMouseDown);
     }
 
-    int specialAttackMode;
+    public int specialAttackMode;
 
     bool lastIsMouseDown = false;
 
@@ -994,7 +994,7 @@ public class PlayerAI : MonoBehaviour {
 
     int specialAttackPhase = 1;
 
-    bool isSpecialAttackUnderWay = false;
+    public bool isSpecialAttackUnderWay = false;
 
     List<GameObject> targetsInRange = new List<GameObject>();
 
