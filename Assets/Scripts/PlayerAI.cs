@@ -1703,6 +1703,11 @@ public class PlayerAI : MonoBehaviour {
 
     public GameObject gameCamera;
 
+    Vector3 refoutvar = Vector3.zero;
+    Vector3 CurrrentJoystickDirection = Vector3.zero;
+
+    float lowerlimit = 0.1f;
+
     Vector3 VirtualJoystick() {
         if (isControlOff == false) {
             float horizontalAxisKeyboard = Input.GetAxis("HorizontalKeyboard");
@@ -1774,7 +1779,30 @@ public class PlayerAI : MonoBehaviour {
 
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
             virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
-            return virtualJoystickDirection;
+            
+
+            CurrrentJoystickDirection = Vector3.SmoothDamp(CurrrentJoystickDirection, virtualJoystickDirection, ref refoutvar, 0.1f);
+
+           
+
+            Vector3 LowerClampedJoystickDirection = CurrrentJoystickDirection;
+
+            if (LowerClampedJoystickDirection.x < lowerlimit && LowerClampedJoystickDirection.x > -lowerlimit)
+            {
+                LowerClampedJoystickDirection.x = 0f;
+            }
+
+            if (LowerClampedJoystickDirection.y < lowerlimit && LowerClampedJoystickDirection.y > -lowerlimit)
+            {
+                LowerClampedJoystickDirection.y = 0f;
+            }
+
+            if (LowerClampedJoystickDirection.z < lowerlimit && LowerClampedJoystickDirection.z > -lowerlimit)
+            {
+                LowerClampedJoystickDirection.z = 0f;
+            }
+
+            return LowerClampedJoystickDirection;
 
         }
         else {

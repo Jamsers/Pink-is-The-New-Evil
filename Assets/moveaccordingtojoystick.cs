@@ -35,8 +35,8 @@ public class moveaccordingtojoystick : MonoBehaviour {
 				float step = (powerCameraMoveSpeed * Time.deltaTime);
 				if (playerAI.specialAttackMode == 1)
 				{
-					//childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), step);
-					childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), ref refoutvar, moveCameraSpringResistance * 2);
+					childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), step);
+					//childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), ref refoutvar, moveCameraSpringResistance * 2);
 				}
 				else
 				{
