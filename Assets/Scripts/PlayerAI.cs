@@ -216,6 +216,7 @@ public class PlayerAI : MonoBehaviour {
 
     float mouseSpecDistanceThresholdreplace;
     void Start() {
+        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
         mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
         fillInHighScores();
         if (PlayerPrefs.HasKey("Upgrade Points"))
@@ -741,8 +742,6 @@ public class PlayerAI : MonoBehaviour {
 
     void SpecialAttackManual(int mode)
     {
-        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
-
         if (orangeCircle.GetComponent<Transform>().position == startLocationOfMouseDown && orangeCircle.activeSelf == false)
         {
             specialAttackAim = Input.mousePosition;
@@ -866,14 +865,41 @@ public class PlayerAI : MonoBehaviour {
         orangeCircle.SetActive(false);
     }
 
+    bool isMouseOverButton = false;
+
+    public void setisMouseOverButton(bool setBool)
+    {
+        isMouseOverButton = setBool;
+    }
+
     void Update() {
-        if ((Input.GetButtonDown("Fire2") == true || Input.GetAxis("Fire2") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
+        if ((Input.GetAxis("Fire2Joystick") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
         {
-            SpecialAttackManual(2);
+            if (orangeCircle.transform.position != startLocationOfMouseDown)
+            {
+                SpecialAttackManual(2);
+            }
         }
-        else if ((Input.GetButtonDown("Fire1") == true || Input.GetAxis("Fire1") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
+        else if ((Input.GetAxis("Fire1Joystick") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
         {
-            SpecialAttackManual(1);
+            if (orangeCircle.transform.position != startLocationOfMouseDown)
+            {
+                SpecialAttackManual(1);
+            }
+        }
+        else if ((Input.GetButtonDown("Fire2") == true) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
+        {
+            if (isMouseOverButton != true)
+            {
+                SpecialAttackManual(2);
+            } 
+        }
+        else if ((Input.GetButtonDown("Fire1") == true) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
+        {
+            if (isMouseOverButton != true)
+            {
+                SpecialAttackManual(1);
+            }
         }
 
         if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true) && Time.timeScale != 0)
@@ -1708,6 +1734,8 @@ public class PlayerAI : MonoBehaviour {
 
     float lowerlimit = 0.1f;
 
+    Vector3 lastMousePosition = Vector3.zero;
+
     Vector3 VirtualJoystick() {
         if (isControlOff == false) {
             float horizontalAxisKeyboard = Input.GetAxis("HorizontalKeyboard");
@@ -1730,6 +1758,19 @@ public class PlayerAI : MonoBehaviour {
             else if (verticalAxisJoystick < 0f && verticalAxisJoystick > -joystickAxisLowerLimit)
             {
                 verticalAxisJoystick = -joystickAxisLowerLimit;
+            }
+
+            if (horizontalAxisJoystick != 0 || verticalAxisJoystick != 0)
+            {
+                Cursor.visible = false;
+            }
+            else if (Input.mousePosition != lastMousePosition)
+            {
+                Cursor.visible = true;
+                lastMousePosition = Input.mousePosition;
+            }
+            else if (horizontalAxisKeyboard != 0 || verticalAxisKeyboard != 0) {
+                Cursor.visible = true;
             }
 
             float horizontalAxis = 0f;
