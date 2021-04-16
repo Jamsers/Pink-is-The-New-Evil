@@ -29,10 +29,11 @@ public class moveaccordingtojoystick : MonoBehaviour {
 			virtualJoystickStored = playerAI.virtualJoystickStored;
 			Vector3 movetopos = (virtualJoystickStored * distanceFromPlayer);
 
+			float step = (powerCameraMoveSpeed * Time.deltaTime);
+
 			//float step = moveCameraSpeed * Time.deltaTime;
 			if (playerAI.isSpecialAttackUnderWay == true)
 			{
-				float step = (powerCameraMoveSpeed * Time.deltaTime);
 				if (playerAI.specialAttackMode == 1)
 				{
 					childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), step);
@@ -43,6 +44,11 @@ public class moveaccordingtojoystick : MonoBehaviour {
 					//childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), step);
 					childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), ref refoutvar, moveCameraSpringResistance * 2);
 				}
+			}
+			else if (playerAI.amAttackingRightNow == true)
+            {
+				childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), step/1.25f);
+				//childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), ref refoutvar, moveCameraSpringResistance * 2);
 			}
 			else
 			{

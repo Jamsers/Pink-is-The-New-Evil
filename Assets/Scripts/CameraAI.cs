@@ -59,7 +59,7 @@ public class CameraAI : MonoBehaviour {
         }
 
         RaycastHit hit;
-        Ray ray = GetComponent<Camera>().ScreenPointToRay(new Vector3(GetComponent<Camera>().pixelWidth/2, (GetComponent<Camera>().pixelHeight / 2) + GetComponent<Camera>().pixelHeight * 0.17f, 0));
+        Ray ray = new Ray(transform.position, visionTest.transform.position - transform.position);
         Physics.Raycast(ray, out hit, Mathf.Infinity, myLayerMask);
 
         //Debug.DrawLine(transform.position, hit.point, Color.red, 0, true);

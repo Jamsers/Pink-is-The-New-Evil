@@ -68,7 +68,7 @@ public class PlayerAI : MonoBehaviour {
 
     public int upgradePoints;
 
-    bool amAttackingRightNow = false;
+    public bool amAttackingRightNow = false;
     //bool prevAmAttackingRightNow = false;
 
     public int attackMode;
@@ -1984,6 +1984,7 @@ public class PlayerAI : MonoBehaviour {
                 else
                     AnimSwitchTo("goToIdle");
                 transform.LookAt(transform.position + direction);
+                //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation((transform.position + direction) - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             }
             else {
                 if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
@@ -1991,7 +1992,8 @@ public class PlayerAI : MonoBehaviour {
                 }
                 else
                     AnimSwitchTo("goToWalkForward");
-                transform.LookAt(transform.position + direction);
+                //transform.LookAt(transform.position + direction);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation((transform.position + direction) - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             }
 
             /*if (Time.time - prevTime > attackCooldown && attackOnCooldown == 1)
@@ -2006,7 +2008,8 @@ public class PlayerAI : MonoBehaviour {
         }
         else {
             //Debug.Log("2");
-            transform.LookAt(enemyTarget.transform.position);
+            //transform.LookAt(enemyTarget.transform.position);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(enemyTarget.transform.position - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
             Vector3 enemyAim = enemyTarget.transform.position - transform.position;
