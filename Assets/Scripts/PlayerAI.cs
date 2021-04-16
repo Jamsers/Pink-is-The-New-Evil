@@ -107,6 +107,8 @@ public class PlayerAI : MonoBehaviour {
     public GameObject weaponModel7;
     public GameObject weaponModel8;
 
+    public GameObject trailparticle;
+
     public GameObject newHighScore;
 
     void CheckIfInHighscores () {
@@ -243,6 +245,20 @@ public class PlayerAI : MonoBehaviour {
             Debug.Log("hello");
             isFallingFromSky = true;
         }*/
+
+        trailParticle = (GameObject)Instantiate(trailparticle, shockwavespawn.position, shockwave.transform.rotation);
+
+        var main = trailParticle.GetComponent<ParticleSystem>().main;
+        var emission = trailParticle.GetComponent<ParticleSystem>().emission;
+
+        main.loop = true;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.startSpeed = 6.5f;
+        main.startSize = 0.65f;
+
+        emission.rateOverTime = 250f;
+
+        trailParticle.GetComponent<ParticleSystem>().Stop();
     }
 
     int targetHealth = 100;
@@ -1206,6 +1222,8 @@ public class PlayerAI : MonoBehaviour {
         }
     }
 
+    GameObject trailParticle;
+
     void PlayerSpecialAttackLogic1 () {
         if (specialAttackPhase == 1) {
             //gameObject.GetComponent<NavMeshAgent>().enabled = true;
@@ -1218,10 +1236,13 @@ public class PlayerAI : MonoBehaviour {
             AnimSwitchTo("SpecAttack1");
             isControlOff = true;
             specialAttackPhase = 2;
+
+            
         }
         else if (specialAttackPhase == 2) {
         }
         else if (specialAttackPhase == 3) {
+
             //get reference to box identifieer gameobject
             //specattack2enemy
             RaycastHit hit;
@@ -1231,6 +1252,27 @@ public class PlayerAI : MonoBehaviour {
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pointHit);
             specialAttackPhase = 4;
+
+            if (attackMode == 7 || attackMode == 8)
+            {
+                trailParticle.transform.position = shockwavespawn2.position;
+            }
+            else
+            {
+                trailParticle.transform.position = shockwavespawn.position;
+            }
+
+            trailParticle.transform.SetParent(this.transform);
+
+            Vector3 newtrailPos = trailParticle.transform.localPosition;
+            newtrailPos.y = newtrailPos.y - 0.3f;
+            newtrailPos.z = newtrailPos.z - 1.25f;
+
+            trailParticle.transform.localPosition = newtrailPos;
+            trailParticle.transform.localScale = new Vector3(0.8f, 1.25f, .75f);
+            trailParticle.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            
+            trailParticle.GetComponent<ParticleSystem>().Play();
         }
         else if (specialAttackPhase == 4) {
             CylinderTargetArea targetarea = boxTargetArea.GetComponent<CylinderTargetArea>();
@@ -1262,6 +1304,8 @@ public class PlayerAI : MonoBehaviour {
             targetsInRange = new List<GameObject>();
             isSpecialAttackUnderWay = false;
             specialAttackPhase = 1;
+
+            trailParticle.GetComponent<ParticleSystem>().Stop();
         }
         //Debug.Log("ATTACKSPEC");
     }
@@ -1943,7 +1987,7 @@ public class PlayerAI : MonoBehaviour {
         if (enemyTarget == null) {
             //Debug.Log("1");
 
-            if ((/*Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange*/ Input.GetButtonDown("Fire3") == true && attackOnCooldown == 0) || amAttackingRightNow == true)
+            if (((Input.GetButtonDown("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
             {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
@@ -2023,7 +2067,8 @@ public class PlayerAI : MonoBehaviour {
             Vector3 up = new Vector3(0f, 1f, 0f);
             float leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, up);
 
-            if ((/*Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange*/ Input.GetButtonDown("Fire3") == true && attackOnCooldown == 0) || amAttackingRightNow == true) {
+            if (((Input.GetButtonDown("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
+            {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
 
