@@ -1907,6 +1907,8 @@ public class PlayerAI : MonoBehaviour {
 
     bool canShowNormJoystick = true;
 
+    public float playerLookAtRotateSpeed;
+
     void MovePlayer (Vector3 direction) {
 
         playerCollider.SimpleMove((direction * moveSpeed) * Time.fixedDeltaTime);
@@ -1941,13 +1943,39 @@ public class PlayerAI : MonoBehaviour {
         if (enemyTarget == null) {
             //Debug.Log("1");
 
-            if (amAttackingRightNow == true) {
+            if ((/*Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange*/ Input.GetButtonDown("Fire3") == true && attackOnCooldown == 0) || amAttackingRightNow == true)
+            {
+                amAttackingRightNow = true;
+                attackOnCooldown = 1;
+
                 if (attackMode == 1)
                     AnimSwitchTo("goToAttack");
                 else if (attackMode == 6 || attackMode == 7 || attackMode == 8)
                     AnimSwitchTo("goToAttack3");
                 else
                     AnimSwitchTo("goToAttack2");
+
+                if (isAttacking == 0)
+                {
+                    //prevTime = Time.time;
+                    isAttacking = 1;
+                    hasDamaged = 0;
+                }
+
+                if (attackDamageTicked == true && hasDamaged == 0)
+                {
+                    //enemyTarget.GetComponent<EnemyAI>().Health(-20);
+                    hasDamaged = 1;
+                    attackDamageTicked = false;
+                }
+
+                if (attackIsDone == true)
+                {
+                    attackIsDone = false;
+                    attackOnCooldown = 1;
+                    isAttacking = 0;
+                    //prevTime = Time.time;
+                }
             }
             else if (direction == new Vector3(0, 0, 0)) {
                 if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
@@ -1992,9 +2020,7 @@ public class PlayerAI : MonoBehaviour {
             Vector3 up = new Vector3(0f, 1f, 0f);
             float leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, up);
 
-            if ((Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange && attackOnCooldown == 0) || amAttackingRightNow == true) {
-                //Debug.Log("1");
-
+            if ((/*Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange*/ Input.GetButtonDown("Fire3") == true && attackOnCooldown == 0) || amAttackingRightNow == true) {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
 
