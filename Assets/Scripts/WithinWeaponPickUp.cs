@@ -14,6 +14,7 @@ public class WithinWeaponPickUp : MonoBehaviour {
 
     public GameObject pinkguyback;
     public GameObject pinkguytext;
+    public GameObject pinkfizz;
 
     public int weaponType;
     public int weaponPrice;
@@ -36,6 +37,8 @@ public class WithinWeaponPickUp : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().BuyWeapon(weaponType);
                 pinkguyback.SetActive(true);
                 pinkguytext.SetActive(true);
+                pinkfizz.SetActive(true);
+                Destroy(pinkfizz, 1);
                 Destroy(pinkguyback, 6);
                 Destroy(pinkguytext, 6);
             }

@@ -5,15 +5,15 @@ using UnityEngine;
 public class lightfadein : MonoBehaviour {
 
 	Light light;
-	float origBrightness;
+	float origRange;
 	bool isFading = false;
-	float fadeamount = 1.5f;
+	float fadeamount = 10f;
 
 	// Use this for initialization
 	void Start () {
 		light = GetComponent<Light>();
-		origBrightness = light.intensity;
-		light.intensity = 0;
+		origRange = light.range;
+		light.range = 0;
 	}
 
 	void OnEnable()
@@ -25,8 +25,8 @@ public class lightfadein : MonoBehaviour {
 	void Update () {
 		if (isFading)
         {
-			light.intensity = Mathf.MoveTowards(light.intensity, origBrightness, fadeamount * Time.deltaTime);
-			if (light.intensity >= origBrightness)
+			light.range = Mathf.MoveTowards(light.range, origRange, fadeamount * Time.deltaTime);
+			if (light.range >= origRange)
             {
 				isFading = false;
             }

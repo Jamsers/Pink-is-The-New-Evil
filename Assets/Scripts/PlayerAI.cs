@@ -253,13 +253,21 @@ public class PlayerAI : MonoBehaviour {
 
         main.loop = true;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.startSpeed = 6.5f;
+        //main.startSpeed = 6.5f;
+        main.startSpeed = 3f;
         main.startSize = 0.65f;
 
-        emission.rateOverTime = 250f;
+        emission.rateOverTime = 200f;
 
         trailParticle.GetComponent<ParticleSystem>().Stop();
+
+        if (PlayerPrefs.GetInt("Level") == 29)
+        {
+            modeltoRepl.GetComponent<Renderer>().sharedMaterial = playerpinkTrim;
+        }
     }
+
+    public Material playerpinkTrim;
 
     int targetHealth = 100;
 
@@ -365,8 +373,14 @@ public class PlayerAI : MonoBehaviour {
             attackCooldown = .5f;
             disableOtherWeapons();
             weaponModel8.SetActive(true);
+            if (PlayerPrefs.GetInt("Level") == 29)
+            {
+                weaponModel8.GetComponent<MeshRenderer>().material = weapon8pinktrim;
+            }
         }
     }
+
+    public Material weapon8pinktrim;
 
     public GameObject gayPoofWeap;
     public GameObject gayPoofPLay;
@@ -566,6 +580,8 @@ public class PlayerAI : MonoBehaviour {
                 GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon8Model.transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
+                poof1.transform.localScale = poof1.transform.localScale * 3;
+                poof2.transform.localScale = poof2.transform.localScale * 3;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
                 backimage1.SetActive(false);
@@ -613,6 +629,8 @@ public class PlayerAI : MonoBehaviour {
                 GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon7Model.transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
+                poof1.transform.localScale = poof1.transform.localScale * 3;
+                poof2.transform.localScale = poof2.transform.localScale * 3;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
                 backimage1.SetActive(false);
@@ -659,6 +677,8 @@ public class PlayerAI : MonoBehaviour {
                 GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon7Model.transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
+                poof1.transform.localScale = poof1.transform.localScale * 3;
+                poof2.transform.localScale = poof2.transform.localScale * 3;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
                 backimage1.SetActive(false);
@@ -1269,7 +1289,7 @@ public class PlayerAI : MonoBehaviour {
             newtrailPos.z = newtrailPos.z - 1.25f;
 
             trailParticle.transform.localPosition = newtrailPos;
-            trailParticle.transform.localScale = new Vector3(0.8f, 1.25f, .75f);
+            trailParticle.transform.localScale = new Vector3(1.2f, 1.2f, .65f);
             trailParticle.transform.localRotation = Quaternion.Euler(0, 0, 0);
             
             trailParticle.GetComponent<ParticleSystem>().Play();
