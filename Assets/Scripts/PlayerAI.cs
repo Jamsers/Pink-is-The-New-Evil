@@ -218,8 +218,7 @@ public class PlayerAI : MonoBehaviour {
 
     float mouseSpecDistanceThresholdreplace;
     void Start() {
-        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
-        mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
+        
         fillInHighScores();
         if (PlayerPrefs.HasKey("Upgrade Points"))
             upgradePoints = PlayerPrefs.GetInt("Upgrade Points");
@@ -909,6 +908,10 @@ public class PlayerAI : MonoBehaviour {
     }
 
     void Update() {
+
+        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
+        mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
+
         if ((Input.GetAxis("Fire2Joystick") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
         {
             if (orangeCircle.transform.position != startLocationOfMouseDown)
@@ -1026,6 +1029,7 @@ public class PlayerAI : MonoBehaviour {
         SpecialAttackIndicatorsFadedXDDDD();
         //Debug.Log("SpecialPhase1 = " + SpecialPhase1 + ", SpecialPhase1_5 = " + SpecialPhase1_5 + ", SpecialPhase2 = " + SpecialPhase2 + ", SpecialPhase2_5 = " + SpecialPhase2_5);
         //Debug.Log("mouseup = " + startDurationOfMouseUp + ", mouse down = " + startDurationOfMouseDown);
+
     }
 
     public int specialAttackMode;
@@ -2007,7 +2011,7 @@ public class PlayerAI : MonoBehaviour {
         if (enemyTarget == null) {
             //Debug.Log("1");
 
-            if (((Input.GetButtonDown("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
+            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
             {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
@@ -2087,7 +2091,7 @@ public class PlayerAI : MonoBehaviour {
             Vector3 up = new Vector3(0f, 1f, 0f);
             float leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, up);
 
-            if (((Input.GetButtonDown("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
+            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
             {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;

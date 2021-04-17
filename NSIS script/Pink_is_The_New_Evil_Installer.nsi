@@ -3,7 +3,7 @@ Unicode True
 !include "FileFunc.nsh"
 !define PUBLISHER_NAME "John James Gutib"
 !define PRODUCT_NAME "Pink is The New Evil"
-!define PRODUCT_VERSION "0.98.0.0"
+!define PRODUCT_VERSION "0.99.0.0"
 !define OutputFileName "PinkIsTheNewEvil_Installer.exe"
 !define ARP "Software\Microsoft\Windows\CurrentVersion\Uninstall\PinkIsTheNewEvil"
 !define MUI_ICON "PinkIsTheNewEvil_Icon.ico"

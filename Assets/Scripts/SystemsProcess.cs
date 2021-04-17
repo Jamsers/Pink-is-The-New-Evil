@@ -138,7 +138,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         setscalability();
     }
 
-    void setscalability()
+    public void setscalability()
     {
         if (PlayerPrefs.GetInt("LowQuality") == 1)
         {
@@ -175,7 +175,8 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
 
     void Start () {
         //ShowAd();
-        
+
+        Cursor.visible = true;
 
         if (IsDebugMenuOn == true)
         {
@@ -187,6 +188,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
         setscalability();
+        Invoke("setscalability", 1f);
         GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.MainMenu);
 
             //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
@@ -290,6 +292,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
                 gamePause.SetActive(true);
                 Time.timeScale = 0;
                 PauseScreenDefaultButton.Select();
+                Cursor.visible = true;
             }
         }
         else if (mode == 8)
@@ -307,6 +310,7 @@ public class SystemsProcess : MonoBehaviour/*, IStoreListener*/ {
             hud.SetActive(false);
             gamePause.SetActive(false);
             gameOver.SetActive(true);
+            Cursor.visible = true;
         }
         else if (mode == 10) {
             resetScoreConfirm.SetActive(false);

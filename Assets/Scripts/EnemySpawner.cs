@@ -579,6 +579,20 @@ public class EnemySpawner : MonoBehaviour {
             }
             else
             {
+                /*int shake = Random.Range(1, 3);
+                switch (shake)
+                {
+                    case 1:
+                        GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.BridgeSection);
+                        break;
+                    case 2:
+                        GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
+                        break;
+                    case 3:
+                        GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.NorthernPart);
+                        break;
+                }*/
+
                 GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
             }
             
@@ -1006,6 +1020,7 @@ public class EnemySpawner : MonoBehaviour {
             tutorialScreen6.SetActive(true);
             //Time.timeScale = 0;
         }
+        Cursor.visible = true;
     }
 
     void RemoveLevelPrompts ()
