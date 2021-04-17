@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Pink is The New Evil!
 
 You can use the [editor on GitHub](https://github.com/Jamsers/Pink-is-The-New-Evil/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
