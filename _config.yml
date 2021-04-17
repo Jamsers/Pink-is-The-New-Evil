@@ -1,7 +1,5 @@
 theme: jekyll-theme-cayman
 title: Pink is The New Evil!
 description: A top down whack a mole game!
-image: /Images/ogtag_banner.jpg
-header-img: "Images/ogtag_banner.jpg"
 github:
   installer_url: https://github.com/Jamsers/Pink-is-The-New-Evil/releases/download/v0.99/PinkIsTheNewEvil_Installer.exe
