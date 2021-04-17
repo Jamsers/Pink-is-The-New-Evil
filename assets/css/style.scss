@@ -1,7 +1,20 @@
 ---
 ---
 
+@import 'jekyll-theme-cayman';
+
 $header-bg-color: #B884B8;
 $header-bg-color-secondary: #A284B8;
 
-@import 'jekyll-theme-cayman';
+.btn {
+    color: #85B884;
+    border-color: #9AD499; 
+    // background-color: #008CBA;
+  } 
+
+  .btn:hover {
+    color: #BBCEBA;
+    text-decoration: none;
+    background-color: #9CB29B;
+    border-color: #DAEADA;
+  }
