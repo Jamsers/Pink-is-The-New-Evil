@@ -1,3 +1,9 @@
+---
+title: "Pink is The New Evil!"
+description: "A top down whack a mole game!"
+tagline: "Pink is The New Evil!"
+---
+
 ## Hordes of Pink
 
 You find yourself stranded in the ruins of a desert city, surrounded by hordes of pink, evil monsters! While you have plenty of questions, the only one that matters is HOW COULD THEY BESMIRCH THE CUTE BEAUTIFUL REPUTATION OF THE COLOR PINK - the only logical recourse is to collect their essence, use it to buy better and stronger weapons, and smash them all to oblivion!
