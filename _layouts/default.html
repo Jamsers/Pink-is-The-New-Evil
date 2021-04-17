@@ -1,6 +1,10 @@
 ---
 title: Pink is The New Evil!
-image: /Images/ogtag_banner.jpg
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /Images/ogtag_banner.jpg
 ---
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
@@ -16,7 +20,7 @@ image: /Images/ogtag_banner.jpg
       </script>
     {% endif %}
     <meta charset="UTF-8">
-
+{% seo title=false %}
 {% seo %}
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
