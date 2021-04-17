@@ -1,8 +1,6 @@
 ---
 ---
 
-@import 'jekyll-theme-cayman';
-
 $header-bg-color: #B884B8;
 $header-bg-color-secondary: #A284B8;
 
@@ -26,3 +24,5 @@ $header-bg-color-secondary: #A284B8;
     border-color: #BBCEBA;
     background-color: #DAEADA;
   }
+
+@import 'jekyll-theme-cayman';
