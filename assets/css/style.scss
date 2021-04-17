@@ -1,12 +1,12 @@
 ---
 ---
 
-@import 'jekyll-theme-cayman';
-
 $header-bg-color: #B884B8;
 $header-bg-color-secondary: #A284B8;
 //$header-heading-color: #000000;
 $section-headings-color: #9A549C;
+
+@import 'jekyll-theme-cayman';
 
 .btn {
     color: #555E63;
