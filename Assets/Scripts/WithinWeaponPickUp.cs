@@ -23,7 +23,7 @@ public class WithinWeaponPickUp : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        func = new UnityAction(delegate () { GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().BuyWeapon(weaponType); });
+        func = new UnityAction(delegate () { GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().BuyWeapon(weaponType); });
     }
 	
 	// Update is called once per frame
@@ -34,7 +34,7 @@ public class WithinWeaponPickUp : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Player Identifier") {
             if (weaponType == 420) {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().BuyWeapon(weaponType);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().BuyWeapon(weaponType);
                 pinkguyback.SetActive(true);
                 pinkguytext.SetActive(true);
                 pinkfizz.SetActive(true);
@@ -48,24 +48,24 @@ public class WithinWeaponPickUp : MonoBehaviour {
                 buybutton.SetActive(true);
                 if (weaponType == 9 || weaponType == 10 || weaponType == 11) {
                     price.GetComponent<Text>().text = "Ascencion: " + weaponPrice;
-                    price.GetComponent<Text>().font = GameObject.Find("Systems Process").GetComponent<EnemySpawner>().poiret;
+                    price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
 
-                    if (weaponType == 9 && GameObject.Find("Systems Process").GetComponent<EnemySpawner>().level == 29) {
+                    if (weaponType == 9 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Extended Rush: 70000";
-                        price.GetComponent<Text>().font = GameObject.Find("Systems Process").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
                     }
-                    else if (weaponType == 10 && GameObject.Find("Systems Process").GetComponent<EnemySpawner>().level == 29) {
+                    else if (weaponType == 10 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Fast-Charge Jump: 90000";
-                        price.GetComponent<Text>().font = GameObject.Find("Systems Process").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
                     }
-                    else if (weaponType == 11 && GameObject.Find("Systems Process").GetComponent<EnemySpawner>().level == 29) {
+                    else if (weaponType == 11 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Double Health: 30000";
-                        price.GetComponent<Text>().font = GameObject.Find("Systems Process").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
                     }
                 }
                 else {
                     price.GetComponent<Text>().text = "Weapon Price: " + weaponPrice;
-                    price.GetComponent<Text>().font = GameObject.Find("Systems Process").GetComponent<EnemySpawner>().forq;
+                    price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().forq;
                 }
                 buybutton.GetComponent<Button>().onClick.AddListener(func);
             }

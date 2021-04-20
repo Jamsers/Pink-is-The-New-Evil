@@ -86,7 +86,7 @@ public class EnemySpawner : MonoBehaviour {
 
     public int level = 1;
 
-    public PlayerAI playerai;
+    public PlayerController playerai;
 
     public bool isTransitionDone = false;
     public bool isCheckingForTransition = false;
@@ -126,7 +126,7 @@ public class EnemySpawner : MonoBehaviour {
 
         RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
         if (level == 29) {
-            GetComponent<SystemsProcess>().removeAdsButton.SetActive(true);
+            GetComponent<MainSystems>().removeAdsButton.SetActive(true);
             if (PlayerPrefs.GetInt("Is Shadows On") == 1)
             {
                 currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
@@ -187,12 +187,12 @@ public class EnemySpawner : MonoBehaviour {
         FadeInWeaponModel();
         ExtremeMemeSpicyMemeLmaoAyyyKillMePleaseEndMySufferingIWantToDie();
         if (constantlyDenyInput == true) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().isAllInputEnabled(false);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().isAllInputEnabled(false);
             //Debug.Log("please kill me");
             inputRestored = false;
         }
         else if (constantlyDenyInput == false && inputRestored == false) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().isAllInputEnabled(true);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().isAllInputEnabled(true);
             //Debug.Log("i wanna fucking die");
             inputRestored = true;
         }
@@ -450,7 +450,7 @@ public class EnemySpawner : MonoBehaviour {
 
     public void Level1() {
         //level = 27;
-        GameObject.Find("Player").GetComponent<PlaySoundEffect>().PlaySound(15);
+        GameObject.Find("Player").GetComponent<SoundManager>().PlaySound(15);
         //isTransitioningBigCockTranny = true;
         //TrannyStart = Time.time;
 
@@ -558,24 +558,24 @@ public class EnemySpawner : MonoBehaviour {
 
         if (level < 7)
         {
-            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.BridgeSection);
+            GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.BridgeSection);
         }
         else if (level < 20) {
-            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
+            GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
         }
         else if (level < 28)
         {
-            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.NorthernPart);
+            GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.NorthernPart);
         }
         else if (level == 28)
         {
-            GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Nightmare);
+            GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
         }
         else if (level == 29)
         {
             if (PlayerPrefs.GetInt("Is Shadows On") == 1)
             {
-                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.Nightmare);
+                GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
             }
             else
             {
@@ -593,7 +593,7 @@ public class EnemySpawner : MonoBehaviour {
                         break;
                 }*/
 
-                GameObject.Find("Player").GetComponent<PlaySoundEffect>().MusicManager(PlaySoundEffect.MusicMood.WorldOpenUp);
+                GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
             }
             
         }
@@ -1033,7 +1033,7 @@ public class EnemySpawner : MonoBehaviour {
     {
         if (DebugDisableSpawning != true)
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().isControlOff = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = false;
             if (level == 1)
             {
                 StartCoroutine(spawnEnemy(1, spawnPoint1, 0));
@@ -1956,14 +1956,14 @@ public class EnemySpawner : MonoBehaviour {
 
             if (level == 2) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(8);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(8);
                 isCheckingForTransition = true;
                 isTransitionDone = false;
                 constantlyDenyInput = true;
             }
             else if (level == 6) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(10);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(10);
                 transitionMode = 4;
                 isCheckingForTransition = true;
                 isTransitionDone = false;
@@ -1971,7 +1971,7 @@ public class EnemySpawner : MonoBehaviour {
             }
             else if (level == 11) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(13);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(13);
                 transitionMode = 11;
                 isCheckingForTransition = true;
                 isTransitionDone = false;
@@ -1979,7 +1979,7 @@ public class EnemySpawner : MonoBehaviour {
             }
             else if (level == 15) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(15);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(15);
                 transitionMode = 16;
                 isCheckingForTransition = true;
                 isTransitionDone = false;
@@ -1987,7 +1987,7 @@ public class EnemySpawner : MonoBehaviour {
             }
             else if (level == 19) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(17);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(17);
                 transitionMode = 21;
                 isCheckingForTransition = true;
                 isTransitionDone = false;
@@ -1995,7 +1995,7 @@ public class EnemySpawner : MonoBehaviour {
             }
             else if (level == 27) {
                 CancelInvoke("CheckIfAllEnemiesAreDead");
-                GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(20);
+                GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(20);
                 transitionMode = 28;
                 isCheckingForTransition = true;
                 isTransitionDone = false;
@@ -2046,7 +2046,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon1Model.transform.localScale;
                 objectToScale = weapon1Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2055,7 +2055,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon2Model.transform.localScale;
                 objectToScale = weapon2Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2064,7 +2064,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon3Model.transform.localScale;
                 objectToScale = weapon3Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2073,7 +2073,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon4Model.transform.localScale;
                 objectToScale = weapon4Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2082,7 +2082,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon5Model.transform.localScale;
                 objectToScale = weapon5Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2091,7 +2091,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon6Model.transform.localScale;
                 objectToScale = weapon6Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2100,7 +2100,7 @@ public class EnemySpawner : MonoBehaviour {
                 originalScale = weapon7Model.transform.localScale;
                 objectToScale = weapon7Model;
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -2344,7 +2344,7 @@ public class EnemySpawner : MonoBehaviour {
             //constantlyDenyInput = false;
         }
         else {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().isControlOff = true;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
         }
     }
 
@@ -2353,76 +2353,76 @@ public class EnemySpawner : MonoBehaviour {
 
         if (transitionMode == 2) {
             transitionMode = 3;
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
             //Debug.Log("bop");
         }
         else if (transitionMode == 0) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(9);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(9);
             transitionMode = 1;
             //Debug.Log("bop2");
         }
         else if (transitionMode == 5) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(11);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(11);
             transitionMode = 6;
         }
         else if (transitionMode == 7) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(12);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(12);
             transitionMode = 8;
         }
         else if (transitionMode == 9) {
             transitionMode = 10;
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
         }
         else if (transitionMode == 12) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(14);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(14);
             transitionMode = 13;
         }
         else if (transitionMode == 14) {
             transitionMode = 15;
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
         }
         else if (transitionMode == 17) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(16);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(16);
             transitionMode = 18;
         }
         else if (transitionMode == 19) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
             transitionMode = 20;
         }
         else if (transitionMode == 22) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(18);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(18);
             transitionMode = 23;
         }
         else if (transitionMode == 24) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(19);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(19);
             transitionMode = 25;
         }
         else if (transitionMode == 26) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
             transitionMode = 27;
         }
         else if (transitionMode == 29) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(21);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(21);
             transitionMode = 30;
         }
         else if (transitionMode == 31) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(22);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(22);
             transitionMode = 32;
         }
         else if (transitionMode == 33) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(23);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(23);
             transitionMode = 34;
         }
         else if (transitionMode == 35) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(24);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(24);
             transitionMode = 36;
         }
         else if (transitionMode == 37) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(25);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(25);
             transitionMode = 38;
         }
         else if (transitionMode == 39) {
-            GameObject.Find("Systems Process").GetComponent<SystemsProcess>().GoToSettings(4);
+            GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(4);
             transitionMode = 40;
         }
         else {

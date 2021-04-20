@@ -71,7 +71,7 @@ public class SinkAndDespawnBlockade : MonoBehaviour {
         if (initiateSink == true) {
             if (hasCreatedInitalParams == false) {
                 MoveUpper();
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
+                GameObject.FindWithTag("Player").GetComponent<SoundManager>().PlaySound(13);
                 beginPos = transform.position;
                 endPos = new Vector3(transform.position.x, transform.position.y - 5, transform.position.z);
 

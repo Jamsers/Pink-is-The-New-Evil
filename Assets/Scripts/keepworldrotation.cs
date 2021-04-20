@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class keepworldrotation : MonoBehaviour {
+public class KeepWorldRotation : MonoBehaviour {
 
 	Quaternion origRotation;
 

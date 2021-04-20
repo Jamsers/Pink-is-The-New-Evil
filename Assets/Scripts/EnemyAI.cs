@@ -53,7 +53,7 @@ public class EnemyAI : MonoBehaviour {
 
     UnityEngine.AI.NavMeshAgent navSelf;
     Transform player;
-    PlayerAI playerai;
+    PlayerController playerai;
     Animator animator;
 
     public float specialTriggerRange;
@@ -74,7 +74,7 @@ public class EnemyAI : MonoBehaviour {
     public bool isPlayerInDanger = false;
 
     //store transform for shake
-    public Transform cube;
+    public Transform transformToShake;
 
     public float attackLength;
     //float attackLengthDamage;
@@ -113,7 +113,7 @@ public class EnemyAI : MonoBehaviour {
         if (currenthealth <= 0)
         {
             if (enemyType == 7 && (enemy7SpikeyReference != null)) {
-                enemy7SpikeyReference.GetComponent<spinnybaldes>().LetsSpawnOut();
+                enemy7SpikeyReference.GetComponent<SpawnBlades>().LetsSpawnOut();
             }
             isDead = true;
             if (pointsGiven == false) {
@@ -121,7 +121,7 @@ public class EnemyAI : MonoBehaviour {
                 pointsGiven = true;
             }
             AnimSwitchTo("isDead");
-            GameObject.Find("Systems Process").GetComponent<EnemySpawner>().listOfAllEnemies.Remove(gameObject);
+            GameObject.Find("Main Systems").GetComponent<EnemySpawner>().listOfAllEnemies.Remove(gameObject);
             gameObject.tag = "Dead Enemy";
             navSelf.enabled = false;
             //GetComponent<CapsuleCollider>().isTrigger = true;
@@ -131,20 +131,20 @@ public class EnemyAI : MonoBehaviour {
         }
 
         if (playerai.attackMode == 1) {
-            GetComponent<PlaySoundEffect>().PlaySoundHit(0);
+            GetComponent<SoundManager>().PlaySoundHit(0);
         }
         else if (playerai.attackMode == 2 || playerai.attackMode == 3) {
-            GetComponent<PlaySoundEffect>().PlaySoundHit(1);
+            GetComponent<SoundManager>().PlaySoundHit(1);
         }
         else if (playerai.attackMode == 4 || playerai.attackMode == 5) {
-            GetComponent<PlaySoundEffect>().PlaySoundHit(2);
+            GetComponent<SoundManager>().PlaySoundHit(2);
         }
         else if (playerai.attackMode == 6 || playerai.attackMode == 7) {
-            GetComponent<PlaySoundEffect>().PlaySoundHit(3);
+            GetComponent<SoundManager>().PlaySoundHit(3);
         }
         else if (playerai.attackMode == 8) {
-            GetComponent<PlaySoundEffect>().PlaySoundHit(2);
-            GetComponent<PlaySoundEffect>().PlaySoundHit(3);
+            GetComponent<SoundManager>().PlaySoundHit(2);
+            GetComponent<SoundManager>().PlaySoundHit(3);
         }
 
     }
@@ -158,37 +158,37 @@ public class EnemyAI : MonoBehaviour {
 
     void Decomposition() {
         float decomposeTimePercent = (Time.time - decomposeStart) / decomposeLength;
-        cube.localPosition = Vector3.Lerp(moveUpperCubeorigpos, new Vector3(0,-2,0), decomposeTimePercent);
+        transformToShake.localPosition = Vector3.Lerp(moveUpperCubeorigpos, new Vector3(0,-2,0), decomposeTimePercent);
     }
 
     void MoveUpper() {
-        cube.position = new Vector3(cube.position.x + shakeAmount/2, cube.position.y + shakeAmount/2, cube.position.z + shakeAmount/2);
+        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount/2, transformToShake.position.y + shakeAmount/2, transformToShake.position.z + shakeAmount/2);
         //Debug.Log("moveup");
     }
 
 
     void MoveLower ()
     {
-        cube.position = new Vector3(cube.position.x - shakeAmount, cube.position.y - shakeAmount, cube.position.z - shakeAmount);
+        transformToShake.position = new Vector3(transformToShake.position.x - shakeAmount, transformToShake.position.y - shakeAmount, transformToShake.position.z - shakeAmount);
         //Debug.Log("movelow");
     }
 
     void MoveUpper2()
     {
-        cube.position = new Vector3(cube.position.x + shakeAmount, cube.position.y + shakeAmount, cube.position.z + shakeAmount);
+        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount, transformToShake.position.y + shakeAmount, transformToShake.position.z + shakeAmount);
         //Debug.Log("moveup");
     }
 
     void MoveFinish ()
     {
         //cube.position = new Vector3(cube.position.x + .05f, cube.position.y + .05f, cube.position.z + .05f);
-        cube.localPosition = moveUpperCubeorigpos;
+        transformToShake.localPosition = moveUpperCubeorigpos;
         //Debug.Log("moveup");
     }
 
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerai = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>();
+        playerai = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         navSelf = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (enemyType == 5) {
             animator = enemy5animator;
@@ -214,7 +214,7 @@ public class EnemyAI : MonoBehaviour {
                 spawnDustReference = (GameObject)Instantiate(spawnDust, transform.position, spawnDust.transform.rotation);
                 spawnDustReference.transform.position = new Vector3(spawnDustReference.transform.position.x + spawnDustAdjustment.x, spawnDustReference.transform.position.y + spawnDustAdjustment.y, spawnDustReference.transform.position.z + spawnDustAdjustment.z);
                 spawnDustReference.transform.localScale = spawnDustScale;
-                moveUpperCubeorigpos = cube.localPosition;
+                moveUpperCubeorigpos = transformToShake.localPosition;
             }
         }
         /*else if (playerai.currenthealth <= 0) {
@@ -520,7 +520,7 @@ public class EnemyAI : MonoBehaviour {
             specialAttackPhase = 3;
         }
         else if (specialAttackPhase == 4) {
-            enemy7SpikeyReference.GetComponent<spinnybaldes>().LetsSpawnOut();
+            enemy7SpikeyReference.GetComponent<SpawnBlades>().LetsSpawnOut();
             specialAttackPhase = 5;
         }
         else if (specialAttackPhase == 6) {
