@@ -22,7 +22,7 @@ public class CameraTargetLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (cameraAI.isOn)
+		if (cameraAI.isTracking)
         {
 			GetComponent<Transform>().position = playerAI.GetComponent<Transform>().position;
 

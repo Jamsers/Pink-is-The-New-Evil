@@ -1,105 +1,88 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
 public class CameraLogic : MonoBehaviour {
-
     public Transform cameraTarget;
-    Vector3 cameraTargetOffset;
-    public bool isOn = true;
+    public bool isTracking = true;
+    public LayerMask layerMask;
+    public Transform visionTestPlane;
 
-	void Start () {
+    [Header("Materials")]
+    public Material transparancyMaterial;
+    public Material roadMaterial;
+    public Material towerMaterial;
+    public Material buildingMaterial;
+    public Material spiralMaterial;
+
+    [Header("Models")]
+    public Renderer roadModel;
+    public Renderer pillar1Model;
+    public Renderer pillar2Model;
+    public Renderer pillar3Model;
+    public Renderer building1Model;
+    public Renderer building2Model;
+    public Renderer building3Model;
+    public Renderer spiralTowerModel;
+
+    [Header("Vision Blockers")]
+    public Transform pillar1Blocker;
+    public Transform pillar2Blocker;
+    public Transform pillar3Blocker;
+    public Transform[] roadBlockers;
+    public Transform[] buildingsSpiralBlockers;
+
+    Vector3 cameraTargetOffset;
+    RaycastHit hitOut;
+    Ray visionTest;
+
+    void Start() {
         cameraTargetOffset = transform.position - cameraTarget.position;
-        GameObject.Find("Main Systems").GetComponent<MainSystems>().playerCamStartPos = transform.position;
-        GameObject.Find("Main Systems").GetComponent<MainSystems>().playerCamStartRot = transform.rotation;
-        GameObject.Find("Main Systems").GetComponent<MainSystems>().playerCamStartFOV = GetComponent<Camera>().fieldOfView;
+        MainSystems mainSystems = GameObject.Find("Main Systems").GetComponent<MainSystems>();
+        mainSystems.cameraStartPosition = transform.position;
+        mainSystems.cameraStartRotation = transform.rotation;
+        mainSystems.cameraStartFOV = GetComponent<Camera>().fieldOfView;
     }
 
-    public LayerMask myLayerMask;
-
-    public GameObject visionTest;
-
-    public Material transparancy;
-
-    public Material road;
-    public Material tower;
-    public Material building;
-    public Material spiral;
-
-    public GameObject RoadTopTest;
-    public GameObject RoadBottomTest;
-    public GameObject RoadPillar1Test;
-    public GameObject RoadPillar2Test;
-    public GameObject Pillar1Test;
-    public GameObject Pillar2Test;
-    public GameObject Pillar3Test;
-    public GameObject Building1Test;
-    public GameObject Building2Test;
-    public GameObject Building3Test;
-    public GameObject SpiralTowerTopTest;
-    public GameObject SpiralTowerBase1Test;
-    public GameObject SpiralTowerBase2Test;
-    public GameObject SpiralTowerBase3Test;
-    public GameObject SpiralTowerBase4Test;
-    public GameObject SpiralTowerBase5Test;
-
-    public GameObject roadModel;
-    public GameObject Pillar1Model;
-    public GameObject Pillar2Model;
-    public GameObject Pillar3Model;
-    public GameObject Building1Model;
-    public GameObject Building2Model;
-    public GameObject Building3Model;
-    public GameObject SpiralTowerModel;
-
-
-    void Update () {
-        if (isOn == true)
-        {
+    void Update() {
+        if (isTracking == true) {
             transform.position = cameraTarget.position + cameraTargetOffset;
         }
 
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, visionTest.transform.position - transform.position);
-        Physics.Raycast(ray, out hit, Mathf.Infinity, myLayerMask);
+        visionTest = new Ray(transform.position, visionTestPlane.position - transform.position);
+        Physics.Raycast(visionTest, out hitOut, Mathf.Infinity, layerMask);
+        HideBlockersHit(hitOut.transform);
+    }
 
-        //Debug.DrawLine(transform.position, hit.point, Color.red, 0, true);
-
-        if (hit.transform == visionTest.transform) {
-            //Debug.Log("I see the player.");
-            roadModel.GetComponent<Renderer>().sharedMaterial = road;
-            Pillar1Model.GetComponent<Renderer>().sharedMaterial = tower;
-            Pillar2Model.GetComponent<Renderer>().sharedMaterial = tower;
-            Pillar3Model.GetComponent<Renderer>().sharedMaterial = tower;
-            SpiralTowerModel.GetComponent<Renderer>().sharedMaterial = spiral;
-            Building1Model.GetComponent<Renderer>().sharedMaterial = building;
-            Building2Model.GetComponent<Renderer>().sharedMaterial = building;
-            Building3Model.GetComponent<Renderer>().sharedMaterial = building;
-        }
-        else if (hit.transform == RoadTopTest.transform || hit.transform == RoadBottomTest.transform || hit.transform == RoadPillar1Test.transform || hit.transform == RoadPillar2Test.transform) {
-            //Debug.Log("Blocked by roadModel.");
-            roadModel.GetComponent<Renderer>().sharedMaterial = transparancy;
-        }
-        else if (hit.transform == Pillar1Test.transform) {
-            //Debug.Log("Blocked by Pillar1Model.");
-            Pillar1Model.GetComponent<Renderer>().sharedMaterial = transparancy;
-        }
-        else if (hit.transform == Pillar2Test.transform) {
-            //Debug.Log("Blocked by Pillar2Model.");
-            Pillar2Model.GetComponent<Renderer>().sharedMaterial = transparancy;
-        }
-        else if (hit.transform == Pillar3Test.transform) {
-            //Debug.Log("Blocked by Pillar3Model.");
-            Pillar3Model.GetComponent<Renderer>().sharedMaterial = transparancy;
-        }
-        else if (hit.transform == SpiralTowerTopTest.transform || hit.transform == SpiralTowerBase1Test.transform || hit.transform == SpiralTowerBase2Test.transform || hit.transform == SpiralTowerBase3Test.transform || hit.transform == SpiralTowerBase4Test.transform || hit.transform == SpiralTowerBase5Test.transform || Building1Test.transform || Building2Test.transform || Building3Test.transform) {
-            //Debug.Log("Blocked by SpiralTowerModel or Buildings.");
-            SpiralTowerModel.GetComponent<Renderer>().sharedMaterial = transparancy;
-            Building1Model.GetComponent<Renderer>().sharedMaterial = transparancy;
-            Building2Model.GetComponent<Renderer>().sharedMaterial = transparancy;
-            Building3Model.GetComponent<Renderer>().sharedMaterial = transparancy;
+    void HideBlockersHit(Transform hitTransform) {
+        if (hitTransform == visionTestPlane) {
+            roadModel.sharedMaterial = roadMaterial;
+            pillar1Model.sharedMaterial = towerMaterial;
+            pillar2Model.sharedMaterial = towerMaterial;
+            pillar3Model.sharedMaterial = towerMaterial;
+            spiralTowerModel.sharedMaterial = spiralMaterial;
+            building1Model.sharedMaterial = buildingMaterial;
+            building2Model.sharedMaterial = buildingMaterial;
+            building3Model.sharedMaterial = buildingMaterial;
         }
         else {
-            Debug.Log("ERROR");
+            if (hitTransform == pillar1Blocker) {
+                pillar1Model.sharedMaterial = transparancyMaterial;
+            }
+            else if (hitTransform == pillar2Blocker) {
+                pillar2Model.sharedMaterial = transparancyMaterial;
+            }
+            else if (hitTransform == pillar3Blocker) {
+                pillar3Model.sharedMaterial = transparancyMaterial;
+            }
+            else if (Array.Exists(roadBlockers, blocker => blocker == hitTransform)) {
+                roadModel.sharedMaterial = transparancyMaterial;
+            }
+            else if (Array.Exists(buildingsSpiralBlockers, blocker => blocker == hitTransform)) {
+                spiralTowerModel.sharedMaterial = transparancyMaterial;
+                building1Model.sharedMaterial = transparancyMaterial;
+                building2Model.sharedMaterial = transparancyMaterial;
+                building3Model.sharedMaterial = transparancyMaterial;
+            }
         }
     }
 }

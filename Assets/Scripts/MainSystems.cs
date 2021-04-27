@@ -119,9 +119,9 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
     //Vector3 playerStartPos;
     //Quaternion playerStartRot;
 
-    public Vector3 playerCamStartPos;
-    public Quaternion playerCamStartRot;
-    public float playerCamStartFOV;
+    public Vector3 cameraStartPosition;
+    public Quaternion cameraStartRotation;
+    public float cameraStartFOV;
 
     //IStoreController storeController;
 
@@ -486,7 +486,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 logo.SetActive(false);
                 hud.SetActive(true);
                 hud.tag = "Active Menu";
-                GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = true;
+                GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = true;
                 if (GetComponent<EnemySpawner>().transitionMode == 3) {
                     GetComponent<EnemySpawner>().level = 3;
                 }
@@ -644,7 +644,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 8) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade1Cam;
             objectiveMenu = null;
             //switchBackMain = false;
@@ -660,7 +660,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 10) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade2Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -679,7 +679,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 13) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade3Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -692,7 +692,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 15) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade4Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -705,7 +705,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 17) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade5Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -724,7 +724,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 20) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isOn = false;
+            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade6Cam;
             objectiveMenu = null;
             switchingToGame = false;

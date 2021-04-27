@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
 
     public float attackAnimLength;
 
-    public Transform bloodParticleEffect;
+    public Transform bloodParticleTransform;
     public GameObject particle1prefab;
     public GameObject particle2prefab;
 
