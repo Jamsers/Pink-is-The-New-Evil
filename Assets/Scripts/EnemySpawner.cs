@@ -7,6 +7,8 @@ public class EnemySpawner : MonoBehaviour {
 
     public bool DebugDisableSpawning;
 
+    public LevelData[] levelData;
+
     public List<GameObject> listOfAllEnemies = new List<GameObject>();
 
     public GameObject blackBackground;
@@ -20,13 +22,8 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject tutorialScreen5;
     public GameObject tutorialScreen6;
 
-    public GameObject enemy1;
-    public GameObject enemy2;
-    public GameObject enemy3;
-    public GameObject enemy4;
-    public GameObject enemy5;
-    public GameObject enemy6;
-    public GameObject enemy7;
+    // 7
+    public GameObject[] enemies;
 
     public GameObject level1Blockade;
     public GameObject level2Blockade;
@@ -37,52 +34,9 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject level7Blockade;
     public GameObject level8Blockade;
 
-    public GameObject spawnPoint1;
-    public GameObject spawnPoint2;
-    public GameObject spawnPoint3;
-    public GameObject spawnPoint4;
-    public GameObject spawnPoint5;
-    public GameObject spawnPoint6;
-    public GameObject spawnPoint7;
-    public GameObject spawnPoint8;
-    public GameObject spawnPoint9;
-    public GameObject spawnPoint10;
-    public GameObject spawnPoint11;
-    public GameObject spawnPoint12;
-    public GameObject spawnPoint13;
-    public GameObject spawnPoint14;
-    public GameObject spawnPoint15;
-    public GameObject spawnPoint16;
-    public GameObject spawnPoint17;
-    public GameObject spawnPoint18;
-    public GameObject spawnPoint19;
-    public GameObject spawnPoint20;
-    public GameObject spawnPoint21;
-    public GameObject spawnPoint22;
-    public GameObject spawnPoint23;
-    public GameObject spawnPoint24;
-    public GameObject spawnPoint25;
-    public GameObject spawnPoint26;
-    public GameObject spawnPoint27;
-    public GameObject spawnPoint28;
-    public GameObject spawnPoint29;
-    public GameObject spawnPoint30;
-    public GameObject spawnPoint31;
-    public GameObject spawnPoint32;
-    public GameObject spawnPoint33;
-    public GameObject spawnPoint34;
-    public GameObject spawnPoint35;
-    public GameObject spawnPoint36;
-    public GameObject spawnPoint37;
-    public GameObject spawnPoint38;
-    public GameObject spawnPoint39;
-    public GameObject spawnPoint40;
-    public GameObject spawnPoint41;
-    public GameObject spawnPoint42;
-    public GameObject spawnPoint43;
-    public GameObject spawnPoint44;
-    public GameObject spawnPoint45;
-    public GameObject spawnPoint46;
+    // 46
+    public Transform[] spawnPoints;
+
 
     public int level = 1;
 
@@ -97,6 +51,26 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject resetHighScoresButton;
 
     public GameObject newGameButtonText;
+
+    [System.Serializable]
+    public struct SpawnData {
+        public int enemyType;
+        public int spawnPoint;
+
+        public SpawnData(int enemyType, int spawnPoint) {
+            this.enemyType = enemyType;
+            this.spawnPoint = spawnPoint;
+        }
+    }
+
+    [System.Serializable]
+    public struct LevelData {
+        public SpawnData[] spawnDataArray;
+
+        public LevelData(SpawnData[] spawnDataArray) {
+            this.spawnDataArray = spawnDataArray;
+        }
+    }
 
     // Use this for initialization
     void Start () {
@@ -210,152 +184,8 @@ public class EnemySpawner : MonoBehaviour {
         int slow = 1;
         int shigh = 46;
         int sspawnType = Random.Range(slow, shigh);
-        GameObject senemySpawned;
-        switch (sspawnType) {
-            case 1:
-                senemySpawned = spawnPoint1;
-                break;
-            case 2:
-                senemySpawned = spawnPoint2;
-                break;
-            case 3:
-                senemySpawned = spawnPoint3;
-                break;
-            case 4:
-                senemySpawned = spawnPoint4;
-                break;
-            case 5:
-                senemySpawned = spawnPoint5;
-                break;
-            case 6:
-                senemySpawned = spawnPoint6;
-                break;
-            case 7:
-                senemySpawned = spawnPoint7;
-                break;
-            case 8:
-                senemySpawned = spawnPoint8;
-                break;
-            case 9:
-                senemySpawned = spawnPoint9;
-                break;
-            case 10:
-                senemySpawned = spawnPoint10;
-                break;
-            case 11:
-                senemySpawned = spawnPoint11;
-                break;
-            case 12:
-                senemySpawned = spawnPoint12;
-                break;
-            case 13:
-                senemySpawned = spawnPoint13;
-                break;
-            case 14:
-                senemySpawned = spawnPoint14;
-                break;
-            case 15:
-                senemySpawned = spawnPoint15;
-                break;
-            case 16:
-                senemySpawned = spawnPoint16;
-                break;
-            case 17:
-                senemySpawned = spawnPoint17;
-                break;
-            case 18:
-                senemySpawned = spawnPoint18;
-                break;
-            case 19:
-                senemySpawned = spawnPoint19;
-                break;
-            case 20:
-                senemySpawned = spawnPoint20;
-                break;
-            case 21:
-                senemySpawned = spawnPoint21;
-                break;
-            case 22:
-                senemySpawned = spawnPoint22;
-                break;
-            case 23:
-                senemySpawned = spawnPoint23;
-                break;
-            case 24:
-                senemySpawned = spawnPoint24;
-                break;
-            case 25:
-                senemySpawned = spawnPoint25;
-                break;
-            case 26:
-                senemySpawned = spawnPoint26;
-                break;
-            case 27:
-                senemySpawned = spawnPoint27;
-                break;
-            case 28:
-                senemySpawned = spawnPoint28;
-                break;
-            case 29:
-                senemySpawned = spawnPoint29;
-                break;
-            case 30:
-                senemySpawned = spawnPoint30;
-                break;
-            case 31:
-                senemySpawned = spawnPoint31;
-                break;
-            case 32:
-                senemySpawned = spawnPoint32;
-                break;
-            case 33:
-                senemySpawned = spawnPoint33;
-                break;
-            case 34:
-                senemySpawned = spawnPoint34;
-                break;
-            case 35:
-                senemySpawned = spawnPoint35;
-                break;
-            case 36:
-                senemySpawned = spawnPoint36;
-                break;
-            case 37:
-                senemySpawned = spawnPoint37;
-                break;
-            case 38:
-                senemySpawned = spawnPoint38;
-                break;
-            case 39:
-                senemySpawned = spawnPoint39;
-                break;
-            case 40:
-                senemySpawned = spawnPoint40;
-                break;
-            case 41:
-                senemySpawned = spawnPoint41;
-                break;
-            case 42:
-                senemySpawned = spawnPoint42;
-                break;
-            case 43:
-                senemySpawned = spawnPoint43;
-                break;
-            case 44:
-                senemySpawned = spawnPoint44;
-                break;
-            case 45:
-                senemySpawned = spawnPoint45;
-                break;
-            case 46:
-                senemySpawned = spawnPoint46;
-                break;
-            default:
-                senemySpawned = spawnPoint1;
-                break;
-        }
 
-        StartCoroutine(spawnEnemy(spawnType, senemySpawned, 0));
+        StartCoroutine(spawnEnemy(spawnType, sspawnType, 0));
         Invoke("InfiniteSpawner", .25f);
     }
 
@@ -1029,483 +859,36 @@ public class EnemySpawner : MonoBehaviour {
         blockadeText.SetActive(false);
     }
 
+    
+
+
     void SpawnLevel1 ()
     {
         if (DebugDisableSpawning != true)
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = false;
-            if (level == 1)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 1));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 1.25f, 0.25f);
+            if (level < 28) {
+                float delay = 0f;
+                foreach (SpawnData spawnData in levelData[level - 1].spawnDataArray) {
+                    StartCoroutine(spawnEnemy(spawnData.enemyType, spawnData.spawnPoint, delay));
+                    if (level < 22) {
+                        delay += 1;
+                    }
+                    else {
+                        delay += 0.5f;
+                    }
+                }
+                InvokeRepeating("CheckIfAllEnemiesAreDead", delay + 0.25f, 0.25f);
             }
-            else if (level == 2)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 3));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 3.25f, 0.25f);
+            else if (level == 28) {
+                InfiniteSpawner();
             }
-            else if (level == 3)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 4));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 7));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 7.25f, 0.25f);
+            else {
+                InfiniteSpawner();
             }
-            else if (level == 4)
-            {
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 0));
-                StartCoroutine(spawnEnemy(2, spawnPoint1, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 4));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 7));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 7.25f, 0.25f);
-            }
-            else if (level == 5)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 4));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint1, 8));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 9));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 10));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 11));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 11.25f, 0.25f);
-            }
-            else if (level == 6)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 3));
-                StartCoroutine(spawnEnemy(2, spawnPoint1, 4));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 7));
-                StartCoroutine(spawnEnemy(1, spawnPoint1, 8));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 9));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 10));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 12));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 13));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 14));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 15));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 18));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 19));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 20));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 21));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 22));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 23));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 23.25f, 0.25f);
-            }
-            else if (level == 7)
-            {
-                StartCoroutine(spawnEnemy(1, spawnPoint5, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint6, 1));
-                StartCoroutine(spawnEnemy(1, spawnPoint7, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint8, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint9, 4));
-                StartCoroutine(spawnEnemy(1, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint12, 7));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 8));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(3, spawnPoint1, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 11));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 11.25f, 0.25f);
-            }
-            else if (level == 8)
-            {
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint6, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint8, 3));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 4));
-                StartCoroutine(spawnEnemy(1, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(1, spawnPoint12, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 8));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(2, spawnPoint1, 10));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 11));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 11.25f, 0.25f);
-            }
-            else if (level == 9)
-            {
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 0));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(1, spawnPoint9, 3));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 4));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(1, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 7));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 8));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 10));
-                StartCoroutine(spawnEnemy(1, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 12));
-                StartCoroutine(spawnEnemy(1, spawnPoint8, 13));
-                StartCoroutine(spawnEnemy(2, spawnPoint9, 14));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 15));
-                StartCoroutine(spawnEnemy(1, spawnPoint11, 16));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 17));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 18));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 19));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 19.25f, 0.25f);
-            }
-            else if (level == 10)
-            {
-                StartCoroutine(spawnEnemy(2, spawnPoint12, 0));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 1));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(2, spawnPoint9, 3));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 4));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 7));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 8));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 12));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 12.25f, 0.25f);
-            }
-            else if (level == 11)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint12, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 3));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 4));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 8));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(4, spawnPoint7, 12));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 13));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 14));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 16));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 17));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 18));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint8, 20));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 20.25f, 0.25f);
-            }
-            else if (level == 12)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint12, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 3));
-                StartCoroutine(spawnEnemy(2, spawnPoint12, 4));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 13));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint13, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 13));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 9));
-                StartCoroutine(spawnEnemy(3, spawnPoint14, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(4, spawnPoint7, 14));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 13));
-                StartCoroutine(spawnEnemy(2, spawnPoint15, 15));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 16));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 17));
-                StartCoroutine(spawnEnemy(2, spawnPoint16, 18));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 16));
-                StartCoroutine(spawnEnemy(4, spawnPoint17, 20));
-                StartCoroutine(spawnEnemy(4, spawnPoint9, 21));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 21.25f, 0.25f);
-            }
-            else if (level == 13)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint12, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 2));
-                StartCoroutine(spawnEnemy(2, spawnPoint9, 3));
-                StartCoroutine(spawnEnemy(2, spawnPoint12, 4));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 5));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(4, spawnPoint13, 7));
-                StartCoroutine(spawnEnemy(3, spawnPoint14, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(4, spawnPoint7, 12));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 13));
-                StartCoroutine(spawnEnemy(2, spawnPoint15, 14));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 16));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 17));
-                StartCoroutine(spawnEnemy(2, spawnPoint16, 18));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 19));
-                StartCoroutine(spawnEnemy(2, spawnPoint15, 22));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 23));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 24));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 25));
-                StartCoroutine(spawnEnemy(2, spawnPoint16, 26));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 26.25f, 0.25f);
-            }
-            else if (level == 14)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint17, 0));
-                StartCoroutine(spawnEnemy(4, spawnPoint16, 1));
-                StartCoroutine(spawnEnemy(4, spawnPoint15, 2));
-                StartCoroutine(spawnEnemy(4, spawnPoint14, 3));
-                StartCoroutine(spawnEnemy(4, spawnPoint13, 4));
-                StartCoroutine(spawnEnemy(4, spawnPoint12, 5));
-                StartCoroutine(spawnEnemy(4, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(4, spawnPoint10, 7));
-                StartCoroutine(spawnEnemy(4, spawnPoint9, 8));
-                StartCoroutine(spawnEnemy(4, spawnPoint8, 9));
-                StartCoroutine(spawnEnemy(4, spawnPoint7, 10));
-                StartCoroutine(spawnEnemy(4, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(4, spawnPoint5, 12));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 13));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 14));
-                StartCoroutine(spawnEnemy(4, spawnPoint2, 15));
-                StartCoroutine(spawnEnemy(4, spawnPoint1, 16));
-                StartCoroutine(spawnEnemy(4, spawnPoint2, 17));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 18));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint5, 20));
-                StartCoroutine(spawnEnemy(4, spawnPoint6, 21));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 21.25f, 0.25f);
-            }
-            else if (level == 15)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint17, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint16, 1));
-                StartCoroutine(spawnEnemy(3, spawnPoint15, 2));
-                StartCoroutine(spawnEnemy(2, spawnPoint14, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint13, 4));
-                StartCoroutine(spawnEnemy(4, spawnPoint12, 5));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint9, 8));
-                StartCoroutine(spawnEnemy(1, spawnPoint8, 9));
-                StartCoroutine(spawnEnemy(4, spawnPoint7, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 11));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 12));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 13));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 14));
-                StartCoroutine(spawnEnemy(4, spawnPoint2, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint1, 16));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 17));
-                StartCoroutine(spawnEnemy(2, spawnPoint3, 18));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint5, 20));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 21));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 22));
-                StartCoroutine(spawnEnemy(2, spawnPoint8, 23));
-                StartCoroutine(spawnEnemy(1, spawnPoint9, 24));
-                StartCoroutine(spawnEnemy(4, spawnPoint10, 25));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 26));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 27));
-                StartCoroutine(spawnEnemy(2, spawnPoint13, 28));
-                StartCoroutine(spawnEnemy(1, spawnPoint14, 29));
-                StartCoroutine(spawnEnemy(4, spawnPoint15, 30));
-                StartCoroutine(spawnEnemy(3, spawnPoint16, 31));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 32));
-                StartCoroutine(spawnEnemy(2, spawnPoint16, 33));
-                StartCoroutine(spawnEnemy(1, spawnPoint15, 34));
-                StartCoroutine(spawnEnemy(4, spawnPoint14, 35));
-                StartCoroutine(spawnEnemy(3, spawnPoint13, 36));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 37));
-                StartCoroutine(spawnEnemy(2, spawnPoint11, 38));
-                StartCoroutine(spawnEnemy(1, spawnPoint10, 39));
-                StartCoroutine(spawnEnemy(4, spawnPoint9, 40));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 41));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 42));
-                StartCoroutine(spawnEnemy(2, spawnPoint6, 43));
-                StartCoroutine(spawnEnemy(1, spawnPoint5, 44));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 45));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 46));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 47));
-                StartCoroutine(spawnEnemy(2, spawnPoint1, 48));
-                StartCoroutine(spawnEnemy(1, spawnPoint2, 49));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 49.25f, 0.25f);
-            }
-            else if (level == 16)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint1, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 1));
-                StartCoroutine(spawnEnemy(6, spawnPoint3, 2));
-                StartCoroutine(spawnEnemy(2, spawnPoint4, 3));
-                StartCoroutine(spawnEnemy(1, spawnPoint5, 4));
-                StartCoroutine(spawnEnemy(4, spawnPoint6, 5));
-                StartCoroutine(spawnEnemy(6, spawnPoint7, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 7));
-                StartCoroutine(spawnEnemy(2, spawnPoint9, 8));
-                StartCoroutine(spawnEnemy(1, spawnPoint10, 9));
-                StartCoroutine(spawnEnemy(4, spawnPoint11, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 11));
-                StartCoroutine(spawnEnemy(6, spawnPoint13, 12));
-                StartCoroutine(spawnEnemy(2, spawnPoint14, 13));
-                StartCoroutine(spawnEnemy(1, spawnPoint15, 14));
-                StartCoroutine(spawnEnemy(4, spawnPoint16, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 16));
-                StartCoroutine(spawnEnemy(6, spawnPoint18, 17));
-                StartCoroutine(spawnEnemy(2, spawnPoint19, 18));
-                StartCoroutine(spawnEnemy(1, spawnPoint20, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint21, 20));
-                StartCoroutine(spawnEnemy(3, spawnPoint22, 21));
-                StartCoroutine(spawnEnemy(3, spawnPoint21, 22));
-                StartCoroutine(spawnEnemy(2, spawnPoint20, 23));
-                StartCoroutine(spawnEnemy(1, spawnPoint19, 24));
-                StartCoroutine(spawnEnemy(4, spawnPoint18, 25));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 26));
-                StartCoroutine(spawnEnemy(3, spawnPoint16, 27));
-                StartCoroutine(spawnEnemy(2, spawnPoint15, 28));
-                StartCoroutine(spawnEnemy(1, spawnPoint14, 29));
-                StartCoroutine(spawnEnemy(4, spawnPoint13, 30));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 31));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 32));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 33));
-                StartCoroutine(spawnEnemy(1, spawnPoint9, 34));
-                StartCoroutine(spawnEnemy(4, spawnPoint8, 35));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 36));
-                StartCoroutine(spawnEnemy(6, spawnPoint6, 37));
-                StartCoroutine(spawnEnemy(2, spawnPoint5, 38));
-                StartCoroutine(spawnEnemy(1, spawnPoint4, 39));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 40));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 41));
-                StartCoroutine(spawnEnemy(3, spawnPoint1, 42));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 43));
-                StartCoroutine(spawnEnemy(1, spawnPoint3, 44));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 45));
-                StartCoroutine(spawnEnemy(6, spawnPoint5, 46));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 47));
-                StartCoroutine(spawnEnemy(2, spawnPoint7, 48));
-                StartCoroutine(spawnEnemy(1, spawnPoint8, 49));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 49.25f, 0.25f);
-            }
-            else if (level == 17)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint1, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 1));
-                StartCoroutine(spawnEnemy(6, spawnPoint3, 2));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 3));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 4));
-                StartCoroutine(spawnEnemy(4, spawnPoint6, 5));
-                StartCoroutine(spawnEnemy(6, spawnPoint7, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 7));
-                StartCoroutine(spawnEnemy(4, spawnPoint9, 8));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 9));
-                StartCoroutine(spawnEnemy(4, spawnPoint11, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 11));
-                StartCoroutine(spawnEnemy(6, spawnPoint13, 12));
-                StartCoroutine(spawnEnemy(4, spawnPoint14, 13));
-                StartCoroutine(spawnEnemy(3, spawnPoint15, 14));
-                StartCoroutine(spawnEnemy(4, spawnPoint16, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 16));
-                StartCoroutine(spawnEnemy(6, spawnPoint18, 17));
-                StartCoroutine(spawnEnemy(4, spawnPoint19, 18));
-                StartCoroutine(spawnEnemy(3, spawnPoint20, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint21, 20));
-                StartCoroutine(spawnEnemy(3, spawnPoint22, 21));
-                StartCoroutine(spawnEnemy(3, spawnPoint21, 22));
-                StartCoroutine(spawnEnemy(4, spawnPoint20, 23));
-                StartCoroutine(spawnEnemy(3, spawnPoint19, 24));
-                StartCoroutine(spawnEnemy(4, spawnPoint18, 25));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 26));
-                StartCoroutine(spawnEnemy(3, spawnPoint16, 27));
-                StartCoroutine(spawnEnemy(4, spawnPoint15, 28));
-                StartCoroutine(spawnEnemy(3, spawnPoint14, 29));
-                StartCoroutine(spawnEnemy(4, spawnPoint13, 30));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 31));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 32));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 33));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 34));
-                StartCoroutine(spawnEnemy(4, spawnPoint8, 35));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 36));
-                StartCoroutine(spawnEnemy(6, spawnPoint6, 37));
-                StartCoroutine(spawnEnemy(2, spawnPoint5, 38));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 39));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 40));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 41));
-                StartCoroutine(spawnEnemy(3, spawnPoint1, 42));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 43));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 44));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 45));
-                StartCoroutine(spawnEnemy(6, spawnPoint5, 46));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 47));
-                StartCoroutine(spawnEnemy(2, spawnPoint7, 48));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 49));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 49.25f, 0.25f);
-            }
-            else if (level == 18)
-            {
-                StartCoroutine(spawnEnemy(4, spawnPoint1, 0));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 1));
-                StartCoroutine(spawnEnemy(6, spawnPoint3, 2));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 3));
-                StartCoroutine(spawnEnemy(3, spawnPoint5, 4));
-                StartCoroutine(spawnEnemy(4, spawnPoint6, 5));
-                StartCoroutine(spawnEnemy(6, spawnPoint7, 6));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 7));
-                StartCoroutine(spawnEnemy(4, spawnPoint9, 8));
-                StartCoroutine(spawnEnemy(3, spawnPoint10, 9));
-                StartCoroutine(spawnEnemy(4, spawnPoint11, 10));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 11));
-                StartCoroutine(spawnEnemy(6, spawnPoint13, 12));
-                StartCoroutine(spawnEnemy(4, spawnPoint14, 13));
-                StartCoroutine(spawnEnemy(3, spawnPoint15, 14));
-                StartCoroutine(spawnEnemy(4, spawnPoint16, 15));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 16));
-                StartCoroutine(spawnEnemy(6, spawnPoint18, 17));
-                StartCoroutine(spawnEnemy(4, spawnPoint19, 18));
-                StartCoroutine(spawnEnemy(3, spawnPoint20, 19));
-                StartCoroutine(spawnEnemy(4, spawnPoint21, 20));
-                StartCoroutine(spawnEnemy(3, spawnPoint22, 21));
-                StartCoroutine(spawnEnemy(3, spawnPoint21, 22));
-                StartCoroutine(spawnEnemy(4, spawnPoint20, 23));
-                StartCoroutine(spawnEnemy(3, spawnPoint19, 24));
-                StartCoroutine(spawnEnemy(4, spawnPoint18, 25));
-                StartCoroutine(spawnEnemy(3, spawnPoint17, 26));
-                StartCoroutine(spawnEnemy(3, spawnPoint16, 27));
-                StartCoroutine(spawnEnemy(4, spawnPoint15, 28));
-                StartCoroutine(spawnEnemy(3, spawnPoint14, 29));
-                StartCoroutine(spawnEnemy(4, spawnPoint13, 30));
-                StartCoroutine(spawnEnemy(3, spawnPoint12, 31));
-                StartCoroutine(spawnEnemy(3, spawnPoint11, 32));
-                StartCoroutine(spawnEnemy(2, spawnPoint10, 33));
-                StartCoroutine(spawnEnemy(3, spawnPoint9, 34));
-                StartCoroutine(spawnEnemy(4, spawnPoint8, 35));
-                StartCoroutine(spawnEnemy(3, spawnPoint7, 36));
-                StartCoroutine(spawnEnemy(6, spawnPoint6, 37));
-                StartCoroutine(spawnEnemy(2, spawnPoint5, 38));
-                StartCoroutine(spawnEnemy(3, spawnPoint4, 39));
-                StartCoroutine(spawnEnemy(4, spawnPoint3, 40));
-                StartCoroutine(spawnEnemy(3, spawnPoint2, 41));
-                StartCoroutine(spawnEnemy(3, spawnPoint1, 42));
-                StartCoroutine(spawnEnemy(2, spawnPoint2, 43));
-                StartCoroutine(spawnEnemy(3, spawnPoint3, 44));
-                StartCoroutine(spawnEnemy(4, spawnPoint4, 45));
-                StartCoroutine(spawnEnemy(6, spawnPoint5, 46));
-                StartCoroutine(spawnEnemy(3, spawnPoint6, 47));
-                StartCoroutine(spawnEnemy(2, spawnPoint7, 48));
-                StartCoroutine(spawnEnemy(3, spawnPoint8, 49));
-                InvokeRepeating("CheckIfAllEnemiesAreDead", 49.25f, 0.25f);
-            }
+
+            /*
+            
             else if (level == 19)
             {
                 StartCoroutine(spawnEnemy(6, spawnPoint1, 0));
@@ -1939,6 +1322,7 @@ public class EnemySpawner : MonoBehaviour {
             {
                 InfiniteSpawner();
             }
+            */
         }
     }
 
@@ -2433,30 +1817,10 @@ public class EnemySpawner : MonoBehaviour {
         isTransitionDone = false;
     }
 
-    IEnumerator spawnEnemy(int type, GameObject spawnPoint, float delay)
+    IEnumerator spawnEnemy(int enemyType, int spawnPoint, float spawnDelay)
     {
-        yield return new WaitForSeconds(delay);
-        if (type == 1)
-        {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy1, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 2) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy2, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 3) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy3, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 4) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy4, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 5) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy5, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 6) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy6, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
-        if (type == 7) {
-            listOfAllEnemies.Add((GameObject)Instantiate(enemy7, spawnPoint.transform.position, spawnPoint.transform.rotation));
-        }
+        yield return new WaitForSeconds(spawnDelay);
+        GameObject spawnedEnemy = Instantiate(enemies[enemyType - 1], spawnPoints[spawnPoint-1].position, spawnPoints[spawnPoint - 1].rotation);
+        listOfAllEnemies.Add(spawnedEnemy);
     }
 }
