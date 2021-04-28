@@ -1,28 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class EnemiesInAttackArea : MonoBehaviour {
-
-    public List<GameObject> withinArea = new List<GameObject>();
-
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public List<GameObject> enemiesWithinArea = new List<GameObject>();
 
     void OnTriggerEnter(Collider other) {
-        if (other.tag == "Enemy" && withinArea.Contains(other.gameObject) == false)
-            withinArea.Add(other.gameObject);
+        if (other.tag == "Enemy" && enemiesWithinArea.Contains(other.gameObject) == false)
+            enemiesWithinArea.Add(other.gameObject);
     }
 
     void OnTriggerExit(Collider other) {
-        if (other.tag == "Enemy" && withinArea.Contains(other.gameObject) == true)
-            withinArea.Remove(other.gameObject);
+        if (other.tag == "Enemy" && enemiesWithinArea.Contains(other.gameObject) == true)
+            enemiesWithinArea.Remove(other.gameObject);
     }
 }

@@ -1303,13 +1303,13 @@ public class PlayerController : MonoBehaviour {
             List<GameObject> targetsInRangeDup = targetsInRange;
 
             for (int i = 0; i < targetsInRangeDup.Count; i++) {
-                if (targetarea.withinArea.Contains(targetsInRangeDup[i]) == false || Vector3.Distance(transform.position, targetsInRangeDup[i].transform.position) > attackRange) {
+                if (targetarea.enemiesWithinArea.Contains(targetsInRangeDup[i]) == false || Vector3.Distance(transform.position, targetsInRangeDup[i].transform.position) > attackRange) {
                     targetsInRange.Remove(targetsInRangeDup[i]);
                 }
             }
 
             for (int i = 0; i < listOfTargets.Count; i++) {
-                if (targetarea.withinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
+                if (targetarea.enemiesWithinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
                     if (targetsInRange.Contains(listOfTargets[i]) == false) {
                         listOfTargets[i].GetComponent<EnemyAI>().Health(damageAmount * 2);
                         targetsInRange.Add(listOfTargets[i]);
@@ -1925,7 +1925,7 @@ public class PlayerController : MonoBehaviour {
         if (attackMode == 2 || attackMode == 3 || attackMode == 4 || attackMode == 5) {
             EnemiesInAttackArea targetarea = cylinderTargetArea.GetComponent<EnemiesInAttackArea>();
             for (int i = 0; i < listOfTargets.Count; i++) {
-                if (targetarea.withinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
+                if (targetarea.enemiesWithinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
                     listOfTargets[i].GetComponent<EnemyAI>().Health(damageAmount);
                 }
             }
@@ -1938,7 +1938,7 @@ public class PlayerController : MonoBehaviour {
             shackwavebrah.transform.localScale = new Vector3(.4f, .4f, .2f);
             Destroy(shackwavebrah, 1);
             for (int i = 0; i < listOfTargets.Count; i++) {
-                if (targetarea.withinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
+                if (targetarea.enemiesWithinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
                     listOfTargets[i].GetComponent<EnemyAI>().Health(damageAmount);
                 }
             }

@@ -1,29 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CheckIfPlayerInRange : MonoBehaviour {
+    EnemyAI enemyAI;
 
-    EnemyAI parent;
-
-	// Use this for initialization
 	void Start () {
-        parent = transform.parent.GetComponent<EnemyAI>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        enemyAI = transform.parent.GetComponent<EnemyAI>();
 	}
 
-    void OnTriggerEnter (Collider other)
-    {
-        if (other.tag == "Player")
-            parent.isPlayerInDanger = true;
+    void OnTriggerEnter (Collider other) {
+        if (other.tag == "Player") {
+            enemyAI.isPlayerInDanger = true;
+        }
     }
 
-    void OnTriggerExit (Collider other)
-    {
-        if (other.tag == "Player")
-            parent.isPlayerInDanger = false;
+    void OnTriggerExit (Collider other) {
+        if (other.tag == "Player") {
+            enemyAI.isPlayerInDanger = false;
+        }
     }
 }

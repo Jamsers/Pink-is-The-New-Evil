@@ -2,39 +2,32 @@
 using UnityEngine;
 using UnityEditor;
 
-public class ChangeVersionWindows : EditorWindow
-{
-    string versionNum;
+public class ChangeVersionWindows : EditorWindow {
+    string version;
     string lastVersion;
     bool changed;
 
     [MenuItem("Window/Version Helper")]
-    public static void ShowWindow()
-    {
-        EditorWindow.GetWindow(typeof(ChangeVersionWindows));
+    public static void ShowWindow() {
+        GetWindow(typeof(ChangeVersionWindows));
     }
 
-    void OnGUI()
-    {
-        if (changed == false)
-        {
-            versionNum = PlayerSettings.bundleVersion;
-            lastVersion = versionNum;
+    void OnGUI() {
+        if (changed == false) {
+            version = PlayerSettings.bundleVersion;
+            lastVersion = version;
         }
 
         EditorGUIUtility.labelWidth = 80;
-        versionNum = EditorGUILayout.TextField("Version", versionNum);
+        version = EditorGUILayout.TextField("Version", version);
 
-        if (lastVersion != versionNum)
-        {
+        if (lastVersion != version) {
             changed = true;
         }
 
-        if (changed == true)
-        {
-            if (GUILayout.Button("Set Version"))
-            {
-                PlayerSettings.bundleVersion = versionNum;
+        if (changed == true) {
+            if (GUILayout.Button("Set Version")) {
+                PlayerSettings.bundleVersion = version;
                 changed = false;
             }
         }

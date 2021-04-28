@@ -1,42 +1,31 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DamagePlayerInArea : MonoBehaviour {
+    PlayerController playerController;
+    bool playerDamagedCooldown = false;
+    const float DamageResetTime = 0.5f;
+    const int DamageHealthAmount = -20;
 
-    bool isPlayerInDanger;
-    PlayerController playerai;
-    bool specialimsoDAMAGED = false;
-
-	// Use this for initialization
 	void Start () {
-        playerai = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
-        if (Vector3.Distance(transform.position, GameObject.Find("Player").transform.position) <= transform.lossyScale.x / 2 && specialimsoDAMAGED == false) {
-            playerai.Health(-20);
-            specialimsoDAMAGED = true;
-            Invoke("HeiiiiImNotSoDamagedAfterAll", .5f);
+        float distanceToPlayer = Vector3.Distance(transform.position, playerController.transform.position);
+
+        // afraid to touch these magic numbers so they'll stay for now
+        if (distanceToPlayer <= (transform.lossyScale.x / 2) && playerDamagedCooldown == false) {
+            playerController.Health(DamageHealthAmount);
+            playerDamagedCooldown = true;
+            Invoke("DamageCooldownReset", DamageResetTime);
         }
-        else if (Vector3.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.5) {
-            CancelInvoke("HeiiiiImNotSoDamagedAfterAll");
-            specialimsoDAMAGED = false;
+        else if (distanceToPlayer > 1.5) {
+            CancelInvoke("DamageCooldownReset");
+            playerDamagedCooldown = false;
         }
-        //Debug.Log(transform.lossyScale);
     }
 
-    void HeiiiiImNotSoDamagedAfterAll () {
-        specialimsoDAMAGED = false;
-    }
-
-    void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player Identifier")
-            isPlayerInDanger = true;
-    }
-
-    void OnTriggerExit(Collider other) {
-        if (other.tag == "Player Identifier")
-            isPlayerInDanger = false;
+    void DamageCooldownReset () {
+        playerDamagedCooldown = false;
     }
 }
