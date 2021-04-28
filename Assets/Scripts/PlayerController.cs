@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
     bool initialPressStored = false;
     Vector3 initialPressPosition = new Vector3(0, 0, 0);
     public Vector3 screenRotationCorrection;
-    public Vector3 virtualJoystickStored;
+    public Vector3 storedMoveDirection;
 
     // MovePlayer()
     CharacterController playerCollider;
@@ -995,8 +995,8 @@ public class PlayerController : MonoBehaviour {
             else {
                 if (isControlOn == true) {
                     if (Time.timeScale != 0)
-                        virtualJoystickStored = VirtualJoystick();
-                        MovePlayer(virtualJoystickStored);
+                        storedMoveDirection = VirtualJoystick();
+                        MovePlayer(storedMoveDirection);
                     //if (Time.timeScale != 0)
                         //PlayerSpecialAttack();
                 }

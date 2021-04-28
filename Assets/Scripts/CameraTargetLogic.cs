@@ -1,65 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraTargetLogic : MonoBehaviour {
-	public PlayerController playerAI;
-	public CameraLogic cameraAI;
-	Vector3 virtualJoystickStored;
-	public float distanceFromPlayer;
-	public float moveCameraSpringResistance;
-	public float powerCameraMoveSpeed;
-	Transform childActualTarget;
-	Vector3 refoutvar = Vector3.zero;
-	public Transform powertarget;
-	public Transform powertarget2;
+	public float camMoveDistance;
+	public float camMoveSpringResistance;
+	public float camLinearMoveSpeed;
+	
+	public Transform specialCam1;
+	public Transform specialCam2;
 
-	// Use this for initialization
+	const float SpringResistanceSpecialMultiplier = 2.0f;
+	const float LinearSpeedSpecialDivider = 1.25f;
+
+	Vector3 refoutvar = Vector3.zero;
+	Transform camMovePosition;
+	PlayerController playerController;
+	CameraLogic cameraLogic;
+
 	void Start () {
-		GetComponent<Transform>().position = playerAI.GetComponent<Transform>().position;
-		childActualTarget = this.gameObject.transform.GetChild(0);
+		playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+		cameraLogic = GameObject.Find("Game Camera").GetComponent<CameraLogic>();
+		transform.position = playerController.transform.position;
+		camMovePosition = transform.GetChild(0);
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if (cameraAI.isTracking)
-        {
-			GetComponent<Transform>().position = playerAI.GetComponent<Transform>().position;
+		if (cameraLogic.isTracking) {
+			transform.position = playerController.transform.position;
+			transform.rotation = Quaternion.identity;
+			Vector3 camMoveTarget = playerController.storedMoveDirection * camMoveDistance;
+			float linearMoveStep = camLinearMoveSpeed * Time.deltaTime;
 
-			virtualJoystickStored = playerAI.virtualJoystickStored;
-			Vector3 movetopos = (virtualJoystickStored * distanceFromPlayer);
-
-			float step = (powerCameraMoveSpeed * Time.deltaTime);
-
-			//float step = moveCameraSpeed * Time.deltaTime;
-			if (playerAI.isSpecialAttackUnderWay == true)
-			{
-				if (playerAI.specialAttackMode == 1)
-				{
-					childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), step);
-					//childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget.position), ref refoutvar, moveCameraSpringResistance * 2);
+			if (playerController.isSpecialAttackUnderWay == true) {
+				if (playerController.specialAttackMode == 1) {
+					camMovePosition.localPosition = Vector3.MoveTowards(camMovePosition.localPosition, transform.InverseTransformPoint(specialCam1.position), linearMoveStep);
 				}
-				else
-				{
-					//childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), step);
-					childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), ref refoutvar, moveCameraSpringResistance * 2);
+				else {
+					camMovePosition.localPosition = Vector3.SmoothDamp(camMovePosition.localPosition, transform.InverseTransformPoint(specialCam2.position), ref refoutvar, camMoveSpringResistance * SpringResistanceSpecialMultiplier);
 				}
 			}
-			else if (playerAI.amAttackingRightNow == true)
-            {
-				childActualTarget.localPosition = Vector3.MoveTowards(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), step/1.25f);
-				//childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, transform.InverseTransformPoint(powertarget2.position), ref refoutvar, moveCameraSpringResistance * 2);
+			else if (playerController.amAttackingRightNow == true) {
+				camMovePosition.localPosition = Vector3.MoveTowards(camMovePosition.localPosition, transform.InverseTransformPoint(specialCam2.position), linearMoveStep/LinearSpeedSpecialDivider);
 			}
-			else
-			{
-				childActualTarget.localPosition = Vector3.SmoothDamp(childActualTarget.localPosition, (movetopos), ref refoutvar, moveCameraSpringResistance);
+			else {
+				camMovePosition.localPosition = Vector3.SmoothDamp(camMovePosition.localPosition, camMoveTarget, ref refoutvar, camMoveSpringResistance);
 			}
-
-
-			//GetComponent<Transform>().position = movetopos;
-			//GetComponent<Transform>().position = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position;
-			GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 		}
-		
 	}
 }
