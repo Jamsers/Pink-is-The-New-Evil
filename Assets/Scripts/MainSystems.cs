@@ -505,7 +505,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 else if (GetComponent<EnemySpawner>().transitionMode == 40) {
                     GetComponent<EnemySpawner>().level = 28;
                 }
-                GetComponent<EnemySpawner>().Level1();
+                GetComponent<EnemySpawner>().LevelSetup();
                 lookMomImIngame = true;
                 pinkSuit.SetActive(true);
                 //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().ResumeSkyfall();

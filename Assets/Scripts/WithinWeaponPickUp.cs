@@ -16,6 +16,9 @@ public class WithinWeaponPickUp : MonoBehaviour {
     public GameObject pinkguytext;
     public GameObject pinkfizz;
 
+    public Font poiretFont;
+    public Font forqFont;
+
     public int weaponType;
     public int weaponPrice;
 
@@ -48,24 +51,24 @@ public class WithinWeaponPickUp : MonoBehaviour {
                 buybutton.SetActive(true);
                 if (weaponType == 9 || weaponType == 10 || weaponType == 11) {
                     price.GetComponent<Text>().text = "Ascencion: " + weaponPrice;
-                    price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
+                    price.GetComponent<Text>().font = poiretFont;
 
                     if (weaponType == 9 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Extended Rush: 70000";
-                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = poiretFont;
                     }
                     else if (weaponType == 10 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Fast-Charge Jump: 90000";
-                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = poiretFont;
                     }
                     else if (weaponType == 11 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
                         price.GetComponent<Text>().text = "Double Health: 30000";
-                        price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().poiret;
+                        price.GetComponent<Text>().font = poiretFont;
                     }
                 }
                 else {
                     price.GetComponent<Text>().text = "Weapon Price: " + weaponPrice;
-                    price.GetComponent<Text>().font = GameObject.Find("Main Systems").GetComponent<EnemySpawner>().forq;
+                    price.GetComponent<Text>().font = forqFont;
                 }
                 buybutton.GetComponent<Button>().onClick.AddListener(func);
             }

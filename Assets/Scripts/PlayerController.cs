@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-    public EnemySpawner systemsProcSpawn;
+    public EnemySpawner enemySpawner;
 
     public LayerMask myLayerMask;
 
@@ -403,12 +403,12 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 100;
                 setAttackMode(2);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon1Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[1-1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel2.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
+                enemySpawner.weapons[1-1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -425,13 +425,13 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 1000;
                 setAttackMode(3);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon2Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[2 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel3.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -448,14 +448,14 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 2300;
                 setAttackMode(4);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon3Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[3 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel4.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
-                systemsProcSpawn.weapon3.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
+                enemySpawner.weapons[3 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -472,15 +472,15 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 4000;
                 setAttackMode(5);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon4Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[4 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel5.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
-                systemsProcSpawn.weapon3.SetActive(false);
-                systemsProcSpawn.weapon4.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
+                enemySpawner.weapons[3 - 1].SetActive(false);
+                enemySpawner.weapons[4 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -497,16 +497,16 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 11000;
                 setAttackMode(6);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon5Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[5 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel6.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
-                systemsProcSpawn.weapon3.SetActive(false);
-                systemsProcSpawn.weapon4.SetActive(false);
-                systemsProcSpawn.weapon5.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
+                enemySpawner.weapons[3 - 1].SetActive(false);
+                enemySpawner.weapons[4 - 1].SetActive(false);
+                enemySpawner.weapons[5 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -523,17 +523,17 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 20000;
                 setAttackMode(7);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon6Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[6 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel7.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
-                systemsProcSpawn.weapon3.SetActive(false);
-                systemsProcSpawn.weapon4.SetActive(false);
-                systemsProcSpawn.weapon5.SetActive(false);
-                systemsProcSpawn.weapon6.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
+                enemySpawner.weapons[3 - 1].SetActive(false);
+                enemySpawner.weapons[4 - 1].SetActive(false);
+                enemySpawner.weapons[5 - 1].SetActive(false);
+                enemySpawner.weapons[6 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -550,18 +550,18 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 43000;
                 setAttackMode(8);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon7Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                systemsProcSpawn.weapon1.SetActive(false);
-                systemsProcSpawn.weapon2.SetActive(false);
-                systemsProcSpawn.weapon3.SetActive(false);
-                systemsProcSpawn.weapon4.SetActive(false);
-                systemsProcSpawn.weapon5.SetActive(false);
-                systemsProcSpawn.weapon6.SetActive(false);
-                systemsProcSpawn.weapon7.SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
+                enemySpawner.weapons[2 - 1].SetActive(false);
+                enemySpawner.weapons[3 - 1].SetActive(false);
+                enemySpawner.weapons[4 - 1].SetActive(false);
+                enemySpawner.weapons[5 - 1].SetActive(false);
+                enemySpawner.weapons[6 - 1].SetActive(false);
+                enemySpawner.weapons[7 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -574,9 +574,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 9) {
-            if (systemsProcSpawn.level == 29 && upgradePoints >= 70000) {
+            if (enemySpawner.level == 29 && upgradePoints >= 70000) {
                 upgradePoints = upgradePoints - 70000;
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon8Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[8 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
@@ -589,7 +589,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 speedPerkIcon.SetActive(true);
                 speedPerkBack.SetActive(true);
-                systemsProcSpawn.weapon8.SetActive(false);
+                enemySpawner.weapons[8 - 1].SetActive(false);
                 animator.SetFloat("specAttack1speed", 0.5f);
                 speedAttackCooldown = speedAttackCooldown + 2;
                 //longer speed
@@ -609,7 +609,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 //Health(-100);
                 ascencionScreen.SetActive(true);
-                systemsProcSpawn.constantlyDenyInput = true;
+                enemySpawner.constantlyDenyInput = true;
                 //death logic
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
@@ -623,9 +623,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 10) {
-            if (systemsProcSpawn.level == 29 && upgradePoints >= 90000) {
+            if (enemySpawner.level == 29 && upgradePoints >= 90000) {
                 upgradePoints = upgradePoints - 90000;
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon7Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
@@ -638,7 +638,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 jumpPerkIcon.SetActive(true);
                 jumpPerkBack.SetActive(true);
-                systemsProcSpawn.weapon9.SetActive(false);
+                enemySpawner.weapons[9 - 1].SetActive(false);
                 jumpAttackCooldown = jumpAttackCooldown / 3;
                 //faster jump
             }
@@ -657,7 +657,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 //Health(-100);
                 ascencionScreen.SetActive(true);
-                systemsProcSpawn.constantlyDenyInput = true;
+                enemySpawner.constantlyDenyInput = true;
                 //death logic
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
@@ -671,9 +671,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 11) {
-            if (systemsProcSpawn.level == 29 && upgradePoints >= 30000) {
+            if (enemySpawner.level == 29 && upgradePoints >= 30000) {
                 upgradePoints = upgradePoints - 30000;
-                GameObject poof1 = Instantiate(gayPoofWeap, systemsProcSpawn.weapon7Model.transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
@@ -686,7 +686,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 healthPerkIcon.SetActive(true);
                 healthPerkBack.SetActive(true);
-                systemsProcSpawn.weapon10.SetActive(false);
+                enemySpawner.weapons[10 - 1].SetActive(false);
                 targetHealth = targetHealth * 2;
                 //double health
             }
@@ -705,7 +705,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 //Health(-100);
                 ascencionScreen.SetActive(true);
-                systemsProcSpawn.constantlyDenyInput = true;
+                enemySpawner.constantlyDenyInput = true;
                 //death logic
                 //make player invul
                 //ASCENCION, PLAY ANIMATION
@@ -961,7 +961,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (hasDoneIt == false) {
-            if (systemsProcSpawn.level == 29) {
+            if (enemySpawner.level == 29) {
                 //Debug.Log("hello");
                 isFallingFromSky = true;
             }
@@ -977,7 +977,7 @@ public class PlayerController : MonoBehaviour {
         //AttackCooldownManager();
         if (isSpecialAttackUnderWay == false) {
             if (isDead == true) {
-                if (systemsProcSpawn.level == 29) {
+                if (enemySpawner.level == 29) {
                     AnimSwitchTo("Ascending");
                     isControlOn = false;
                 }
@@ -1105,12 +1105,12 @@ public class PlayerController : MonoBehaviour {
 
             //MEMELORD EXTREME
 
-            for (int i = 0; i < systemsProcSpawn.listOfAllEnemies.Count; i++) {
+            for (int i = 0; i < enemySpawner.listOfAllEnemies.Count; i++) {
                 if (specialAttackEnemyTarget == null) {
-                    specialAttackEnemyTarget = systemsProcSpawn.listOfAllEnemies[i];
+                    specialAttackEnemyTarget = enemySpawner.listOfAllEnemies[i];
                 }
-                else if (Vector3.Distance(scanPoint, systemsProcSpawn.listOfAllEnemies[i].transform.position) < Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position)) {
-                    specialAttackEnemyTarget = systemsProcSpawn.listOfAllEnemies[i];
+                else if (Vector3.Distance(scanPoint, enemySpawner.listOfAllEnemies[i].transform.position) < Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position)) {
+                    specialAttackEnemyTarget = enemySpawner.listOfAllEnemies[i];
                 }
             }
 
@@ -1456,10 +1456,10 @@ public class PlayerController : MonoBehaviour {
     int MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 0;
 
     void SpecialAttackIndicatorsFadedXDDDD () {
-        if (systemsProcSpawn.level > 14) {
+        if (enemySpawner.level > 14) {
             MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 2;
         }
-        else if (systemsProcSpawn.level > 5) {
+        else if (enemySpawner.level > 5) {
             MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 1;
         }
         else {
