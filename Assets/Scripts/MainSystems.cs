@@ -49,7 +49,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
     public GameObject resetScoreConfirm;
     public GameObject loadingScreen;
 
-    public GameObject removeAdsButton;
+    public GameObject toggleLightingButton;
     public GameObject removeAdsText;
 
     public GameObject gamePause;
@@ -591,7 +591,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 if (firstObjective4 == true)
                 {
                     //Debug.Log("Transition to current level lighting");
-                    GetComponent<EnemySpawner>().isTransitioningBigCockTranny = true;
+                    GetComponent<EnemySpawner>().isLightingTransitioning = true;
                     GetComponent<EnemySpawner>().TrannyStart = Time.time;
                     GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResumeSkyfall();
