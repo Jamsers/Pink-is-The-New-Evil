@@ -592,7 +592,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 {
                     //Debug.Log("Transition to current level lighting");
                     GetComponent<EnemySpawner>().isLightingTransitioning = true;
-                    GetComponent<EnemySpawner>().TrannyStart = Time.time;
+                    GetComponent<EnemySpawner>().transitionStart = Time.time;
                     GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResumeSkyfall();
                 }

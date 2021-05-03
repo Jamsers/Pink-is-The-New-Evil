@@ -4,17 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour {
-
     public bool DebugDisableSpawning;
 
-    
     public int level = 1;
     public PlayerController playerController;
     public bool isTransitionDone = false;
     public bool isCheckingForTransition = false;
     public bool constantlyDenyInput = false;
     public bool isLightingTransitioning = false;
-    public float TrannyStart = 0;
+    public float transitionStart = 0;
     public int TransitionLevelObjective;
     public int transitionMode = 0;
 
@@ -32,14 +30,14 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject spawnDust;
 
     [Header("UI")]
-    public GameObject blackBackground;
+    public GameObject levelBannerBackground;
     public GameObject levelTitle;
-    public GameObject blackBackground2;
-    public GameObject blockadeText;
+    public GameObject poiBannerBackground;
+    public GameObject poiMessage;
     public GameObject levelSubtitle;
     public GameObject hudCanvas;
     public GameObject resetHighScoresButton;
-    public GameObject newGameButtonText;
+    public Text newGameButtonText;
 
     [Header("Lighting")]
     public GameObject noonLight;
@@ -47,8 +45,8 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject currentLight;
     public GameObject nightmareLight;
     public GameObject nightmareUnderlight;
-    public Material altsky;
-    public Material normsky;
+    public Material nightmareSkybox;
+    public Material daySkybox;
 
     [Header("List of All Enemies")]
     public List<GameObject> listOfAllEnemies = new List<GameObject>();
@@ -154,13 +152,13 @@ public class EnemySpawner : MonoBehaviour {
         level = PlayerPrefs.GetInt("Level", 1);
 
         if (level == 1) {
-            newGameButtonText.GetComponent<Text>().text = "New Game";
+            newGameButtonText.text = "New Game";
         }
         else if (level == 29) {
-            newGameButtonText.GetComponent<Text>().text = "Survival";
+            newGameButtonText.text = "Survival";
         }
         else {
-            newGameButtonText.GetComponent<Text>().text = "Resume";
+            newGameButtonText.text = "Resume";
         }
 
         if (level != 29) {
@@ -180,7 +178,7 @@ public class EnemySpawner : MonoBehaviour {
                 RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
                 currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
                 nightmareUnderlight.SetActive(true);
-                RenderSettings.skybox = altsky;
+                RenderSettings.skybox = nightmareSkybox;
             }
             weapons[10 - 1].SetActive(true);
         }
@@ -194,7 +192,7 @@ public class EnemySpawner : MonoBehaviour {
             RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(true);
-            RenderSettings.skybox = altsky;
+            RenderSettings.skybox = nightmareSkybox;
             GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
         }
         else {
@@ -203,7 +201,7 @@ public class EnemySpawner : MonoBehaviour {
             RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
             currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
             nightmareUnderlight.SetActive(false);
-            RenderSettings.skybox = normsky;
+            RenderSettings.skybox = daySkybox;
             GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
         }
     }
@@ -275,23 +273,23 @@ public class EnemySpawner : MonoBehaviour {
                 isLightTransitionInitialized = true;
             }
             else {
-                float lerpNum = (Time.time - TrannyStart) / transitionTimeLight;
+                float lerpNum = (Time.time - transitionStart) / transitionTimeLight;
                 if (lerpNum > 1) {
                     isLightTransitionInitialized = false;
                     isLightingTransitioning = false;
                     if (TransitionLevelObjective == 29) {
                         if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
                             nightmareUnderlight.SetActive(true);
-                            RenderSettings.skybox = altsky;
+                            RenderSettings.skybox = nightmareSkybox;
                         }
                         else {
                             nightmareUnderlight.SetActive(false);
-                            RenderSettings.skybox = normsky;
+                            RenderSettings.skybox = daySkybox;
                         }
                     }
                     else if (TransitionLevelObjective == 28) {
                         nightmareUnderlight.SetActive(true);
-                        RenderSettings.skybox = altsky;
+                        RenderSettings.skybox = nightmareSkybox;
                     }
                     GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
                 }
@@ -405,16 +403,16 @@ public class EnemySpawner : MonoBehaviour {
     void LevelTitleTransition() {
         if (isTitleTransitioning == true) {
             if (isTitleTransitionInitialized == false) {
-                backSourcePos = new Vector3((blackBackground.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), blackBackground.transform.position.y, 0);
+                backSourcePos = new Vector3((levelBannerBackground.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelBannerBackground.transform.position.y, 0);
                 textSourcePos = new Vector3((levelTitle.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelTitle.transform.position.y, 0);
                 text2SourcePos = new Vector3((levelSubtitle.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelSubtitle.transform.position.y, 0);
-                backOrigPos = blackBackground.transform.position;
+                backOrigPos = levelBannerBackground.transform.position;
                 textOrigPos = levelTitle.transform.position;
                 text2OrigPos = levelSubtitle.transform.position;
-                backDestPos = new Vector3((blackBackground.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), blackBackground.transform.position.y, 0);
+                backDestPos = new Vector3((levelBannerBackground.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelBannerBackground.transform.position.y, 0);
                 textDestPos = new Vector3((levelTitle.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelTitle.transform.position.y, 0);
                 text2DestPos = new Vector3((levelSubtitle.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelSubtitle.transform.position.y, 0);
-                blackBackground.SetActive(true);
+                levelBannerBackground.SetActive(true);
                 levelTitle.SetActive(true);
                 levelSubtitle.SetActive(true);
 
@@ -427,7 +425,7 @@ public class EnemySpawner : MonoBehaviour {
                 levelSubtitle.GetComponent<Text>().font = levelTexts[level - 1].subtitleFont;
                 levelSubtitle.GetComponent<Text>().color = levelTexts[level - 1].subtitleColor;
 
-                initAlphaVal = blackBackground.GetComponent<Image>().color.a;
+                initAlphaVal = levelBannerBackground.GetComponent<Image>().color.a;
 
                 isTitleTransitionInitialized = true;
             }
@@ -438,33 +436,33 @@ public class EnemySpawner : MonoBehaviour {
 
             if (lerpBeg > 1) {
                 isTitleAnimating = true;
-                blackBackground.transform.position = backOrigPos;
+                levelBannerBackground.transform.position = backOrigPos;
                 levelTitle.transform.position = textOrigPos;
                 levelSubtitle.transform.position = text2OrigPos;
             }
 
             if (lerpEnd > 1) {
                 isTitleTransitioning = false;
-                blackBackground.SetActive(false);
+                levelBannerBackground.SetActive(false);
                 levelTitle.SetActive(false);
                 levelSubtitle.SetActive(false);
-                blackBackground.transform.position = backOrigPos;
+                levelBannerBackground.transform.position = backOrigPos;
                 levelTitle.transform.position = textOrigPos;
                 levelSubtitle.transform.position = text2OrigPos;
                 isTitleAnimating = false;
                 isTitleTransitionInitialized = false;
-                Color backColor = blackBackground.GetComponent<Image>().color;
+                Color backColor = levelBannerBackground.GetComponent<Image>().color;
                 backColor.a = initAlphaVal;
-                blackBackground.GetComponent<Image>().color = backColor;
+                levelBannerBackground.GetComponent<Image>().color = backColor;
             }
             else {
                 if (isTitleAnimating == false) {
-                    blackBackground.transform.position = Vector3.Lerp(backSourcePos, backOrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
+                    levelBannerBackground.transform.position = Vector3.Lerp(backSourcePos, backOrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
                     levelTitle.transform.position = Vector3.Lerp(textSourcePos, textOrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
                     levelSubtitle.transform.position = Vector3.Lerp(text2SourcePos, text2OrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
-                    Color backColor = blackBackground.GetComponent<Image>().color;
+                    Color backColor = levelBannerBackground.GetComponent<Image>().color;
                     backColor.a = Mathf.Lerp(0, initAlphaVal, Mathf.SmoothStep(0, 1, lerpBeg));
-                    blackBackground.GetComponent<Image>().color = backColor;
+                    levelBannerBackground.GetComponent<Image>().color = backColor;
                     Color textColor = levelTitle.GetComponent<Text>().color;
                     textColor.a = Mathf.Lerp(0, 1, Mathf.SmoothStep(0, 1, lerpBeg));
                     levelTitle.GetComponent<Text>().color = textColor;
@@ -473,12 +471,12 @@ public class EnemySpawner : MonoBehaviour {
                     levelSubtitle.GetComponent<Text>().color = textColor2;
                 }
                 else if (isTitleAnimating == true && (stay > ayyStayTime)) {
-                    blackBackground.transform.position = Vector3.Lerp(backOrigPos, backDestPos, Mathf.SmoothStep(0, 1, lerpEnd));
+                    levelBannerBackground.transform.position = Vector3.Lerp(backOrigPos, backDestPos, Mathf.SmoothStep(0, 1, lerpEnd));
                     levelTitle.transform.position = Vector3.Lerp(textOrigPos, textDestPos, Mathf.SmoothStep(0, 1, lerpEnd));
                     levelSubtitle.transform.position = Vector3.Lerp(text2OrigPos, text2DestPos, Mathf.SmoothStep(0, 1, lerpEnd));
-                    Color backColor = blackBackground.GetComponent<Image>().color;
+                    Color backColor = levelBannerBackground.GetComponent<Image>().color;
                     backColor.a = Mathf.Lerp(initAlphaVal, 0, Mathf.SmoothStep(0, 1, lerpEnd));
-                    blackBackground.GetComponent<Image>().color = backColor;
+                    levelBannerBackground.GetComponent<Image>().color = backColor;
                     Color textColor = levelTitle.GetComponent<Text>().color;
                     textColor.a = Mathf.Lerp(1, 0, Mathf.SmoothStep(0, 1, lerpEnd));
                     levelTitle.GetComponent<Text>().color = textColor;
@@ -521,8 +519,8 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void RemoveLevelPrompts() {
-        blackBackground2.SetActive(false);
-        blockadeText.SetActive(false);
+        poiBannerBackground.SetActive(false);
+        poiMessage.SetActive(false);
     }
 
     void SpawnEnemies() {
@@ -554,7 +552,7 @@ public class EnemySpawner : MonoBehaviour {
         GameObject areTheAlive = GameObject.FindWithTag("Enemy");
         if (areTheAlive == null) {
             isLightingTransitioning = true;
-            TrannyStart = Time.time;
+            transitionStart = Time.time;
             TransitionLevelObjective = level + 1;
 
             switch (level) {
@@ -710,8 +708,8 @@ public class EnemySpawner : MonoBehaviour {
                     TransitionAction(TransitionDoneType.Filler, 0);
                     break;
                 default:
-                    blackBackground2.SetActive(true);
-                    blockadeText.SetActive(true);
+                    poiBannerBackground.SetActive(true);
+                    poiMessage.SetActive(true);
                     blockades[1 - 1].GetComponent<SinkAndDespawnBlockade>().DespawnBlockade();
                     Invoke("EnableIsCheckingForTransition", 2.5f);
                     break;
@@ -732,8 +730,8 @@ public class EnemySpawner : MonoBehaviour {
             constantlyDenyInput = false;
         }
         else {
-            blackBackground2.SetActive(true);
-            blockadeText.SetActive(true);
+            poiBannerBackground.SetActive(true);
+            poiMessage.SetActive(true);
             string transitionText = "";
 
             if (transitionDoneType == TransitionDoneType.NewWeapon) {
@@ -753,7 +751,7 @@ public class EnemySpawner : MonoBehaviour {
                 blockades[objectToFade - 1].GetComponent<SinkAndDespawnBlockade>().DespawnBlockade();
             }
 
-            blockadeText.GetComponent<Text>().text = transitionText;
+            poiMessage.GetComponent<Text>().text = transitionText;
             transitionMode += 1;
             Invoke("EnableIsCheckingForTransition", 2.5f);
         }
