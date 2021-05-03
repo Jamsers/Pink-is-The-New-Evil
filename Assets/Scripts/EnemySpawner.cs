@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject poiBannerBackground;
     public GameObject poiMessage;
     public GameObject levelSubtitle;
-    public GameObject hudCanvas;
+    public RectTransform hudCanvas;
     public GameObject resetHighScoresButton;
     public Text newGameButtonText;
 
@@ -59,44 +59,45 @@ public class EnemySpawner : MonoBehaviour {
 
     Color begColor;
     Color endColor;
+    Color nightBegColor;
+    Color nightEndColor;
     Quaternion begRotation;
     Quaternion endRotation;
 
-    Color nightBegColor;
-    Color nightEndColor;
+    
 
     
 
     bool isTitleTransitioning = false;
     bool isTitleTransitionInitialized = false;
-    float beginAyyTime;
+    float transitionBeginningTime;
+    float levelBannerOriginalAlpha;
+
+    Vector3 levelBannerFadeInPosition;
+    Vector3 levelTitleFadeInPosition;
+    Vector3 levelSubtitleFadeInPosition;
+
+    Vector3 levelBannerOrigPosition;
+    Vector3 levelTitleOrigPosition;
+    Vector3 levelSubtitleOrigPosition;
+
+    Vector3 levelBannerFadeOutPosition;
+    Vector3 levelTitleFadeOutPosition;
+    Vector3 levelSubtitleFadeOutPosition;
 
     
-
-    Vector3 backSourcePos;
-    Vector3 textSourcePos;
-    Vector3 text2SourcePos;
-
-    Vector3 backOrigPos;
-    Vector3 textOrigPos;
-    Vector3 text2OrigPos;
-
-    Vector3 backDestPos;
-    Vector3 textDestPos;
-    Vector3 text2DestPos;
-
-    float initAlphaVal;
 
     
 
     bool isTitleAnimating = false;
 
-    float ayyTransitionTime = .5f;
-    float ayyStayTime = 6;
+    float transitionTimeLength = .5f;
+    float transitionLingerTime = 6;
 
     float borderSpace = 500;
 
-    
+    const int InfiniteEnemyCap = 39;
+    const float InfiniteSpawnerTick = 0.25f;
 
     int weaponToFade;
     bool weaponIsFading = false;
@@ -165,44 +166,11 @@ public class EnemySpawner : MonoBehaviour {
             resetHighScoresButton.GetComponent<Button>().interactable = false;
         }
 
-        RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+        SetMainMenuLighting();
+
         if (level == 29) {
             GetComponent<MainSystems>().toggleLightingButton.SetActive(true);
-            if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
-                currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
-                RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-                currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
-            }
-            else {
-                currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
-                RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-                currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
-                nightmareUnderlight.SetActive(true);
-                RenderSettings.skybox = nightmareSkybox;
-            }
             weapons[10 - 1].SetActive(true);
-        }
-    }
-
-    public void ToggleLighting() {
-        if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
-
-            PlayerPrefs.SetInt("Is Shadows On", 0);
-            currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
-            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-            currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
-            nightmareUnderlight.SetActive(true);
-            RenderSettings.skybox = nightmareSkybox;
-            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-        }
-        else {
-            PlayerPrefs.SetInt("Is Shadows On", 1);
-            currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
-            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-            currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
-            nightmareUnderlight.SetActive(false);
-            RenderSettings.skybox = daySkybox;
-            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
         }
     }
 
@@ -214,6 +182,7 @@ public class EnemySpawner : MonoBehaviour {
         LightingTransition();
         FadeInWeaponModel();
         LevelTitleTransition();
+
         if (constantlyDenyInput == true) {
             GameObject.Find("Main Systems").GetComponent<MainSystems>().isAllInputEnabled(false);
             inputRestored = false;
@@ -224,21 +193,49 @@ public class EnemySpawner : MonoBehaviour {
         }
     }
 
+    public void ToggleLighting() {
+        int isSurvivalLightingFlipped = PlayerPrefs.GetInt("Is Survival Lighting Flipped");
+
+        if (isSurvivalLightingFlipped == 1) {
+            PlayerPrefs.SetInt("Is Survival Lighting Flipped", 0); ;
+        }
+        else if (isSurvivalLightingFlipped == 0) {
+            PlayerPrefs.SetInt("Is Survival Lighting Flipped", 1); ;
+        }
+
+        SetMainMenuLighting();
+    }
+
+    void SetMainMenuLighting() {
+        int isSurvivalLightingFlipped = PlayerPrefs.GetInt("Is Survival Lighting Flipped");
+
+        if (isSurvivalLightingFlipped == 1) {
+            currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
+            currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
+            RenderSettings.skybox = daySkybox;
+            nightmareUnderlight.SetActive(false);
+        }
+        else if (isSurvivalLightingFlipped == 0) {
+            currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
+            currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
+            RenderSettings.skybox = nightmareSkybox;
+            nightmareUnderlight.SetActive(true);
+        }
+
+        RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+        GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+    }
+
     void InfiniteSpawner() {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length > 39) {
-            Invoke("InfiniteSpawner", .25f);
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length > InfiniteEnemyCap) {
+            Invoke("InfiniteSpawner", InfiniteSpawnerTick);
             return;
         }
-        int low = 1;
-        int high = 8;
-        int spawnType = Random.Range(low, high);
 
-        int slow = 1;
-        int shigh = 46;
-        int sspawnType = Random.Range(slow, shigh);
-
-        StartCoroutine(SpawnEnemy(spawnType, sspawnType, 0));
-        Invoke("InfiniteSpawner", .25f);
+        int enemyType = Random.Range(1, enemies.Length);
+        int spawnPoint = Random.Range(1, spawnPoints.Length);
+        StartCoroutine(SpawnEnemy(enemyType, spawnPoint, 0));
+        Invoke("InfiniteSpawner", InfiniteSpawnerTick);
     }
 
     void LightingTransition() {
@@ -247,7 +244,7 @@ public class EnemySpawner : MonoBehaviour {
                 begColor = currentLight.GetComponent<Light>().color;
                 begRotation = currentLight.GetComponent<Transform>().rotation;
 
-                if (TransitionLevelObjective == 28 || (TransitionLevelObjective == 29 && PlayerPrefs.GetInt("Is Shadows On") == 1)) {
+                if (TransitionLevelObjective == 28 || (TransitionLevelObjective == 29 && PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1)) {
                     endColor = nightmareLight.GetComponent<Light>().color;
                     endRotation = nightmareLight.GetComponent<Transform>().rotation;
                     nightmareUnderlight.SetActive(true);
@@ -278,7 +275,7 @@ public class EnemySpawner : MonoBehaviour {
                     isLightTransitionInitialized = false;
                     isLightingTransitioning = false;
                     if (TransitionLevelObjective == 29) {
-                        if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
+                        if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
                             nightmareUnderlight.SetActive(true);
                             RenderSettings.skybox = nightmareSkybox;
                         }
@@ -346,7 +343,7 @@ public class EnemySpawner : MonoBehaviour {
         PlayerPrefs.Save();
 
         isTitleTransitioning = true;
-        beginAyyTime = Time.time;
+        transitionBeginningTime = Time.time;
 
         if (level < 7) {
             playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.BridgeSection);
@@ -361,7 +358,7 @@ public class EnemySpawner : MonoBehaviour {
             playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
         }
         else if (level == 29) {
-            if (PlayerPrefs.GetInt("Is Shadows On") == 1) {
+            if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
                 playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
             }
             else {
@@ -403,90 +400,106 @@ public class EnemySpawner : MonoBehaviour {
     void LevelTitleTransition() {
         if (isTitleTransitioning == true) {
             if (isTitleTransitionInitialized == false) {
-                backSourcePos = new Vector3((levelBannerBackground.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelBannerBackground.transform.position.y, 0);
-                textSourcePos = new Vector3((levelTitle.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelTitle.transform.position.y, 0);
-                text2SourcePos = new Vector3((levelSubtitle.transform.position.x + (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) + borderSpace), levelSubtitle.transform.position.y, 0);
-                backOrigPos = levelBannerBackground.transform.position;
-                textOrigPos = levelTitle.transform.position;
-                text2OrigPos = levelSubtitle.transform.position;
-                backDestPos = new Vector3((levelBannerBackground.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelBannerBackground.transform.position.y, 0);
-                textDestPos = new Vector3((levelTitle.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelTitle.transform.position.y, 0);
-                text2DestPos = new Vector3((levelSubtitle.transform.position.x - (hudCanvas.GetComponent<RectTransform>().sizeDelta.x / 2) - borderSpace), levelSubtitle.transform.position.y, 0);
-                levelBannerBackground.SetActive(true);
-                levelTitle.SetActive(true);
-                levelSubtitle.SetActive(true);
-
-                int minInt = 0;
-                int maxInt = levelTexts[level - 1].subtitles.Length - 1;
-                int randInt = Random.Range(minInt, maxInt);
-
-                levelTitle.GetComponent<Text>().text = levelTexts[level - 1].title;
-                levelSubtitle.GetComponent<Text>().text = levelTexts[level - 1].subtitles[randInt];
-                levelSubtitle.GetComponent<Text>().font = levelTexts[level - 1].subtitleFont;
-                levelSubtitle.GetComponent<Text>().color = levelTexts[level - 1].subtitleColor;
-
-                initAlphaVal = levelBannerBackground.GetComponent<Image>().color.a;
-
-                isTitleTransitionInitialized = true;
+                InitializeTitleTransition();
             }
 
-            float lerpBeg = (Time.time - beginAyyTime) / ayyTransitionTime;
-            float stay = Time.time - (beginAyyTime + ayyTransitionTime);
-            float lerpEnd = (Time.time - (beginAyyTime + ayyTransitionTime + ayyStayTime)) / ayyTransitionTime;
+            float currentTransitionToLingerPercentage = (Time.time - transitionBeginningTime) / transitionTimeLength;
+            float currentLingerTime = Time.time - (transitionBeginningTime + transitionTimeLength);
+            float currentTransitionToFadeOutPercentage = (Time.time - (transitionBeginningTime + transitionTimeLength + transitionLingerTime)) / transitionTimeLength;
 
-            if (lerpBeg > 1) {
+            if (currentTransitionToLingerPercentage > 1) {
                 isTitleAnimating = true;
-                levelBannerBackground.transform.position = backOrigPos;
-                levelTitle.transform.position = textOrigPos;
-                levelSubtitle.transform.position = text2OrigPos;
+                levelBannerBackground.transform.position = levelBannerOrigPosition;
+                levelTitle.transform.position = levelTitleOrigPosition;
+                levelSubtitle.transform.position = levelSubtitleOrigPosition;
             }
 
-            if (lerpEnd > 1) {
-                isTitleTransitioning = false;
+            if (currentTransitionToFadeOutPercentage > 1) {
                 levelBannerBackground.SetActive(false);
                 levelTitle.SetActive(false);
                 levelSubtitle.SetActive(false);
-                levelBannerBackground.transform.position = backOrigPos;
-                levelTitle.transform.position = textOrigPos;
-                levelSubtitle.transform.position = text2OrigPos;
+
+                Color backgroundColor = levelBannerBackground.GetComponent<Image>().color;
+
+                levelBannerBackground.transform.position = levelBannerOrigPosition;
+                levelTitle.transform.position = levelTitleOrigPosition;
+                levelSubtitle.transform.position = levelSubtitleOrigPosition;
+                backgroundColor.a = levelBannerOriginalAlpha;
+
+                levelBannerBackground.GetComponent<Image>().color = backgroundColor;
+
+                isTitleTransitioning = false;
                 isTitleAnimating = false;
                 isTitleTransitionInitialized = false;
-                Color backColor = levelBannerBackground.GetComponent<Image>().color;
-                backColor.a = initAlphaVal;
-                levelBannerBackground.GetComponent<Image>().color = backColor;
             }
             else {
                 if (isTitleAnimating == false) {
-                    levelBannerBackground.transform.position = Vector3.Lerp(backSourcePos, backOrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
-                    levelTitle.transform.position = Vector3.Lerp(textSourcePos, textOrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
-                    levelSubtitle.transform.position = Vector3.Lerp(text2SourcePos, text2OrigPos, Mathf.SmoothStep(0, 1, lerpBeg));
-                    Color backColor = levelBannerBackground.GetComponent<Image>().color;
-                    backColor.a = Mathf.Lerp(0, initAlphaVal, Mathf.SmoothStep(0, 1, lerpBeg));
-                    levelBannerBackground.GetComponent<Image>().color = backColor;
-                    Color textColor = levelTitle.GetComponent<Text>().color;
-                    textColor.a = Mathf.Lerp(0, 1, Mathf.SmoothStep(0, 1, lerpBeg));
-                    levelTitle.GetComponent<Text>().color = textColor;
-                    Color textColor2 = levelSubtitle.GetComponent<Text>().color;
-                    textColor2.a = Mathf.Lerp(0, 1, Mathf.SmoothStep(0, 1, lerpBeg));
-                    levelSubtitle.GetComponent<Text>().color = textColor2;
+                    FadeTitle(true, currentTransitionToLingerPercentage);
                 }
-                else if (isTitleAnimating == true && (stay > ayyStayTime)) {
-                    levelBannerBackground.transform.position = Vector3.Lerp(backOrigPos, backDestPos, Mathf.SmoothStep(0, 1, lerpEnd));
-                    levelTitle.transform.position = Vector3.Lerp(textOrigPos, textDestPos, Mathf.SmoothStep(0, 1, lerpEnd));
-                    levelSubtitle.transform.position = Vector3.Lerp(text2OrigPos, text2DestPos, Mathf.SmoothStep(0, 1, lerpEnd));
-                    Color backColor = levelBannerBackground.GetComponent<Image>().color;
-                    backColor.a = Mathf.Lerp(initAlphaVal, 0, Mathf.SmoothStep(0, 1, lerpEnd));
-                    levelBannerBackground.GetComponent<Image>().color = backColor;
-                    Color textColor = levelTitle.GetComponent<Text>().color;
-                    textColor.a = Mathf.Lerp(1, 0, Mathf.SmoothStep(0, 1, lerpEnd));
-                    levelTitle.GetComponent<Text>().color = textColor;
-                    Color textColor2 = levelSubtitle.GetComponent<Text>().color;
-                    textColor2.a = Mathf.Lerp(1, 0, Mathf.SmoothStep(0, 1, lerpEnd));
-                    levelSubtitle.GetComponent<Text>().color = textColor2;
-
+                else if (isTitleAnimating == true && (currentLingerTime > transitionLingerTime)) {
+                    FadeTitle(false, currentTransitionToFadeOutPercentage);
                 }
             }
         }
+    }
+
+    void FadeTitle(bool isFadeIn, float percentage) {
+        Color backgroundColor = levelBannerBackground.GetComponent<Image>().color;
+        Color titleColor = levelTitle.GetComponent<Text>().color;
+        Color subtitleColor = levelSubtitle.GetComponent<Text>().color;
+        float smoothedPercentage = Mathf.SmoothStep(0, 1, percentage);
+
+        if (isFadeIn) {
+            levelBannerBackground.transform.position = Vector3.Lerp(levelBannerFadeInPosition, levelBannerOrigPosition, smoothedPercentage);
+            levelTitle.transform.position = Vector3.Lerp(levelTitleFadeInPosition, levelTitleOrigPosition, smoothedPercentage);
+            levelSubtitle.transform.position = Vector3.Lerp(levelSubtitleFadeInPosition, levelSubtitleOrigPosition, smoothedPercentage);
+            backgroundColor.a = Mathf.Lerp(0, levelBannerOriginalAlpha, smoothedPercentage);
+            titleColor.a = Mathf.Lerp(0, 1, smoothedPercentage);
+            subtitleColor.a = Mathf.Lerp(0, 1, smoothedPercentage);
+        }
+        else {
+            levelBannerBackground.transform.position = Vector3.Lerp(levelBannerOrigPosition, levelBannerFadeOutPosition, smoothedPercentage);
+            levelTitle.transform.position = Vector3.Lerp(levelTitleOrigPosition, levelTitleFadeOutPosition, smoothedPercentage);
+            levelSubtitle.transform.position = Vector3.Lerp(levelSubtitleOrigPosition, levelSubtitleFadeOutPosition, smoothedPercentage);
+            backgroundColor.a = Mathf.Lerp(levelBannerOriginalAlpha, 0, smoothedPercentage);
+            titleColor.a = Mathf.Lerp(1, 0, smoothedPercentage);
+            subtitleColor.a = Mathf.Lerp(1, 0, smoothedPercentage);
+        }
+
+        levelBannerBackground.GetComponent<Image>().color = backgroundColor;
+        levelTitle.GetComponent<Text>().color = titleColor;
+        levelSubtitle.GetComponent<Text>().color = subtitleColor;
+    }
+
+    void InitializeTitleTransition() {
+        levelBannerFadeInPosition = new Vector3((levelBannerBackground.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelBannerBackground.transform.position.y, 0);
+        levelTitleFadeInPosition = new Vector3((levelTitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelTitle.transform.position.y, 0);
+        levelSubtitleFadeInPosition = new Vector3((levelSubtitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelSubtitle.transform.position.y, 0);
+
+        levelBannerOrigPosition = levelBannerBackground.transform.position;
+        levelTitleOrigPosition = levelTitle.transform.position;
+        levelSubtitleOrigPosition = levelSubtitle.transform.position;
+
+        levelBannerFadeOutPosition = new Vector3((levelBannerBackground.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelBannerBackground.transform.position.y, 0);
+        levelTitleFadeOutPosition = new Vector3((levelTitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelTitle.transform.position.y, 0);
+        levelSubtitleFadeOutPosition = new Vector3((levelSubtitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelSubtitle.transform.position.y, 0);
+
+        levelBannerOriginalAlpha = levelBannerBackground.GetComponent<Image>().color.a;
+
+        int minInt = 0;
+        int subtitlesAmount = levelTexts[level - 1].subtitles.Length - 1;
+        int subtitleToUse = Random.Range(minInt, subtitlesAmount);
+
+        levelTitle.GetComponent<Text>().text = levelTexts[level - 1].title;
+        levelSubtitle.GetComponent<Text>().text = levelTexts[level - 1].subtitles[subtitleToUse];
+        levelSubtitle.GetComponent<Text>().font = levelTexts[level - 1].subtitleFont;
+        levelSubtitle.GetComponent<Text>().color = levelTexts[level - 1].subtitleColor;
+
+        levelBannerBackground.SetActive(true);
+        levelTitle.SetActive(true);
+        levelSubtitle.SetActive(true);
+
+        isTitleTransitionInitialized = true;
     }
 
     public void ShowTutorial() {
