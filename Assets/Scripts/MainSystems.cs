@@ -7,8 +7,11 @@ using UnityEngine.UI;
 using UnityEngine.PostProcessing;
 
 public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
-    public bool IsDebugMenuOn = false;
+    [Header("Debug Options")]
+    public bool debugMenuInPause;
+    public bool debugDisableSpawning;
 
+    [Header("")]
     public Button MainMenuDefaultButton;
     public Button SettingsDefaultButton;
     public Button CreditsDefaultButton;
@@ -178,7 +181,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
 
         Cursor.visible = true;
 
-        if (IsDebugMenuOn == true)
+        if (debugMenuInPause == true)
         {
             DebugMenu.SetActive(true);
         }
@@ -592,7 +595,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 {
                     //Debug.Log("Transition to current level lighting");
                     GetComponent<EnemySpawner>().isLightingTransitioning = true;
-                    GetComponent<EnemySpawner>().transitionStart = Time.time;
+                    GetComponent<EnemySpawner>().lightTransitionStart = Time.time;
                     GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResumeSkyfall();
                 }

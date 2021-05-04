@@ -4,17 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour {
-    public bool DebugDisableSpawning;
-
-    public int level = 1;
     public PlayerController playerController;
-    public bool isTransitionDone = false;
-    public bool isCheckingForTransition = false;
-    public bool constantlyDenyInput = false;
-    public bool isLightingTransitioning = false;
-    public float transitionStart = 0;
-    public int TransitionLevelObjective;
-    public int transitionMode = 0;
 
     [Header("Data")]
     public LevelData[] levelData;
@@ -48,70 +38,65 @@ public class EnemySpawner : MonoBehaviour {
     public Material nightmareSkybox;
     public Material daySkybox;
 
-    [Header("List of All Enemies")]
-    public List<GameObject> listOfAllEnemies = new List<GameObject>();
+    [HideInInspector] public int level = 1;
+    [HideInInspector] public List<GameObject> listOfAllEnemies = new List<GameObject>();
+    [HideInInspector] public int transitionMode = 0;
+    [HideInInspector] public int TransitionLevelObjective;
+    [HideInInspector] public bool isTransitionDone = false;
+    [HideInInspector] public bool isCheckingForTransition = false;
+    [HideInInspector] public bool constantlyDenyInput = false;
+    [HideInInspector] public bool isLightingTransitioning = false;
+    [HideInInspector] public float lightTransitionStart = 0;
 
     bool inputRestored = true;
+    const float TransitionTimeLength = .5f;
+    const float TransitionLingerTime = 6;
+    const int InfiniteEnemyCap = 39;
+    const float InfiniteSpawnerTick = 0.25f;
 
-    float transitionTimeLight = 5;
-
+    const float LightTransitionLength = 5f;
     bool isLightTransitionInitialized = false;
+    Color currentLightBeginningColor;
+    Color currentLightEndColor;
+    Quaternion currentLightBeginningRotation;
+    Quaternion currentLightEndRotation;
+    Color spookyUnderlightBeginningColor;
+    Color spookyUnderlightEndColor;
 
-    Color begColor;
-    Color endColor;
-    Color nightBegColor;
-    Color nightEndColor;
-    Quaternion begRotation;
-    Quaternion endRotation;
-
-    
-
-    
-
+    const float BorderSpace = 500f;
     bool isTitleTransitioning = false;
+    bool isTitleAnimating = false;
     bool isTitleTransitionInitialized = false;
     float transitionBeginningTime;
     float levelBannerOriginalAlpha;
 
-    Vector3 levelBannerFadeInPosition;
-    Vector3 levelTitleFadeInPosition;
-    Vector3 levelSubtitleFadeInPosition;
-
     Vector3 levelBannerOrigPosition;
     Vector3 levelTitleOrigPosition;
     Vector3 levelSubtitleOrigPosition;
-
+    Vector3 levelBannerFadeInPosition;
+    Vector3 levelTitleFadeInPosition;
+    Vector3 levelSubtitleFadeInPosition;
     Vector3 levelBannerFadeOutPosition;
     Vector3 levelTitleFadeOutPosition;
     Vector3 levelSubtitleFadeOutPosition;
 
-    
-
-    
-
-    bool isTitleAnimating = false;
-
-    float transitionTimeLength = .5f;
-    float transitionLingerTime = 6;
-
-    float borderSpace = 500;
-
-    const int InfiniteEnemyCap = 39;
-    const float InfiniteSpawnerTick = 0.25f;
-
+    const float TimeToFadeWeapon = 2f;
     int weaponToFade;
     bool weaponIsFading = false;
-    float timeToFadeWeapon = 2f;
     float fadingWeaponStartTime;
-    Vector3 originalScale;
+    Vector3 objectOriginalScale;
     GameObject objectToScale;
-
-    
 
     enum TransitionDoneType {
         NewWeapon,
         Blockade,
         Filler
+    }
+
+    enum LightTransitionType {
+        ToNightmare,
+        ToNoon,
+        ToLevel
     }
 
     [System.Serializable]
@@ -239,66 +224,88 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void LightingTransition() {
-        if (isLightingTransitioning == true) {
-            if (isLightTransitionInitialized == false) {
-                begColor = currentLight.GetComponent<Light>().color;
-                begRotation = currentLight.GetComponent<Transform>().rotation;
+        if (isLightingTransitioning == false)
+            return;
 
-                if (TransitionLevelObjective == 28 || (TransitionLevelObjective == 29 && PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1)) {
-                    endColor = nightmareLight.GetComponent<Light>().color;
-                    endRotation = nightmareLight.GetComponent<Transform>().rotation;
+        if (isLightTransitionInitialized == false) {
+            InitializeLightTransition();
+            return;
+        }
+
+        float lightTransitionPercentage = (Time.time - lightTransitionStart) / LightTransitionLength;
+
+        if (lightTransitionPercentage > 1) {
+            isLightTransitionInitialized = false;
+            isLightingTransitioning = false;
+            if (TransitionLevelObjective == 29) {
+                if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
                     nightmareUnderlight.SetActive(true);
-                    Color nightlight = nightmareUnderlight.GetComponent<Light>().color;
-                    nightEndColor = nightlight;
-                    nightlight = Color.black;
-                    nightmareUnderlight.GetComponent<Light>().color = nightlight;
-                    nightBegColor = nightlight;
-                }
-                else if (TransitionLevelObjective == 29) {
-                    endColor = noonLight.GetComponent<Light>().color;
-                    endRotation = noonLight.GetComponent<Transform>().rotation;
-                    Color nightlight = nightmareUnderlight.GetComponent<Light>().color;
-                    nightBegColor = nightlight;
-                    nightlight = Color.black;
-                    nightEndColor = nightlight;
+                    RenderSettings.skybox = nightmareSkybox;
                 }
                 else {
-                    endColor = Color.Lerp(noonLight.GetComponent<Light>().color, afternoonLight.GetComponent<Light>().color, TransitionLevelObjective / 27f);
-                    endRotation = Quaternion.Lerp(noonLight.GetComponent<Transform>().rotation, afternoonLight.GetComponent<Transform>().rotation, TransitionLevelObjective / 27f);
+                    nightmareUnderlight.SetActive(false);
+                    RenderSettings.skybox = daySkybox;
                 }
+            }
+            else if (TransitionLevelObjective == 28) {
+                nightmareUnderlight.SetActive(true);
+                RenderSettings.skybox = nightmareSkybox;
+            }
+            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+        }
+        else {
+            currentLight.GetComponent<Light>().color = Color.Lerp(currentLightBeginningColor, currentLightEndColor, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
+            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
+            currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(currentLightBeginningRotation, currentLightEndRotation, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
+            if (TransitionLevelObjective == 28 || TransitionLevelObjective == 29) {
+                nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(spookyUnderlightBeginningColor, spookyUnderlightEndColor, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
+            }
+        }
+    }
 
-                isLightTransitionInitialized = true;
+    void InitializeLightTransition() {
+        currentLightBeginningColor = currentLight.GetComponent<Light>().color;
+        currentLightBeginningRotation = currentLight.GetComponent<Transform>().rotation;
+
+        if (TransitionLevelObjective == 29) {
+            if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
+                InitializeLightEndVariables(LightTransitionType.ToNightmare);
             }
             else {
-                float lerpNum = (Time.time - transitionStart) / transitionTimeLight;
-                if (lerpNum > 1) {
-                    isLightTransitionInitialized = false;
-                    isLightingTransitioning = false;
-                    if (TransitionLevelObjective == 29) {
-                        if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
-                            nightmareUnderlight.SetActive(true);
-                            RenderSettings.skybox = nightmareSkybox;
-                        }
-                        else {
-                            nightmareUnderlight.SetActive(false);
-                            RenderSettings.skybox = daySkybox;
-                        }
-                    }
-                    else if (TransitionLevelObjective == 28) {
-                        nightmareUnderlight.SetActive(true);
-                        RenderSettings.skybox = nightmareSkybox;
-                    }
-                    GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
-                }
-                else {
-                    currentLight.GetComponent<Light>().color = Color.Lerp(begColor, endColor, Mathf.SmoothStep(0f, 1f, lerpNum));
-                    RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-                    currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(begRotation, endRotation, Mathf.SmoothStep(0f, 1f, lerpNum));
-                    if (TransitionLevelObjective == 28 || TransitionLevelObjective == 29) {
-                        nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(nightBegColor, nightEndColor, Mathf.SmoothStep(0f, 1f, lerpNum));
-                    }
-                }
+                InitializeLightEndVariables(LightTransitionType.ToNoon);
             }
+        }
+        else if (TransitionLevelObjective == 28) {
+            InitializeLightEndVariables(LightTransitionType.ToNightmare);
+        }
+        else {
+            InitializeLightEndVariables(LightTransitionType.ToLevel);
+        }
+
+        isLightTransitionInitialized = true;
+    }
+
+    void InitializeLightEndVariables(LightTransitionType transitionType) {
+        if (transitionType == LightTransitionType.ToLevel) {
+            currentLightEndColor = Color.Lerp(noonLight.GetComponent<Light>().color, afternoonLight.GetComponent<Light>().color, TransitionLevelObjective / 27f);
+            currentLightEndRotation = Quaternion.Lerp(noonLight.GetComponent<Transform>().rotation, afternoonLight.GetComponent<Transform>().rotation, TransitionLevelObjective / 27f);
+        }
+        else if (transitionType == LightTransitionType.ToNightmare) {
+            currentLightEndColor = nightmareLight.GetComponent<Light>().color;
+            currentLightEndRotation = nightmareLight.GetComponent<Transform>().rotation;
+
+            spookyUnderlightBeginningColor = Color.black;
+            spookyUnderlightEndColor = nightmareUnderlight.GetComponent<Light>().color;
+
+            nightmareUnderlight.GetComponent<Light>().color = spookyUnderlightBeginningColor;
+            nightmareUnderlight.SetActive(true);
+        }
+        else if (transitionType == LightTransitionType.ToNoon) {
+            currentLightEndColor = noonLight.GetComponent<Light>().color;
+            currentLightEndRotation = noonLight.GetComponent<Transform>().rotation;
+
+            spookyUnderlightBeginningColor = nightmareUnderlight.GetComponent<Light>().color;
+            spookyUnderlightEndColor = Color.black;
         }
     }
 
@@ -403,9 +410,9 @@ public class EnemySpawner : MonoBehaviour {
                 InitializeTitleTransition();
             }
 
-            float currentTransitionToLingerPercentage = (Time.time - transitionBeginningTime) / transitionTimeLength;
-            float currentLingerTime = Time.time - (transitionBeginningTime + transitionTimeLength);
-            float currentTransitionToFadeOutPercentage = (Time.time - (transitionBeginningTime + transitionTimeLength + transitionLingerTime)) / transitionTimeLength;
+            float currentTransitionToLingerPercentage = (Time.time - transitionBeginningTime) / TransitionTimeLength;
+            float currentLingerTime = Time.time - (transitionBeginningTime + TransitionTimeLength);
+            float currentTransitionToFadeOutPercentage = (Time.time - (transitionBeginningTime + TransitionTimeLength + TransitionLingerTime)) / TransitionTimeLength;
 
             if (currentTransitionToLingerPercentage > 1) {
                 isTitleAnimating = true;
@@ -436,7 +443,7 @@ public class EnemySpawner : MonoBehaviour {
                 if (isTitleAnimating == false) {
                     FadeTitle(true, currentTransitionToLingerPercentage);
                 }
-                else if (isTitleAnimating == true && (currentLingerTime > transitionLingerTime)) {
+                else if (isTitleAnimating == true && (currentLingerTime > TransitionLingerTime)) {
                     FadeTitle(false, currentTransitionToFadeOutPercentage);
                 }
             }
@@ -472,17 +479,17 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void InitializeTitleTransition() {
-        levelBannerFadeInPosition = new Vector3((levelBannerBackground.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelBannerBackground.transform.position.y, 0);
-        levelTitleFadeInPosition = new Vector3((levelTitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelTitle.transform.position.y, 0);
-        levelSubtitleFadeInPosition = new Vector3((levelSubtitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + borderSpace), levelSubtitle.transform.position.y, 0);
+        levelBannerFadeInPosition = new Vector3((levelBannerBackground.transform.position.x + (hudCanvas.sizeDelta.x / 2) + BorderSpace), levelBannerBackground.transform.position.y, 0);
+        levelTitleFadeInPosition = new Vector3((levelTitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + BorderSpace), levelTitle.transform.position.y, 0);
+        levelSubtitleFadeInPosition = new Vector3((levelSubtitle.transform.position.x + (hudCanvas.sizeDelta.x / 2) + BorderSpace), levelSubtitle.transform.position.y, 0);
 
         levelBannerOrigPosition = levelBannerBackground.transform.position;
         levelTitleOrigPosition = levelTitle.transform.position;
         levelSubtitleOrigPosition = levelSubtitle.transform.position;
 
-        levelBannerFadeOutPosition = new Vector3((levelBannerBackground.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelBannerBackground.transform.position.y, 0);
-        levelTitleFadeOutPosition = new Vector3((levelTitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelTitle.transform.position.y, 0);
-        levelSubtitleFadeOutPosition = new Vector3((levelSubtitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - borderSpace), levelSubtitle.transform.position.y, 0);
+        levelBannerFadeOutPosition = new Vector3((levelBannerBackground.transform.position.x - (hudCanvas.sizeDelta.x / 2) - BorderSpace), levelBannerBackground.transform.position.y, 0);
+        levelTitleFadeOutPosition = new Vector3((levelTitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - BorderSpace), levelTitle.transform.position.y, 0);
+        levelSubtitleFadeOutPosition = new Vector3((levelSubtitle.transform.position.x - (hudCanvas.sizeDelta.x / 2) - BorderSpace), levelSubtitle.transform.position.y, 0);
 
         levelBannerOriginalAlpha = levelBannerBackground.GetComponent<Image>().color.a;
 
@@ -537,27 +544,28 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void SpawnEnemies() {
-        if (DebugDisableSpawning != true) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = false;
-            if (level < 28) {
-                float delay = 0f;
-                foreach (SpawnData spawnData in levelData[level - 1].spawnDataArray) {
-                    StartCoroutine(SpawnEnemy(spawnData.enemyType, spawnData.spawnPoint, delay));
-                    if (level < 22) {
-                        delay += 1;
-                    }
-                    else {
-                        delay += 0.5f;
-                    }
+        if (GetComponent<MainSystems>().debugDisableSpawning == true)
+            return;
+
+        playerController.isControlOff = false;
+        if (level < 28) {
+            float delay = 0f;
+            foreach (SpawnData spawnData in levelData[level - 1].spawnDataArray) {
+                StartCoroutine(SpawnEnemy(spawnData.enemyType, spawnData.spawnPoint, delay));
+                if (level < 22) {
+                    delay += 1;
                 }
-                InvokeRepeating("CheckIfAllEnemiesAreDead", delay + 0.25f, 0.25f);
+                else {
+                    delay += 0.5f;
+                }
             }
-            else if (level == 28) {
-                InfiniteSpawner();
-            }
-            else {
-                InfiniteSpawner();
-            }
+            InvokeRepeating("CheckIfAllEnemiesAreDead", delay + 0.25f, 0.25f);
+        }
+        else if (level == 28) {
+            InfiniteSpawner();
+        }
+        else {
+            InfiniteSpawner();
         }
     }
 
@@ -565,7 +573,7 @@ public class EnemySpawner : MonoBehaviour {
         GameObject areTheAlive = GameObject.FindWithTag("Enemy");
         if (areTheAlive == null) {
             isLightingTransitioning = true;
-            transitionStart = Time.time;
+            lightTransitionStart = Time.time;
             TransitionLevelObjective = level + 1;
 
             switch (level) {
@@ -614,7 +622,7 @@ public class EnemySpawner : MonoBehaviour {
             }
             else {
                 weapons[weaponToFade - 1].SetActive(true);
-                originalScale = weaponModels[weaponToFade - 1].transform.localScale;
+                objectOriginalScale = weaponModels[weaponToFade - 1].transform.localScale;
                 objectToScale = weaponModels[weaponToFade - 1];
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
                 playerController.GetComponent<SoundManager>().PlaySound(13);
@@ -630,7 +638,7 @@ public class EnemySpawner : MonoBehaviour {
 
             weaponToFade = 0;
 
-            float lerpTime = ((Time.time - fadingWeaponStartTime) / timeToFadeWeapon);
+            float lerpTime = ((Time.time - fadingWeaponStartTime) / TimeToFadeWeapon);
 
             if (fadeErUp == false) {
                 weaponIsFading = false;
@@ -640,7 +648,7 @@ public class EnemySpawner : MonoBehaviour {
                     weaponIsFading = false;
                 }
                 else {
-                    objectToScale.transform.localScale = originalScale * Mathf.SmoothStep(0, 1, lerpTime);
+                    objectToScale.transform.localScale = objectOriginalScale * Mathf.SmoothStep(0, 1, lerpTime);
                 }
             }
         }

@@ -3,7 +3,6 @@ using System;
 
 public class CameraLogic : MonoBehaviour {
     public Transform cameraTarget;
-    public bool isTracking = true;
     public LayerMask layerMask;
     public Transform visionTestPlane;
 
@@ -30,6 +29,8 @@ public class CameraLogic : MonoBehaviour {
     public Transform pillar3Blocker;
     public Transform[] roadBlockers;
     public Transform[] buildingsSpiralBlockers;
+
+    [HideInInspector] public bool isTracking = true;
 
     Vector3 cameraTargetOffset;
     RaycastHit hitOut;
