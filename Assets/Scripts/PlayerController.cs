@@ -111,19 +111,16 @@ public class PlayerController : MonoBehaviour {
 
     public GameObject newHighScore;
 
-    void CheckIfInHighscores () {
-        int[] currentHighscores = new int[8] {PlayerPrefs.GetInt("High Score 1"), PlayerPrefs.GetInt("High Score 2"), PlayerPrefs.GetInt("High Score 3"), PlayerPrefs.GetInt("High Score 4"), PlayerPrefs.GetInt("High Score 5"), PlayerPrefs.GetInt("High Score 6"), PlayerPrefs.GetInt("High Score 7"), PlayerPrefs.GetInt("High Score 8"),};
-        string[] currentHighscoresNames = new string[8] {PlayerPrefs.GetString("High Score Name 1"), PlayerPrefs.GetString("High Score Name 2"), PlayerPrefs.GetString("High Score Name 3"), PlayerPrefs.GetString("High Score Name 4"), PlayerPrefs.GetString("High Score Name 5"), PlayerPrefs.GetString("High Score Name 6"), PlayerPrefs.GetString("High Score Name 7"), PlayerPrefs.GetString("High Score Name 8"), };
 
-        for (int i = 0; i < 8; i++) {
-            if (upgradePoints > currentHighscores[i]) {
+    void CheckIfInHighscores () {
+        for (int i = 0; i < MainSystems.HighScoreListLength; i++) {
+            if (upgradePoints > GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().currentHighScoreList[i].highScoreValue) {
                 leburhighsc.gameObject.SetActive(true);
                 newname.gameObject.SetActive(true);
                 leburhighscnum.gameObject.SetActive(true);
                 newHighScore.SetActive(true);
                 leburhighscnum.GetComponent<Text>().text = upgradePoints.ToString();
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().saveHighScore = true;
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().highscorepalce = i;
                 break;
             }
         }

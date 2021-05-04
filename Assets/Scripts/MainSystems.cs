@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.PostProcessing;
+using System.Linq;
 
 public class MainSystems : MonoBehaviour {
     [Header("Debug Options")]
@@ -29,7 +29,6 @@ public class MainSystems : MonoBehaviour {
     public GameObject[] highScore;
 
     public bool saveHighScore = false;
-    public int highscorepalce;
 
     public GameObject leburhighsc;
     public GameObject newname;
@@ -120,6 +119,20 @@ public class MainSystems : MonoBehaviour {
     public Quaternion cameraStartRotation;
     public float cameraStartFOV;
 
+    public struct HighScorePair {
+        public string highScoreName;
+        public int highScoreValue;
+
+        public HighScorePair(string highScoreName, int highScoreValue) {
+            this.highScoreName = highScoreName;
+            this.highScoreValue = highScoreValue;
+        }
+    }
+
+    public const int HighScoreListLength = 8;
+
+    public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength+1];
+
     void togglescalability()
     {
         if (PlayerPrefs.GetInt("LowQuality") == 1)
@@ -184,6 +197,12 @@ public class MainSystems : MonoBehaviour {
         setscalability();
         Invoke("setscalability", 1f);
         GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.MainMenu);
+
+        for (int i = 0; i < HighScoreListLength; i++) {
+            string highScoreNameRetrieved = PlayerPrefs.GetString("High Score Name " + (i+1));
+            int highScoreValueRetrieved = PlayerPrefs.GetInt("High Score " + (i+1));
+            currentHighScoreList[i] = new HighScorePair(highScoreNameRetrieved, highScoreValueRetrieved);
+        }
     }
 	
 	void Update () {
@@ -722,93 +741,12 @@ public class MainSystems : MonoBehaviour {
     void ExitAfterAd () {
         Time.timeScale = 1;
         if (saveHighScore == true) {
-            if (highscorepalce == 0) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", PlayerPrefs.GetInt("High Score 5"));
-                PlayerPrefs.SetString("High Score Name 6", PlayerPrefs.GetString("High Score Name 5"));
-                PlayerPrefs.SetInt("High Score 5", PlayerPrefs.GetInt("High Score 4"));
-                PlayerPrefs.SetString("High Score Name 5", PlayerPrefs.GetString("High Score Name 4"));
-                PlayerPrefs.SetInt("High Score 4", PlayerPrefs.GetInt("High Score 3"));
-                PlayerPrefs.SetString("High Score Name 4", PlayerPrefs.GetString("High Score Name 3"));
-                PlayerPrefs.SetInt("High Score 3", PlayerPrefs.GetInt("High Score 2"));
-                PlayerPrefs.SetString("High Score Name 3", PlayerPrefs.GetString("High Score Name 2"));
-                PlayerPrefs.SetInt("High Score 2", PlayerPrefs.GetInt("High Score 1"));
-                PlayerPrefs.SetString("High Score Name 2", PlayerPrefs.GetString("High Score Name 1"));
-                PlayerPrefs.SetInt("High Score 1", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 1", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 1) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", PlayerPrefs.GetInt("High Score 5"));
-                PlayerPrefs.SetString("High Score Name 6", PlayerPrefs.GetString("High Score Name 5"));
-                PlayerPrefs.SetInt("High Score 5", PlayerPrefs.GetInt("High Score 4"));
-                PlayerPrefs.SetString("High Score Name 5", PlayerPrefs.GetString("High Score Name 4"));
-                PlayerPrefs.SetInt("High Score 4", PlayerPrefs.GetInt("High Score 3"));
-                PlayerPrefs.SetString("High Score Name 4", PlayerPrefs.GetString("High Score Name 3"));
-                PlayerPrefs.SetInt("High Score 3", PlayerPrefs.GetInt("High Score 2"));
-                PlayerPrefs.SetString("High Score Name 3", PlayerPrefs.GetString("High Score Name 2"));
-                PlayerPrefs.SetInt("High Score 2", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 2", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 2) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", PlayerPrefs.GetInt("High Score 5"));
-                PlayerPrefs.SetString("High Score Name 6", PlayerPrefs.GetString("High Score Name 5"));
-                PlayerPrefs.SetInt("High Score 5", PlayerPrefs.GetInt("High Score 4"));
-                PlayerPrefs.SetString("High Score Name 5", PlayerPrefs.GetString("High Score Name 4"));
-                PlayerPrefs.SetInt("High Score 4", PlayerPrefs.GetInt("High Score 3"));
-                PlayerPrefs.SetString("High Score Name 4", PlayerPrefs.GetString("High Score Name 3"));
-                PlayerPrefs.SetInt("High Score 3", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 3", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 3) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", PlayerPrefs.GetInt("High Score 5"));
-                PlayerPrefs.SetString("High Score Name 6", PlayerPrefs.GetString("High Score Name 5"));
-                PlayerPrefs.SetInt("High Score 5", PlayerPrefs.GetInt("High Score 4"));
-                PlayerPrefs.SetString("High Score Name 5", PlayerPrefs.GetString("High Score Name 4"));
-                PlayerPrefs.SetInt("High Score 4", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 4", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 4) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", PlayerPrefs.GetInt("High Score 5"));
-                PlayerPrefs.SetString("High Score Name 6", PlayerPrefs.GetString("High Score Name 5"));
-                PlayerPrefs.SetInt("High Score 5", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 5", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 5) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", PlayerPrefs.GetInt("High Score 6"));
-                PlayerPrefs.SetString("High Score Name 7", PlayerPrefs.GetString("High Score Name 6"));
-                PlayerPrefs.SetInt("High Score 6", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 6", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 6) {
-                PlayerPrefs.SetInt("High Score 8", PlayerPrefs.GetInt("High Score 7"));
-                PlayerPrefs.SetString("High Score Name 8", PlayerPrefs.GetString("High Score Name 7"));
-                PlayerPrefs.SetInt("High Score 7", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 7", newname.GetComponent<Text>().text);
-            }
-            else if (highscorepalce == 7) {
-                PlayerPrefs.SetInt("High Score 8", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
-                PlayerPrefs.SetString("High Score Name 8", newname.GetComponent<Text>().text);
+            currentHighScoreList[HighScoreListLength] = new HighScorePair(newname.GetComponent<Text>().text, GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
+            currentHighScoreList = currentHighScoreList.OrderByDescending(highScorePair => highScorePair.highScoreValue).ToArray();
+
+            for (int i = 0; i < HighScoreListLength; i++) {
+                PlayerPrefs.SetString("High Score Name " + (i + 1), currentHighScoreList[i].highScoreName);
+                PlayerPrefs.SetInt("High Score " + (i+1), currentHighScoreList[i].highScoreValue);
             }
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
