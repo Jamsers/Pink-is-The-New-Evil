@@ -56,6 +56,7 @@ public class EnemySpawner : MonoBehaviour {
 
     const float LightTransitionLength = 5f;
     bool isLightTransitionInitialized = false;
+    LightTransitionType lightTransitionToType;
     Color currentLightBeginningColor;
     Color currentLightEndColor;
     Quaternion currentLightBeginningRotation;
@@ -126,9 +127,9 @@ public class EnemySpawner : MonoBehaviour {
         public Font subtitleFont;
         public Color subtitleColor;
 
-        public LevelText(string title, string[] subtitle, Font subtitleFont, Color subtitleColor) {
+        public LevelText(string title, string[] subtitles, Font subtitleFont, Color subtitleColor) {
             this.title = title;
-            this.subtitles = subtitle;
+            this.subtitles = subtitles;
             this.subtitleFont = subtitleFont;
             this.subtitleColor = subtitleColor;
         }
@@ -192,11 +193,6 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void SetMainMenuLighting() {
-        currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
-        currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
-        RenderSettings.skybox = daySkybox;
-        nightmareUnderlight.SetActive(false);
-
         int isSurvivalLightingFlipped = PlayerPrefs.GetInt("Is Survival Lighting Flipped");
 
         if (level == 29 && isSurvivalLightingFlipped == 0) {
@@ -204,6 +200,12 @@ public class EnemySpawner : MonoBehaviour {
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             RenderSettings.skybox = nightmareSkybox;
             nightmareUnderlight.SetActive(true);
+        }
+        else {
+            currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
+            currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
+            RenderSettings.skybox = daySkybox;
+            nightmareUnderlight.SetActive(false);
         }
 
         RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
@@ -234,31 +236,30 @@ public class EnemySpawner : MonoBehaviour {
         float lightTransitionPercentage = (Time.time - lightTransitionStart) / LightTransitionLength;
 
         if (lightTransitionPercentage > 1) {
-            isLightTransitionInitialized = false;
-            isLightingTransitioning = false;
-            if (TransitionLevelObjective == 29) {
-                if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
-                    nightmareUnderlight.SetActive(true);
-                    RenderSettings.skybox = nightmareSkybox;
-                }
-                else {
-                    nightmareUnderlight.SetActive(false);
-                    RenderSettings.skybox = daySkybox;
-                }
-            }
-            else if (TransitionLevelObjective == 28) {
+            if (lightTransitionToType == LightTransitionType.ToNightmare) {
                 nightmareUnderlight.SetActive(true);
                 RenderSettings.skybox = nightmareSkybox;
             }
+            else {
+                nightmareUnderlight.SetActive(false);
+                RenderSettings.skybox = daySkybox;
+            }
+
             GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+
+            isLightTransitionInitialized = false;
+            isLightingTransitioning = false;
         }
         else {
-            currentLight.GetComponent<Light>().color = Color.Lerp(currentLightBeginningColor, currentLightEndColor, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
-            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-            currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(currentLightBeginningRotation, currentLightEndRotation, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
-            if (TransitionLevelObjective == 28 || TransitionLevelObjective == 29) {
-                nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(spookyUnderlightBeginningColor, spookyUnderlightEndColor, Mathf.SmoothStep(0f, 1f, lightTransitionPercentage));
+            float smoothedPercentage = Mathf.SmoothStep(0f, 1f, lightTransitionPercentage);
+
+            currentLight.GetComponent<Light>().color = Color.Lerp(currentLightBeginningColor, currentLightEndColor, smoothedPercentage);
+            currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(currentLightBeginningRotation, currentLightEndRotation, smoothedPercentage);
+            if (lightTransitionToType == LightTransitionType.ToNightmare) {
+                nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(spookyUnderlightBeginningColor, spookyUnderlightEndColor, smoothedPercentage);
             }
+
+            RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
         }
     }
 
@@ -268,19 +269,20 @@ public class EnemySpawner : MonoBehaviour {
 
         if (TransitionLevelObjective == 29) {
             if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
-                InitializeLightEndVariables(LightTransitionType.ToNightmare);
+                lightTransitionToType = LightTransitionType.ToNightmare;
             }
             else {
-                InitializeLightEndVariables(LightTransitionType.ToNoon);
+                lightTransitionToType = LightTransitionType.ToNoon;
             }
         }
         else if (TransitionLevelObjective == 28) {
-            InitializeLightEndVariables(LightTransitionType.ToNightmare);
+            lightTransitionToType = LightTransitionType.ToNightmare;
         }
         else {
-            InitializeLightEndVariables(LightTransitionType.ToLevel);
+            lightTransitionToType = LightTransitionType.ToLevel;
         }
 
+        InitializeLightEndVariables(lightTransitionToType);
         isLightTransitionInitialized = true;
     }
 

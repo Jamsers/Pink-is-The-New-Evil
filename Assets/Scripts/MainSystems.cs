@@ -2,11 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-//using UnityEngine.Advertisements;
-//using UnityEngine.Purchasing;
 using UnityEngine.PostProcessing;
 
-public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
+public class MainSystems : MonoBehaviour {
     [Header("Debug Options")]
     public bool debugMenuInPause;
     public bool debugDisableSpawning;
@@ -102,7 +100,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
 
     public GameObject gameCamera;
 
-    //SwitchToMenu()
     GameObject fromMenuCam;
     GameObject toMenuCam;
     Vector3 fromMenuCamPos;
@@ -119,14 +116,9 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
 
     bool switchBackMain = false;
 
-    //Vector3 playerStartPos;
-    //Quaternion playerStartRot;
-
     public Vector3 cameraStartPosition;
     public Quaternion cameraStartRotation;
     public float cameraStartFOV;
-
-    //IStoreController storeController;
 
     void togglescalability()
     {
@@ -177,7 +169,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
     }
 
     void Start () {
-        //ShowAd();
 
         Cursor.visible = true;
 
@@ -193,50 +184,12 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         setscalability();
         Invoke("setscalability", 1f);
         GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.MainMenu);
-
-            //ConfigurationBuilder builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            //builder.AddProduct("com.jamsers.projectone.removeads", ProductType.NonConsumable);
-            //UnityPurchasing.Initialize(this, builder);
-
-        //playerStartPos = GameObject.FindWithTag("Player").transform.position;
-        //playerStartRot = GameObject.FindWithTag("Player").transform.rotation;
-
-        //playerCamStartPos = GameObject.Find("Game Camera").transform.position;
-        //playerCamStartRot = GameObject.Find("Game Camera").transform.rotation;
-        //playerCamStartFOV = GameObject.Find("Game Camera").GetComponent<Camera>().fieldOfView;
     }
 	
 	void Update () {
         if (isSwitching == true)
             SwitchToMenu();
 	}
-
-    /*public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs arguments) {
-        if (string.Equals(arguments.purchasedProduct.definition.id, "com.jamsers.projectone.removeads", System.StringComparison.Ordinal)) {
-            removeAds.gameObject.SetActive(true);
-            removeAdsText.GetComponent<Text>().text = "Ads removed";
-            removeAdsButton.GetComponent<Button>().interactable = false;
-        }
-        return PurchaseProcessingResult.Complete;
-    }
-
-    public void OnPurchaseFailed(Product product, PurchaseFailureReason reason) {
-        removeAdsFailed.gameObject.SetActive(true);
-    }
-
-    public void OnInitialized(IStoreController controller, IExtensionProvider extensions) {
-        storeController = controller;
-        if (storeController.products.WithID("com.jamsers.projectone.removeads").hasReceipt == true) {
-            removeAdsText.GetComponent<Text>().text = "Ads removed";
-        }
-        else {
-            removeAdsButton.GetComponent<Button>().interactable = true;
-        }
-    }
-
-    public void OnInitializeFailed(InitializationFailureReason reason) {
-        Debug.Log("IAP INITIALIZATION FAILED!!!!!! REASON: " + reason);
-    }*/
 
     public Text debuglevel;
     public Text debugweapon;
@@ -256,8 +209,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             PlayerPrefs.DeleteAll();
             Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //resetProgress.gameObject.SetActive(false);
-            //progressReset.gameObject.SetActive(true);
         }
         else if (mode == 3)
         {
@@ -274,16 +225,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (mode == 6)
         {
-            //removeAds.gameObject.SetActive(true);
-            /*if (storeController != null) {
-                //TODO: check if there's reciept for product, then tell user if there is "you've already removed ads"
-                if (storeController.products.WithID("com.jamsers.projectone.removeads") != null && storeController.products.WithID("com.jamsers.projectone.removeads").availableToPurchase) {
-                    storeController.InitiatePurchase(storeController.products.WithID("com.jamsers.projectone.removeads"));
-                }
-            }*/
-            //TODO: ELSE iap not initializeD yet pop up bla bla
-
-
             GetComponent<EnemySpawner>().ToggleLighting();
         }
         else if (mode == 7)
@@ -364,7 +305,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (mode == 18) {
             tutorialScreen6.SetActive(false);
-            //Time.timeScale = 1;
             GoToSettings(4);
         }
         else if (mode == 19)
@@ -485,7 +425,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             if (switchingToGame == true)
             {
                 GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = false;
-                //Debug.Log("dff");
                 logo.SetActive(false);
                 hud.SetActive(true);
                 hud.tag = "Active Menu";
@@ -511,17 +450,12 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
                 GetComponent<EnemySpawner>().LevelSetup();
                 lookMomImIngame = true;
                 pinkSuit.SetActive(true);
-                //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().ResumeSkyfall();
-                //Debug.Log("bop2");
+
             }
 
-            //if (lookMomImIngame == true) {
                 gameObject.GetComponent<EnemySpawner>().isTransitionDone = true;
-            //}
             switchBackMain = false;
-            //Debug.Log(toMenuCam);
             isAllInputEnabled(true);
-            //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAI>().ResumeSkyfall();
         }
         else
         {
@@ -529,7 +463,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             fromMenuCam.transform.rotation = Quaternion.Lerp(fromMenuCamRot, toMenuCam.transform.rotation, Mathf.SmoothStep(0f, 1f, switchTimePercent));
             fromMenuCam.gameObject.GetComponent<Camera>().fieldOfView = Mathf.Lerp(fromMenuCamFOV, toMenuCam.gameObject.GetComponent<Camera>().fieldOfView, Mathf.SmoothStep(0f, 1f, switchTimePercent));
             isAllInputEnabled(false);
-            //remove all
         }
 
     }
@@ -557,7 +490,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         GameObject.Find("Player").GetComponent<SoundManager>().PlaySound(16);
         GameObject objectiveCamera;
         GameObject objectiveMenu;
-        //Debug.Log(objective);
 
         if (objective == 1)
         {
@@ -593,19 +525,14 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             {
                 if (firstObjective4 == true)
                 {
-                    //Debug.Log("Transition to current level lighting");
                     GetComponent<EnemySpawner>().isLightingTransitioning = true;
                     GetComponent<EnemySpawner>().lightTransitionStart = Time.time;
                     GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResumeSkyfall();
                 }
-                //Debug.Log("if you can't figure out how to make objective 4 work, make a new objective (sigh)");
                 objectiveCamera = gameCamera;
                 objectiveMenu = null;
                 switchingToGame = true;
-                //switchLength = switchToGameLength;
-                //gamePause.tag = "Active Menu";
-                //logo.SetActive(false);
                 firstObjective4 = false;
             }
                 
@@ -614,22 +541,7 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         else if (objective == 5)
         {
             loadingScreen.SetActive(true);
-            /*if (Advertisement.isInitialized == true && Advertisement.isShowing == false && Advertisement.IsReady() == true) {
-                if (storeController != null) {
-                    if (storeController.products.WithID("com.jamsers.projectone.removeads").hasReceipt == true) {
-                        ExitAfterAd(new ShowResult());
-                    }
-                    else {
-                        Advertisement.Show(null, new ShowOptions { resultCallback = ExitAfterAd });
-                    }
-                }
-                else {
-                    ExitAfterAd(new ShowResult());
-                }
-            }
-            else {*/
-                ExitAfterAd(/*new ShowResult()*/);
-            //}
+                ExitAfterAd();
 
             objectiveCamera = mainMenuCamera;
             objectiveMenu = mainMenu;
@@ -650,15 +562,12 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
             objectiveCamera = blockade1Cam;
             objectiveMenu = null;
-            //switchBackMain = false;
             switchingToGame = false;
         }
         else if (objective == 9) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            //GameObject.FindWithTag("MainCamera").GetComponent<CameraAI>().isOn = false;
             objectiveCamera = weapon1Cam;
             objectiveMenu = null;
-            //switchBackMain = false;
             switchingToGame = false;
         }
         else if (objective == 10) {
@@ -740,7 +649,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 22) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            //GameObject.FindWithTag("MainCamera").GetComponent<CameraAI>().isOn = false;
             objectiveCamera = blockade7Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -753,7 +661,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         }
         else if (objective == 24) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            //GameObject.FindWithTag("MainCamera").GetComponent<CameraAI>().isOn = false;
             objectiveCamera = blockade8Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -771,7 +678,6 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             Debug.Log("well damn");
         }
 
-        //Debug.Log("well damn");
 
         fromMenuCam = GameObject.FindWithTag("MainCamera");
         if (objective == 4) {
@@ -788,14 +694,11 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
         else {
             toMenuCam = objectiveCamera;
         }
-        //Debug.Log(toMenuCam);
-        //Debug.Log(objective);
         fromMenuCamPos = fromMenuCam.transform.position;
         fromMenuCamRot = fromMenuCam.transform.rotation;
         fromMenuCamFOV = fromMenuCam.gameObject.GetComponent<Camera>().fieldOfView;
         switchTime = Time.time;
 
-        //mainMenu.gameObject.SetActive(false);
         GameObject actmen = GameObject.FindWithTag("Active Menu");
 
         if (objective != 9 && objective != 11 && objective != 12 && objective != 14 && objective != 16 && objective != 18 && objective != 19 && objective != 21 && objective != 23 && objective != 25) {
@@ -812,19 +715,11 @@ public class MainSystems : MonoBehaviour/*, IStoreListener*/ {
             }
         }
 
-        //MASSIVE SUCCESS - NOW TRANSITION TO WEAPON CAM
-
-        /*if (switchingToGame == false)
-        {
-            objectiveMenu.gameObject.SetActive(true);
-            objectiveMenu.gameObject.tag = "Active Menu";
-        }*/
-
         isSwitching = true;
         
     }
 
-    void ExitAfterAd (/*ShowResult x*/) {
+    void ExitAfterAd () {
         Time.timeScale = 1;
         if (saveHighScore == true) {
             if (highscorepalce == 0) {
