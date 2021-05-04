@@ -192,15 +192,14 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void SetMainMenuLighting() {
+        currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
+        currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
+        RenderSettings.skybox = daySkybox;
+        nightmareUnderlight.SetActive(false);
+
         int isSurvivalLightingFlipped = PlayerPrefs.GetInt("Is Survival Lighting Flipped");
 
-        if (isSurvivalLightingFlipped == 1) {
-            currentLight.GetComponent<Light>().color = noonLight.GetComponent<Light>().color;
-            currentLight.GetComponent<Transform>().rotation = noonLight.GetComponent<Transform>().rotation;
-            RenderSettings.skybox = daySkybox;
-            nightmareUnderlight.SetActive(false);
-        }
-        else if (isSurvivalLightingFlipped == 0) {
+        if (level == 29 && isSurvivalLightingFlipped == 0) {
             currentLight.GetComponent<Light>().color = nightmareLight.GetComponent<Light>().color;
             currentLight.GetComponent<Transform>().rotation = nightmareLight.GetComponent<Transform>().rotation;
             RenderSettings.skybox = nightmareSkybox;
