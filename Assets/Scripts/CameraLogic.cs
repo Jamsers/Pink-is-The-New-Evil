@@ -38,10 +38,9 @@ public class CameraLogic : MonoBehaviour {
 
     void Start() {
         cameraTargetOffset = transform.position - cameraTarget.position;
-        MainSystems mainSystems = GameObject.Find("Main Systems").GetComponent<MainSystems>();
-        mainSystems.cameraStartPosition = transform.position;
-        mainSystems.cameraStartRotation = transform.rotation;
-        mainSystems.cameraStartFOV = GetComponent<Camera>().fieldOfView;
+        PinkIsTheNewEvil.MainSystems.cameraStartPosition = transform.position;
+        PinkIsTheNewEvil.MainSystems.cameraStartRotation = transform.rotation;
+        PinkIsTheNewEvil.MainSystems.cameraStartFOV = GetComponent<Camera>().fieldOfView;
     }
 
     void Update() {

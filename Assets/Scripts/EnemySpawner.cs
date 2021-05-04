@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour {
-    public PlayerController playerController;
-
     [Header("Data")]
     public LevelData[] levelData;
     public LevelText[] levelTexts;
@@ -155,7 +153,7 @@ public class EnemySpawner : MonoBehaviour {
         SetMainMenuLighting();
 
         if (level == 29) {
-            GetComponent<MainSystems>().toggleLightingButton.SetActive(true);
+            PinkIsTheNewEvil.MainSystems.toggleLightingButton.SetActive(true);
             weapons[10 - 1].SetActive(true);
         }
     }
@@ -170,11 +168,11 @@ public class EnemySpawner : MonoBehaviour {
         LevelTitleTransition();
 
         if (constantlyDenyInput == true) {
-            GameObject.Find("Main Systems").GetComponent<MainSystems>().isAllInputEnabled(false);
+            PinkIsTheNewEvil.MainSystems.isAllInputEnabled(false);
             inputRestored = false;
         }
         else if (constantlyDenyInput == false && inputRestored == false) {
-            GameObject.Find("Main Systems").GetComponent<MainSystems>().isAllInputEnabled(true);
+            PinkIsTheNewEvil.MainSystems.isAllInputEnabled(true);
             inputRestored = true;
         }
     }
@@ -209,7 +207,7 @@ public class EnemySpawner : MonoBehaviour {
         }
 
         RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
-        GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+        PinkIsTheNewEvil.ReflectionProbe.RenderProbe();
     }
 
     void InfiniteSpawner() {
@@ -245,7 +243,7 @@ public class EnemySpawner : MonoBehaviour {
                 RenderSettings.skybox = daySkybox;
             }
 
-            GameObject.Find("Reflection Probe").GetComponent<ReflectionProbe>().RenderProbe();
+            PinkIsTheNewEvil.ReflectionProbe.RenderProbe();
 
             isLightTransitionInitialized = false;
             isLightingTransitioning = false;
@@ -311,10 +309,10 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     public void LevelSetup() {
-        playerController.GetComponent<SoundManager>().PlaySound(15);
+        PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(15);
 
         for (int i = 0; i < weapons.Length; i++) {
-            if (i < playerController.attackMode - 1) {
+            if (i < PinkIsTheNewEvil.PlayerController.attackMode - 1) {
                 weapons[i].SetActive(false);
             }
             else {
@@ -346,31 +344,31 @@ public class EnemySpawner : MonoBehaviour {
         }
 
         PlayerPrefs.SetInt("Level", level);
-        PlayerPrefs.SetInt("Upgrade Points", playerController.upgradePoints);
-        PlayerPrefs.SetInt("Weapon", playerController.attackMode);
+        PlayerPrefs.SetInt("Upgrade Points", PinkIsTheNewEvil.PlayerController.upgradePoints);
+        PlayerPrefs.SetInt("Weapon", PinkIsTheNewEvil.PlayerController.attackMode);
         PlayerPrefs.Save();
 
         isTitleTransitioning = true;
         transitionBeginningTime = Time.time;
 
         if (level < 7) {
-            playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.BridgeSection);
+            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.BridgeSection);
         }
         else if (level < 20) {
-            playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
+            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
         }
         else if (level < 28) {
-            playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.NorthernPart);
+            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.NorthernPart);
         }
         else if (level == 28) {
-            playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
+            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
         }
         else if (level == 29) {
             if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
-                playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
+                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
             }
             else {
-                playerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
+                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
             }
 
         }
@@ -545,10 +543,10 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void SpawnEnemies() {
-        if (GetComponent<MainSystems>().debugDisableSpawning == true)
+        if (PinkIsTheNewEvil.MainSystems.debugDisableSpawning == true)
             return;
 
-        playerController.isControlOff = false;
+        PinkIsTheNewEvil.PlayerController.isControlOff = false;
         if (level < 28) {
             float delay = 0f;
             foreach (SpawnData spawnData in levelData[level - 1].spawnDataArray) {
@@ -607,7 +605,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void AllEnemiesDeadTransition (int transitionTo, int settingsType) {
-        GameObject.Find("Main Systems").GetComponent<MainSystems>().GoToSettings(settingsType);
+        PinkIsTheNewEvil.MainSystems.GoToSettings(settingsType);
         if (level != 2) {
             transitionMode = transitionTo;
         }
@@ -626,7 +624,7 @@ public class EnemySpawner : MonoBehaviour {
                 objectOriginalScale = weaponModels[weaponToFade - 1].transform.localScale;
                 objectToScale = weaponModels[weaponToFade - 1];
                 GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                playerController.GetComponent<SoundManager>().PlaySound(13);
+                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(13);
                 dust.transform.parent = null;
                 Destroy(dust, 4);
             }
@@ -741,7 +739,7 @@ public class EnemySpawner : MonoBehaviour {
             isTransitionDone = false;
         }
         else {
-            playerController.isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
         }
     }
 
@@ -781,62 +779,61 @@ public class EnemySpawner : MonoBehaviour {
 
     void EnableIsCheckingForTransition() {
         RemoveLevelPrompts();
-        MainSystems mainSystems = GameObject.Find("Main Systems").GetComponent<MainSystems>();
 
         switch (transitionMode) {
             case 2:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
             case 0:
-                mainSystems.GoToSettings(9);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(9);
                 break;
             case 5:
-                mainSystems.GoToSettings(11);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(11);
                 break;
             case 7:
-                mainSystems.GoToSettings(12);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(12);
                 break;
             case 9:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
             case 12:
-                mainSystems.GoToSettings(14);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(14);
                 break;
             case 14:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
             case 17:
-                mainSystems.GoToSettings(16);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(16);
                 break;
             case 19:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
             case 22:
-                mainSystems.GoToSettings(18);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(18);
                 break;
             case 24:
-                mainSystems.GoToSettings(19);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(19);
                 break;
             case 26:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
             case 29:
-                mainSystems.GoToSettings(21);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(21);
                 break;
             case 31:
-                mainSystems.GoToSettings(22);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(22);
                 break;
             case 33:
-                mainSystems.GoToSettings(23);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(23);
                 break;
             case 35:
-                mainSystems.GoToSettings(24);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(24);
                 break;
             case 37:
-                mainSystems.GoToSettings(25);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(25);
                 break;
             case 39:
-                mainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
                 break;
         }
 

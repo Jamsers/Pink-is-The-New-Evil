@@ -1,21 +1,16 @@
 ﻿using UnityEngine;
 
 public class DamagePlayerInArea : MonoBehaviour {
-    PlayerController playerController;
     bool playerDamagedCooldown = false;
     const float DamageResetTime = 0.5f;
     const int DamageHealthAmount = -20;
-
-	void Start () {
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-	}
 	
 	void Update () {
-        float distanceToPlayer = Vector3.Distance(transform.position, playerController.transform.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, PinkIsTheNewEvil.PlayerController.transform.position);
 
         // afraid to touch these magic numbers so they'll stay for now
         if (distanceToPlayer <= (transform.lossyScale.x / 2) && playerDamagedCooldown == false) {
-            playerController.Health(DamageHealthAmount);
+            PinkIsTheNewEvil.PlayerController.Health(DamageHealthAmount);
             playerDamagedCooldown = true;
             Invoke("DamageCooldownReset", DamageResetTime);
         }
