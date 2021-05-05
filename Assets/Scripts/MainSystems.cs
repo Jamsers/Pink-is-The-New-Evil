@@ -3,10 +3,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.PostProcessing;
 using System.Linq;
+using UnityStandardAssets.Water;
 
 public class MainSystems : MonoBehaviour {
     [Header("Debug Options")]
     public bool debugMenusEnabled;
+    public bool debugRawRender;
     public bool debugDisableSpawning;
     public bool debugInvulnerable;
 
@@ -22,6 +24,7 @@ public class MainSystems : MonoBehaviour {
     public Button PauseScreenDefaultButton;
     public Toggle debugPlayerInvulnerabilityToggle;
     public Toggle debugDisableSpawningToggle;
+    public Toggle debugRawRenderToggle;
 
 
     public GameObject DebugMenu;
@@ -41,6 +44,9 @@ public class MainSystems : MonoBehaviour {
     public Button highsetting;
     public Button lowsetting;
     public Light[] lightsforscalability;
+    public Light[] lightsForToggleScalability;
+    public LayerMask reflectionScalabilityMask;
+    public WaterBase waterForScalability;
     public PostProcessingBehaviour[] camerasForScalability;
     public PostProcessingProfile lowsettings;
     public PostProcessingProfile highsettings;
@@ -152,15 +158,42 @@ public class MainSystems : MonoBehaviour {
 
     public void setscalability()
     {
-        if (PlayerPrefs.GetInt("LowQuality") == 1)
+        if (debugRawRender) {
+            QualitySettings.vSyncCount = 0;
+            reflectionprobe.resolution = 16;
+            reflectionprobe.hdr = false;
+            reflectionprobe.cullingMask = 0;
+            highsetting.interactable = false;
+            lowsetting.interactable = false;
+            waterForScalability.waterQuality = WaterQuality.Medium;
+            waterForScalability.edgeBlend = false;
+            foreach (Light light in lightsforscalability) {
+                light.shadows = LightShadows.None;
+            }
+            foreach (Light light in lightsForToggleScalability) {
+                light.shadows = LightShadows.None;
+            }
+            foreach (PostProcessingBehaviour cameraobject in camerasForScalability) {
+                cameraobject.profile = null;
+            }
+        }
+        else if (PlayerPrefs.GetInt("LowQuality") == 1)
         {
             QualitySettings.vSyncCount = 0;
             reflectionprobe.resolution = 16;
+            reflectionprobe.hdr = true;
+            reflectionprobe.cullingMask = reflectionScalabilityMask;
             highsetting.interactable = true;
             lowsetting.interactable = false;
+            waterForScalability.waterQuality = WaterQuality.High;
+            waterForScalability.edgeBlend = true;
             foreach (Light light in lightsforscalability)
             {
+                light.shadows = LightShadows.Soft;
                 light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
+            }
+            foreach (Light light in lightsForToggleScalability) {
+                light.shadows = LightShadows.Soft;
             }
             foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
             {
@@ -171,11 +204,19 @@ public class MainSystems : MonoBehaviour {
         {
             QualitySettings.vSyncCount = 1;
             reflectionprobe.resolution = 128;
+            reflectionprobe.hdr = true;
+            reflectionprobe.cullingMask = reflectionScalabilityMask;
             highsetting.interactable = false;
             lowsetting.interactable = true;
+            waterForScalability.waterQuality = WaterQuality.High;
+            waterForScalability.edgeBlend = true;
             foreach (Light light in lightsforscalability)
             {
+                light.shadows = LightShadows.Soft;
                 light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Medium;
+            }
+            foreach (Light light in lightsForToggleScalability) {
+                light.shadows = LightShadows.Soft;
             }
             foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
             {
@@ -193,6 +234,7 @@ public class MainSystems : MonoBehaviour {
         {
             DebugMenu.SetActive(true);
             debugDisableSpawningToggle.gameObject.SetActive(true);
+            debugRawRenderToggle.gameObject.SetActive(true);
         }
         logo.gameObject.SetActive(true);
         mainMenu.gameObject.SetActive(true);
@@ -211,6 +253,7 @@ public class MainSystems : MonoBehaviour {
 
         debugPlayerInvulnerabilityToggle.isOn = debugInvulnerable;
         debugDisableSpawningToggle.isOn = debugDisableSpawning;
+        debugRawRenderToggle.isOn = debugRawRender;
     }
 	
 	void Update () {
@@ -427,6 +470,10 @@ public class MainSystems : MonoBehaviour {
         }
         else if (mode == 27) {
             debugDisableSpawning = debugDisableSpawningToggle.isOn;
+        }
+        else if (mode == 28) {
+            debugRawRender = debugRawRenderToggle.isOn;
+            setscalability();
         }
         else {
             Debug.Log(mode);
