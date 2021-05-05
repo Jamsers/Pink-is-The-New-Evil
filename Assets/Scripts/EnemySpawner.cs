@@ -253,9 +253,7 @@ public class EnemySpawner : MonoBehaviour {
 
             currentLight.GetComponent<Light>().color = Color.Lerp(currentLightBeginningColor, currentLightEndColor, smoothedPercentage);
             currentLight.GetComponent<Transform>().rotation = Quaternion.Lerp(currentLightBeginningRotation, currentLightEndRotation, smoothedPercentage);
-            if (lightTransitionToType == LightTransitionType.ToNightmare) {
-                nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(spookyUnderlightBeginningColor, spookyUnderlightEndColor, smoothedPercentage);
-            }
+            nightmareUnderlight.GetComponent<Light>().color = Color.Lerp(spookyUnderlightBeginningColor, spookyUnderlightEndColor, smoothedPercentage);
 
             RenderSettings.fogColor = currentLight.GetComponent<Light>().color;
         }
@@ -288,6 +286,9 @@ public class EnemySpawner : MonoBehaviour {
         if (transitionType == LightTransitionType.ToLevel) {
             currentLightEndColor = Color.Lerp(noonLight.GetComponent<Light>().color, afternoonLight.GetComponent<Light>().color, TransitionLevelObjective / 27f);
             currentLightEndRotation = Quaternion.Lerp(noonLight.GetComponent<Transform>().rotation, afternoonLight.GetComponent<Transform>().rotation, TransitionLevelObjective / 27f);
+
+            spookyUnderlightBeginningColor = nightmareUnderlight.GetComponent<Light>().color;
+            spookyUnderlightEndColor = nightmareUnderlight.GetComponent<Light>().color;
         }
         else if (transitionType == LightTransitionType.ToNightmare) {
             currentLightEndColor = nightmareLight.GetComponent<Light>().color;

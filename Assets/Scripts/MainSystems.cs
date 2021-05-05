@@ -6,8 +6,9 @@ using System.Linq;
 
 public class MainSystems : MonoBehaviour {
     [Header("Debug Options")]
-    public bool debugMenuInPause;
+    public bool debugMenusEnabled;
     public bool debugDisableSpawning;
+    public bool debugInvulnerable;
 
     [Header("")]
     public Button MainMenuDefaultButton;
@@ -19,7 +20,10 @@ public class MainSystems : MonoBehaviour {
     public Button HighScalabilitySelectSwitchToButton;
     public Button LowScalabilitySelectSwitchToButton;
     public Button PauseScreenDefaultButton;
-    
+    public Toggle debugPlayerInvulnerabilityToggle;
+    public Toggle debugDisableSpawningToggle;
+
+
     public GameObject DebugMenu;
 
     public GameObject blockAllInput;
@@ -185,9 +189,10 @@ public class MainSystems : MonoBehaviour {
 
         Cursor.visible = true;
 
-        if (debugMenuInPause == true)
+        if (debugMenusEnabled == true)
         {
             DebugMenu.SetActive(true);
+            debugDisableSpawningToggle.gameObject.SetActive(true);
         }
         logo.gameObject.SetActive(true);
         mainMenu.gameObject.SetActive(true);
@@ -203,6 +208,9 @@ public class MainSystems : MonoBehaviour {
             int highScoreValueRetrieved = PlayerPrefs.GetInt("High Score " + (i+1));
             currentHighScoreList[i] = new HighScorePair(highScoreNameRetrieved, highScoreValueRetrieved);
         }
+
+        debugPlayerInvulnerabilityToggle.isOn = debugInvulnerable;
+        debugDisableSpawningToggle.isOn = debugDisableSpawning;
     }
 	
 	void Update () {
@@ -408,8 +416,19 @@ public class MainSystems : MonoBehaviour {
             }
             setscalability();
         }
-        else
-        {
+        else if (mode == 25) {
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject enemy in allEnemies) {
+                enemy.GetComponent<EnemyAI>().Health(-10000);
+            }
+        }
+        else if (mode == 26) {
+            debugInvulnerable = debugPlayerInvulnerabilityToggle.isOn;
+        }
+        else if (mode == 27) {
+            debugDisableSpawning = debugDisableSpawningToggle.isOn;
+        }
+        else {
             Debug.Log(mode);
         }
     }

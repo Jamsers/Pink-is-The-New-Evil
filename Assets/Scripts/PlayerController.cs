@@ -159,13 +159,14 @@ public class PlayerController : MonoBehaviour {
 
     public void Health(int value) {
         if (isSpecialAttackUnderWay == false) {
-            if (isControlOn == true) {
+            if (isControlOn == true && PinkIsTheNewEvil.MainSystems.debugInvulnerable == false) {
                 currenthealth = currenthealth + value;
                 Vector3 bloodpos = new Vector3(transform.position.x, transform.position.y + .6f, transform.position.z);
                 GameObject particle = (GameObject)Instantiate(particle2prefab, bloodpos, particle2prefab.transform.rotation);
                 Destroy(particle, 1.0f);
                 GetComponent<SoundManager>().PlaySound(7);
             }
+
             if (currenthealth <= 0) {
                 isDead = true;
                 //AnimSwitchTo("isDead");
