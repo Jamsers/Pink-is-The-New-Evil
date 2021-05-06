@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -20,10 +19,7 @@ public class PlayerController : MonoBehaviour {
 
     public Transform transformToShake;
 
-    // Health()
     public int currenthealth = 100;
-
-    //bool triggerTriggered;
 
     public GameObject cylinderTargetArea;
     public GameObject boxTargetArea;
@@ -31,7 +27,6 @@ public class PlayerController : MonoBehaviour {
     public Transform shockwavespawn2;
     public GameObject shockwave;
 
-    // Attack()
     int amAttacking = 0;
 
     public GameObject pointNumbers;
@@ -42,26 +37,22 @@ public class PlayerController : MonoBehaviour {
     public GameObject particle1prefab;
     public GameObject particle2prefab;
 
-    // VirtualJoystick()
     bool initialPressStored = false;
     Vector3 initialPressPosition = new Vector3(0, 0, 0);
     public Vector3 screenRotationCorrection;
     public Vector3 storedMoveDirection;
 
-    // MovePlayer()
     CharacterController playerCollider;
     public int moveSpeed;
     public float attackRange;
     public float attackCooldown;
     int attackOnCooldown = 0;
-    //float prevTime;
     int isAttacking = 0;
     int hasDamaged;
 
     public float shakeAmount;
 
     public float attackLength;
-    //float attackLengthDamage;
 
     bool attackDamageTicked = false;
     bool attackIsDone = false;
@@ -69,19 +60,15 @@ public class PlayerController : MonoBehaviour {
     public int upgradePoints;
 
     public bool amAttackingRightNow = false;
-    //bool prevAmAttackingRightNow = false;
 
     public int attackMode;
 
     public GameObject healthBloodOnScreen;
     public GameObject hudCanvas;
 
-    // UpdateTarget()
     List<GameObject> listOfTargets = new List<GameObject>();
     GameObject enemyTarget = null;
 
-    // AnimSwitchTo()
-    //string lastTrigger = "null";
     Animator animator;
 
     public void ResumeSkyfall () {
@@ -169,7 +156,6 @@ public class PlayerController : MonoBehaviour {
 
             if (currenthealth <= 0) {
                 isDead = true;
-                //AnimSwitchTo("isDead");
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().OpenPrompt(9);
                 if (PlayerPrefs.GetInt("Level") == 29)
                     CheckIfInHighscores();
@@ -220,28 +206,19 @@ public class PlayerController : MonoBehaviour {
         fillInHighScores();
         if (PlayerPrefs.HasKey("Upgrade Points"))
             upgradePoints = PlayerPrefs.GetInt("Upgrade Points");
-            //upgradePoints = 100000;
         else
             upgradePoints = 0;
         HealthRegeneration();
         playerCollider = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        //InvokeRepeating("UpdateTarget", .25f, .25f);
-        //prevTime = Time.time;
 
         if (PlayerPrefs.HasKey("Weapon"))
             setAttackMode(PlayerPrefs.GetInt("Weapon"));
-            //setAttackMode(8);
         else
             setAttackMode(1);
 
         origOrangeCircle = orangeCircle;
 
-        //Debug.Log(systemsProcSpawn.level);
-        /*if (systemsProcSpawn.level == 29) {
-            Debug.Log("hello");
-            isFallingFromSky = true;
-        }*/
 
         trailParticle = (GameObject)Instantiate(trailparticle, shockwavespawn.position, shockwave.transform.rotation);
 
@@ -250,7 +227,6 @@ public class PlayerController : MonoBehaviour {
 
         main.loop = true;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        //main.startSpeed = 6.5f;
         main.startSpeed = 3f;
         main.startSize = 0.65f;
 
@@ -286,8 +262,6 @@ public class PlayerController : MonoBehaviour {
     public void setAttackMode(int mode) {
         if (mode == 1) {
             attackLength = .7f;
-            //attackLengthDamage = attackLength * 0.50f;
-            //animator.SetFloat("attackSpeed", 0.542f / attackLength);
             attackMode = 1;
             attackRange = 1.2f;
             damageAmount = -30;
@@ -296,8 +270,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 2) {
             attackLength = .5f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.667f / attackLength);
             attackMode = 2;
             attackRange = 1.6f;
             damageAmount = -50;
@@ -307,8 +279,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 3) {
             attackLength = 0.5f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.667f / attackLength);
             attackMode = 3;
             attackRange = 1.7f;
             damageAmount = -90;
@@ -318,8 +288,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 4) {
             attackLength = 0.5f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.667f / attackLength);
             attackMode = 4;
             attackRange = 1.6f;
             damageAmount = -150;
@@ -329,8 +297,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 5) {
             attackLength = 0.5f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.667f / attackLength);
             attackMode = 5;
             attackRange = 2f;
             damageAmount = -300;
@@ -340,8 +306,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 6) {
             attackLength = 1f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.875f / attackLength);
             attackMode = 6;
             attackRange = 2.9f;
             damageAmount = -600;
@@ -351,8 +315,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 7) {
             attackLength = 1f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.875f / attackLength);
             attackMode = 7;
             attackRange = 3.9f;
             damageAmount = -800;
@@ -362,8 +324,6 @@ public class PlayerController : MonoBehaviour {
         }
         else if (mode == 8) {
             attackLength = 1f;
-            //attackLengthDamage = attackLength * 0.73f;
-            //animator.SetFloat("attackSpeed", 0.875f / attackLength);
             attackMode = 8;
             attackRange = 3.9f;
             damageAmount = -1200;
@@ -387,8 +347,6 @@ public class PlayerController : MonoBehaviour {
     public GameObject buybutton;
 
     public void BuyWeapon(int type) {
-        //Debug.Log(type);
-        //BRUH
         if (type == 420) {
             GetComponent<SoundManager>().PlaySound(14);
         }
@@ -590,14 +548,12 @@ public class PlayerController : MonoBehaviour {
                 enemySpawner.weapons[8 - 1].SetActive(false);
                 animator.SetFloat("specAttack1speed", 0.5f);
                 speedAttackCooldown = speedAttackCooldown + 2;
-                //longer speed
             }
             else if (upgradePoints >= 100000) {
                 upgradePoints = upgradePoints - 100000;
                 PlayerPrefs.SetInt("Level", 29);
                 PlayerPrefs.SetInt("Upgrade Points", 0);
                 PlayerPrefs.SetInt("Weapon", 8);
-                //PlayerPrefs.SetInt("Weapon", 8);
                 PlayerPrefs.Save();
                 backimage1.SetActive(false);
                 price.SetActive(false);
@@ -605,12 +561,8 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                //Health(-100);
                 ascencionScreen.SetActive(true);
                 enemySpawner.constantlyDenyInput = true;
-                //death logic
-                //make player invul
-                //ASCENCION, PLAY ANIMATION
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -638,14 +590,12 @@ public class PlayerController : MonoBehaviour {
                 jumpPerkBack.SetActive(true);
                 enemySpawner.weapons[9 - 1].SetActive(false);
                 jumpAttackCooldown = jumpAttackCooldown / 3;
-                //faster jump
             }
             else if (upgradePoints >= 100000) {
                 upgradePoints = upgradePoints - 100000;
                 PlayerPrefs.SetInt("Level", 29);
                 PlayerPrefs.SetInt("Upgrade Points", 0);
                 PlayerPrefs.SetInt("Weapon", 8);
-                //PlayerPrefs.SetInt("Weapon", 8);
                 PlayerPrefs.Save();
                 backimage1.SetActive(false);
                 price.SetActive(false);
@@ -653,12 +603,8 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                //Health(-100);
                 ascencionScreen.SetActive(true);
                 enemySpawner.constantlyDenyInput = true;
-                //death logic
-                //make player invul
-                //ASCENCION, PLAY ANIMATION
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -686,14 +632,12 @@ public class PlayerController : MonoBehaviour {
                 healthPerkBack.SetActive(true);
                 enemySpawner.weapons[10 - 1].SetActive(false);
                 targetHealth = targetHealth * 2;
-                //double health
             }
             else if (upgradePoints >= 100000) {
                 upgradePoints = upgradePoints - 100000;
                 PlayerPrefs.SetInt("Level", 29);
                 PlayerPrefs.SetInt("Upgrade Points", 0);
                 PlayerPrefs.SetInt("Weapon", 8);
-                //PlayerPrefs.SetInt("Weapon", 8);
                 PlayerPrefs.Save();
                 backimage1.SetActive(false);
                 price.SetActive(false);
@@ -701,12 +645,8 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                //Health(-100);
                 ascencionScreen.SetActive(true);
                 enemySpawner.constantlyDenyInput = true;
-                //death logic
-                //make player invul
-                //ASCENCION, PLAY ANIMATION
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -953,26 +893,21 @@ public class PlayerController : MonoBehaviour {
             AudioListener.volume = 1;
         }
 
-        //triggerTriggered = false;
         if (moveUpperCubeorigpos == new Vector3(999, 999, 999)) {
             moveUpperCubeorigpos = transformToShake.localPosition;
         }
 
         if (hasDoneIt == false) {
             if (enemySpawner.level == 29) {
-                //Debug.Log("hello");
                 isFallingFromSky = true;
             }
             animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             hasDoneIt = true;
         }
 
-        //Debug.Log(isFallingFromSky);
-
         HealthSplatterUpdate();
         pointNumbers.GetComponent<Text>().text = upgradePoints.ToString();
         UpdateTarget();
-        //AttackCooldownManager();
         if (isSpecialAttackUnderWay == false) {
             if (isDead == true) {
                 if (enemySpawner.level == 29) {
@@ -995,8 +930,6 @@ public class PlayerController : MonoBehaviour {
                     if (Time.timeScale != 0)
                         storedMoveDirection = VirtualJoystick();
                         MovePlayer(storedMoveDirection);
-                    //if (Time.timeScale != 0)
-                        //PlayerSpecialAttack();
                 }
                 else if (isControlOn == false) {
                     AnimSwitchTo("goToIdle3");
@@ -1006,7 +939,6 @@ public class PlayerController : MonoBehaviour {
                     price.SetActive(false);
                     buybutton.SetActive(false);
                     buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-                    //Debug.Log("hello");
                 }
             }
         }
@@ -1017,17 +949,10 @@ public class PlayerController : MonoBehaviour {
             else if (specialAttackMode == 2) {
                 PlayerSpecialAttackLogic();
             }
-            //systemsProcSpawn.constantlyDenyInput = true;
         }
-
-        //Debug.Log(isControlOn);
-        //Debug.Log(isSpecialAttackUnderWay);
 
         fadeAwayOrangeGroup();
         SpecialAttackIndicatorsFadedXDDDD();
-        //Debug.Log("SpecialPhase1 = " + SpecialPhase1 + ", SpecialPhase1_5 = " + SpecialPhase1_5 + ", SpecialPhase2 = " + SpecialPhase2 + ", SpecialPhase2_5 = " + SpecialPhase2_5);
-        //Debug.Log("mouseup = " + startDurationOfMouseUp + ", mouse down = " + startDurationOfMouseDown);
-
     }
 
     public int specialAttackMode;
@@ -1084,9 +1009,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void PlayerSpecialAttackLogic() {
-        //Debug.Log(specialAttackPhase);
         if (specialAttackPhase == 1) {
-            //Debug.Log("hello1");
             AnimSwitchTo("SpecAttack3");
             isControlOff = true;
             specialAttackPhase = 2;
@@ -1094,15 +1017,8 @@ public class PlayerController : MonoBehaviour {
             RaycastHit hit;
             Physics.Raycast(ray, out hit, Mathf.Infinity, myLayerMask);
             scanPoint = hit.point;
-            //specialAttackAimSphere.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-            //Debug.Log(specialAttackAimSphere.gameObject.GetComponent<SpecialAttackAimLogic>().RetrieveTarget());
         }
         else if (specialAttackPhase == 2) {
-            //Debug.Log("hello2");
-            //specialAttackEnemyTarget = specialAttackAimSphere.GetComponent<SpecialAttackAimLogic>().RetrieveTarget();
-
-            //MEMELORD EXTREME
-
             for (int i = 0; i < enemySpawner.listOfAllEnemies.Count; i++) {
                 if (specialAttackEnemyTarget == null) {
                     specialAttackEnemyTarget = enemySpawner.listOfAllEnemies[i];
@@ -1113,13 +1029,10 @@ public class PlayerController : MonoBehaviour {
             }
 
             if (specialAttackEnemyTarget != null) {
-                //Debug.DrawLine(scanPoint, specialAttackEnemyTarget.transform.position, Color.red, 20, false);
-                //Debug.Log((Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position) < 6));
                 if (Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position) > 6) {
                     specialAttackEnemyTarget = null;
                 }
             }
-            //Debug.Log(specialAttackEnemyTarget == null);
             if (specialAttackEnemyTarget != null) {
                 backimage1.SetActive(false);
                 price.SetActive(false);
@@ -1128,27 +1041,19 @@ public class PlayerController : MonoBehaviour {
                 specialAttackPhase = 3;
                 transform.LookAt(specialAttackEnemyTarget.transform.position);
                 transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-
-                //Debug.Log("trigger");
             }
             else {
-                //AnimSwitchTo("goToIdle");
                 specialAttackPhase = 8;
                 isThereNoTargetForJump = true;
                 jumpAttackLastTrigRESET = true;
-                //Debug.Log("trigger2");
             }
         }
         else if (specialAttackPhase == 3) {
-            //Debug.Log("hello3");
             transform.LookAt(specialAttackEnemyTarget.transform.position);
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         }
         else if (specialAttackPhase == 4) {
-            //Debug.Log("hello4");
             if (specialAttackEnemyTarget == null) {
-                //Debug.Log("FAIL");
-                //AnimSwitchTo("goToIdle");
                 specialAttackPhase = 8;
                 isThereNoTargetForJump = true;
                 jumpAttackLastTrigRESET = true;
@@ -1161,7 +1066,6 @@ public class PlayerController : MonoBehaviour {
                 specialAttackFlightStartTime = playbackTime;
                 specialAttackFlightStartPos = transform.position;
                 specialAttackFlightTargetTime = 0.696f;
-                //0.696
                 specialAttackFlightTargetPos = specialAttackEnemyTarget.transform.position;
 
                 collider1.enabled = false;
@@ -1172,7 +1076,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (specialAttackPhase == 5) {
-           // Debug.Log("hello5");
             AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
             float switchTimePercent = ((currentState.normalizedTime % 1) - specialAttackFlightStartTime) / (specialAttackFlightTargetTime - specialAttackFlightStartTime);
 
@@ -1184,7 +1087,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (specialAttackPhase == 6) {
-            //Debug.Log("hello6");
             collider1.enabled = true;
             collider2.enabled = true;
             collider3.enabled = true;
@@ -1198,10 +1100,8 @@ public class PlayerController : MonoBehaviour {
             specialAttackPhase = 7;
         }
         else if (specialAttackPhase == 7) {
-           // Debug.Log("hello7");
         }
         else if (specialAttackPhase == 8) {
-           // Debug.Log("hello8");
             isControlOff = false;
             targetsInRange = new List<GameObject>();
             isSpecialAttackUnderWay = false;
@@ -1233,13 +1133,6 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
-            /*for (int i = 0; i < systemsProcSpawn.listOfAllEnemies.Count; i++) {
-                float range = 5f;
-                if (Vector3.Distance(raycastSource.transform.position, systemsProcSpawn.listOfAllEnemies[i].transform.position) < range) {
-                    systemsProcSpawn.listOfAllEnemies[i].GetComponent<EnemyAI>().Health(damageAmount * 4);
-                }
-            }*/
-
             specAttack3IsGo = false;
         }
     }
@@ -1248,8 +1141,6 @@ public class PlayerController : MonoBehaviour {
 
     void PlayerSpecialAttackLogic1 () {
         if (specialAttackPhase == 1) {
-            //gameObject.GetComponent<NavMeshAgent>().enabled = true;
-            // Vector3 virtualJoystickDirection = startLocationOfMouseDown - Input.mousePosition;
             Vector3 virtualJoystickDirection = startLocationOfMouseDown - orangeCircle.GetComponent<Transform>().position;
             virtualJoystickDirection = new Vector3(-virtualJoystickDirection.x, 0, -virtualJoystickDirection.y);
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
@@ -1264,12 +1155,8 @@ public class PlayerController : MonoBehaviour {
         else if (specialAttackPhase == 2) {
         }
         else if (specialAttackPhase == 3) {
-
-            //get reference to box identifieer gameobject
-            //specattack2enemy
             RaycastHit hit;
-            //var layerMask = 1 << 9;
-            Physics.Raycast(/*raycastSource.transform.position*/ new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y+1, raycastSource.transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
+            Physics.Raycast(new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y+1, raycastSource.transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
             Vector3 pointHit = hit.point;
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pointHit);
@@ -1329,7 +1216,6 @@ public class PlayerController : MonoBehaviour {
 
             trailParticle.GetComponent<ParticleSystem>().Stop();
         }
-        //Debug.Log("ATTACKSPEC");
     }
 
     Vector3 specialAttackAim;
@@ -1386,8 +1272,6 @@ public class PlayerController : MonoBehaviour {
             orangeCircle.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
             powerUpIcon.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
 
-
-
             if (lerpPoint <= 0) {
                 isThereNoTargetForJump = false;
                 orangeCircle.SetActive(false);
@@ -1412,9 +1296,6 @@ public class PlayerController : MonoBehaviour {
                 redCircle.SetActive(false);
             }
         }
-        //CancelInvoke("removeOrangeCircle");
-        //powerUpIcon;
-        //orangeCircle;
     }
 
     float orangeActivateTime;
@@ -1426,8 +1307,8 @@ public class PlayerController : MonoBehaviour {
     float primaryCooldown;
     float secondaryCooldown;
 
-    bool isSpecAttack1 = true; //hop attack
-    bool isSpecAttack2 = true; //speedy attack
+    bool isSpecAttack1 = true;
+    bool isSpecAttack2 = true;
 
     public GameObject speedAttackIndicatorCircle;
     public GameObject speedAttackIndicatorIcon;
@@ -1443,13 +1324,9 @@ public class PlayerController : MonoBehaviour {
 
     float speedAttackCooldown = 5;
     float jumpAttackCooldown = 20;
-    //float jumpAttackCooldown = 1;
 
     float speedAttackLastTrig = -5;
     float jumpAttackLastTrig = -20;
-    //float jumpAttackLastTrig = -1;
-
-    //MEMELORD EXTEREME 2
 
     int MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 0;
 
@@ -1529,7 +1406,6 @@ public class PlayerController : MonoBehaviour {
             jumpTrans.a = 1;
             jumpAttackIndicatorCircleGlow.SetActive(true);
             jumpAttackIndicatorIconGlow.SetActive(true);
-            //isSpecialAttackUnderWay = false;
         }
         else {
             jumpTrans.a = Mathf.Lerp(0, 1, b) - .2f;
@@ -1541,8 +1417,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     void PlayerSpecialAttack () {
-        
-
         if (isControlOff == false) {
             if (Input.GetMouseButton(0) == true) {
                 if (lastIsMouseDown == false) {
@@ -1609,7 +1483,6 @@ public class PlayerController : MonoBehaviour {
                                 redCircle.SetActive(false);
                                 redAim.SetActive(false);
                             }
-                            //PUT CODE HERE SOMEWHERE KILL ME
                         }
                         else if (isSpecAttack1 == true) {
                             if (isSpecAttack1 == true) {
@@ -1626,7 +1499,6 @@ public class PlayerController : MonoBehaviour {
                         canShowNormJoystick = false;
                     }
                     else {
-                        //greenCircle.SetActive(true);
                     }
                 }
                 else {
@@ -1957,14 +1829,6 @@ public class PlayerController : MonoBehaviour {
 
     void AttackCooldownManager () {
         attackOnCooldown = 0;
-        /*if (prevAmAttackingRightNow == true && amAttackingRightNow == false && attackOnCooldown == 0) {
-            prevTime = Time.time;
-            attackOnCooldown = 1;
-        }
-        else if (Time.time - prevTime > attackCooldown && attackOnCooldown == 1)
-            attackOnCooldown = 0;
-
-        prevAmAttackingRightNow = amAttackingRightNow;*/
     }
 
     bool prevBlueArrow = false;
@@ -1995,20 +1859,7 @@ public class PlayerController : MonoBehaviour {
             prevBlueArrow = false;
         }
 
-        //TAKE LOCATION OF GREEN CIRCLE
-        //TAKE DIRECTION
-        //SHOOT LINE IN DIRECTION, LIMIT DISTANCE
-        //PUT BLUE DIREC ON EDGE OF LINE
-
-        //THEN
-
-        //ROTATE TOWARDS GREEN CIRCLE THEN INVERT
-
-        //MAGNUM DONG
-
         if (enemyTarget == null) {
-            //Debug.Log("1");
-
             if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
             {
                 amAttackingRightNow = true;
@@ -2023,14 +1874,12 @@ public class PlayerController : MonoBehaviour {
 
                 if (isAttacking == 0)
                 {
-                    //prevTime = Time.time;
                     isAttacking = 1;
                     hasDamaged = 0;
                 }
 
                 if (attackDamageTicked == true && hasDamaged == 0)
                 {
-                    //enemyTarget.GetComponent<EnemyAI>().Health(-20);
                     hasDamaged = 1;
                     attackDamageTicked = false;
                 }
@@ -2040,7 +1889,6 @@ public class PlayerController : MonoBehaviour {
                     attackIsDone = false;
                     attackOnCooldown = 1;
                     isAttacking = 0;
-                    //prevTime = Time.time;
                 }
             }
             else if (direction == new Vector3(0, 0, 0)) {
@@ -2050,7 +1898,6 @@ public class PlayerController : MonoBehaviour {
                 else
                     AnimSwitchTo("goToIdle");
                 transform.LookAt(transform.position + direction);
-                //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation((transform.position + direction) - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             }
             else {
                 if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
@@ -2058,23 +1905,14 @@ public class PlayerController : MonoBehaviour {
                 }
                 else
                     AnimSwitchTo("goToWalkForward");
-                //transform.LookAt(transform.position + direction);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation((transform.position + direction) - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             }
-
-            /*if (Time.time - prevTime > attackCooldown && attackOnCooldown == 1)
-                attackOnCooldown = 0;*/
 
             isAttacking = 0;
 
             transformToShake.localPosition = new Vector3(0, 0, 0);
-
-            //amAttackingRightNow = false;
-
         }
         else {
-            //Debug.Log("2");
-            //transform.LookAt(enemyTarget.transform.position);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(enemyTarget.transform.position - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
@@ -2102,13 +1940,11 @@ public class PlayerController : MonoBehaviour {
                     AnimSwitchTo("goToAttack2");
                 
                 if (isAttacking == 0) {
-                    //prevTime = Time.time;
                     isAttacking = 1;
                     hasDamaged = 0;
                 }
 
                 if (attackDamageTicked == true && hasDamaged == 0) {
-                    //enemyTarget.GetComponent<EnemyAI>().Health(-20);
                     hasDamaged = 1;
                     attackDamageTicked = false;
                 }
@@ -2117,15 +1953,10 @@ public class PlayerController : MonoBehaviour {
                     attackIsDone = false;
                     attackOnCooldown = 1;
                     isAttacking = 0;
-                    //prevTime = Time.time;
                 }
             }
             else {
-                //Debug.Log("2");
                 amAttackingRightNow = false;
-
-                /*if (Time.time - prevTime > attackCooldown && attackOnCooldown == 1)
-                    attackOnCooldown = 0;*/
 
                 if (direction == new Vector3(0, 0, 0)) {
                     if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
@@ -2150,9 +1981,6 @@ public class PlayerController : MonoBehaviour {
                         else
                             AnimSwitchTo("goToWalkRight");
                     }
-                    /*else {
-                        AnimSwitchTo("goToIdle");
-                    }*/
                 }
                 else if (angle < 45f) {
                     if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
@@ -2168,8 +1996,6 @@ public class PlayerController : MonoBehaviour {
                     else
                         AnimSwitchTo("goToWalkBack");
                 }
-                /*else
-                    Debug.Log("WARNING: Targeting error.");*/
             }
         }
     }
@@ -2184,31 +2010,16 @@ public class PlayerController : MonoBehaviour {
                     enemyTarget = listOfTargets[i];
                 }
                 else if (listOfTargets[i] == null || listOfTargets[i].gameObject.tag != "Enemy") {
-                    // logic for when enemy is dead
                     listOfTargets.RemoveAt(i);
                 }
                 else if (Vector3.Distance(transform.position, listOfTargets[i].transform.position) < Vector3.Distance(transform.position, enemyTarget.transform.position)) {
                     enemyTarget = listOfTargets[i];
                 }
                 else {
-                    // do nothing, keep current target 
                 }
-                //Debug.Log(listOfTargets[i]);
             }
         }
     }
-
-    /*void AnimSwitchTo(string trigger)
-    {
-        if (triggerTriggered == false) {
-            triggerTriggered = true;
-            lastTrigger
-            if (trigger != lastTrigger) {
-                animator.SetTrigger(trigger);
-                lastTrigger = ReturnCurrentTrigger();
-            }
-        }
-    }*/
 
     void AnimSwitchTo(string trigger) {
         if (trigger == "goToAttack") {
