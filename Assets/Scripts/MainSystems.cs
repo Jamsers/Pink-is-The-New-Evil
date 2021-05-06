@@ -158,73 +158,60 @@ public class MainSystems : MonoBehaviour {
 
     public void setscalability()
     {
+        ScalabilitySettings scalabilitySettings;
+
         if (debugRawRender) {
-            QualitySettings.vSyncCount = 0;
-            reflectionprobe.resolution = 16;
-            reflectionprobe.hdr = false;
-            reflectionprobe.cullingMask = 0;
+            scalabilitySettings = rawScalabilitySettings;
             highsetting.interactable = false;
             lowsetting.interactable = false;
-            waterForScalability.waterQuality = WaterQuality.Medium;
-            waterForScalability.edgeBlend = false;
-            foreach (Light light in lightsforscalability) {
-                light.shadows = LightShadows.None;
-            }
-            foreach (Light light in lightsForToggleScalability) {
-                light.shadows = LightShadows.None;
-            }
-            foreach (PostProcessingBehaviour cameraobject in camerasForScalability) {
-                cameraobject.profile = null;
-            }
         }
-        else if (PlayerPrefs.GetInt("LowQuality") == 1)
-        {
-            QualitySettings.vSyncCount = 0;
-            reflectionprobe.resolution = 16;
-            reflectionprobe.hdr = true;
-            reflectionprobe.cullingMask = reflectionScalabilityMask;
+        else if (PlayerPrefs.GetInt("LowQuality") == 1) {
+            scalabilitySettings = lowScalabilitySettings;
             highsetting.interactable = true;
             lowsetting.interactable = false;
-            waterForScalability.waterQuality = WaterQuality.High;
-            waterForScalability.edgeBlend = true;
-            foreach (Light light in lightsforscalability)
-            {
-                light.shadows = LightShadows.Soft;
-                light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
-            }
-            foreach (Light light in lightsForToggleScalability) {
-                light.shadows = LightShadows.Soft;
-            }
-            foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
-            {
-                cameraobject.profile = lowsettings;
-            }
         }
-        else
-        {
-            QualitySettings.vSyncCount = 1;
-            reflectionprobe.resolution = 128;
-            reflectionprobe.hdr = true;
-            reflectionprobe.cullingMask = reflectionScalabilityMask;
+        else {
+            scalabilitySettings = highScalabilitySettings;
             highsetting.interactable = false;
             lowsetting.interactable = true;
-            waterForScalability.waterQuality = WaterQuality.High;
-            waterForScalability.edgeBlend = true;
-            foreach (Light light in lightsforscalability)
-            {
-                light.shadows = LightShadows.Soft;
-                light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Medium;
-            }
-            foreach (Light light in lightsForToggleScalability) {
-                light.shadows = LightShadows.Soft;
-            }
-            foreach (PostProcessingBehaviour cameraobject in camerasForScalability)
-            {
-                cameraobject.profile = highsettings;
-            }
         }
+
+        QualitySettings.vSyncCount = scalabilitySettings.vSyncCount;
+        reflectionprobe.resolution = scalabilitySettings.reflectionResolution;
+        reflectionprobe.hdr = scalabilitySettings.reflectionHdr;
+        reflectionprobe.cullingMask = scalabilitySettings.reflectionMask;
+        waterForScalability.waterQuality = scalabilitySettings.waterQuality;
+        waterForScalability.edgeBlend = scalabilitySettings.waterEdgeBlend;
+        foreach (Light light in lightsforscalability) {
+            light.shadows = scalabilitySettings.lightShadows;
+            light.shadowResolution = scalabilitySettings.lightShadowResolution;
+        }
+        foreach (Light light in lightsForToggleScalability) {
+            light.shadows = scalabilitySettings.lightShadows;
+        }
+        foreach (PostProcessingBehaviour cameraobject in camerasForScalability) {
+            cameraobject.profile = scalabilitySettings.postProcessingProfile;
+        }
+
         reflectionprobe.RenderProbe();
     }
+
+    [System.Serializable]
+    public struct ScalabilitySettings {
+        public int vSyncCount;
+        public int reflectionResolution;
+        public bool reflectionHdr;
+        public LayerMask reflectionMask;
+        public WaterQuality waterQuality;
+        public bool waterEdgeBlend;
+        public LightShadows lightShadows;
+        public UnityEngine.Rendering.LightShadowResolution lightShadowResolution;
+        public PostProcessingProfile postProcessingProfile;
+    }
+
+    public ScalabilitySettings rawScalabilitySettings;
+    public ScalabilitySettings lowScalabilitySettings;
+    public ScalabilitySettings highScalabilitySettings;
 
     void Start () {
 
@@ -243,7 +230,7 @@ public class MainSystems : MonoBehaviour {
         mainMenuCamera.gameObject.tag = "MainCamera";
         setscalability();
         Invoke("setscalability", 1f);
-        GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.MainMenu);
+        PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.MainMenu);
 
         for (int i = 0; i < HighScoreListLength; i++) {
             string highScoreNameRetrieved = PlayerPrefs.GetString("High Score Name " + (i+1));
@@ -267,7 +254,7 @@ public class MainSystems : MonoBehaviour {
 
     public void OpenPrompt (int mode)
     {
-        GameObject.Find("Player").GetComponent<SoundManager>().PlaySound(16);
+        PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);
         if (mode == 1)
         {
             resetProgress.gameObject.SetActive(true);
@@ -301,7 +288,7 @@ public class MainSystems : MonoBehaviour {
         {
             if (Time.timeScale != 0)
             {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(false);
+                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(false);
                 hud.SetActive(false);
                 gamePause.SetActive(true);
                 Time.timeScale = 0;
@@ -313,7 +300,7 @@ public class MainSystems : MonoBehaviour {
         {
             if (Time.timeScale == 0)
             {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(true);
+                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(true);
                 hud.SetActive(true);
                 gamePause.SetActive(false);
                 Time.timeScale = 1;
@@ -332,22 +319,10 @@ public class MainSystems : MonoBehaviour {
         }
         else if (mode == 11) {
             loadingScreen.SetActive(true);
-            PlayerPrefs.DeleteKey("High Score 1");
-            PlayerPrefs.DeleteKey("High Score Name 1");
-            PlayerPrefs.DeleteKey("High Score 2");
-            PlayerPrefs.DeleteKey("High Score Name 2");
-            PlayerPrefs.DeleteKey("High Score 3");
-            PlayerPrefs.DeleteKey("High Score Name 3");
-            PlayerPrefs.DeleteKey("High Score 4");
-            PlayerPrefs.DeleteKey("High Score Name 4");
-            PlayerPrefs.DeleteKey("High Score 5");
-            PlayerPrefs.DeleteKey("High Score Name 5");
-            PlayerPrefs.DeleteKey("High Score 6");
-            PlayerPrefs.DeleteKey("High Score Name 6");
-            PlayerPrefs.DeleteKey("High Score 7");
-            PlayerPrefs.DeleteKey("High Score Name 7");
-            PlayerPrefs.DeleteKey("High Score 8");
-            PlayerPrefs.DeleteKey("High Score Name 8");
+            for (int i = 0; i < HighScoreListLength; i++) {
+                PlayerPrefs.DeleteKey("High Score Name " + (i+1));
+                PlayerPrefs.DeleteKey("High Score " + (i+1));
+            }
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else if (mode == 12) {
@@ -509,36 +484,36 @@ public class MainSystems : MonoBehaviour {
 
             if (switchingToGame == true)
             {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = false;
+                PinkIsTheNewEvil.PlayerController.isControlOff = false;
                 logo.SetActive(false);
                 hud.SetActive(true);
                 hud.tag = "Active Menu";
-                GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = true;
-                if (GetComponent<EnemySpawner>().transitionMode == 3) {
-                    GetComponent<EnemySpawner>().level = 3;
+                PinkIsTheNewEvil.CameraLogic.isTracking = true;
+                if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 3) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 3;
                 }
-                else if (GetComponent<EnemySpawner>().transitionMode == 10) {
-                    GetComponent<EnemySpawner>().level = 7;
+                else if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 10) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 7;
                 }
-                else if (GetComponent<EnemySpawner>().transitionMode == 15) {
-                    GetComponent<EnemySpawner>().level = 12;
+                else if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 15) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 12;
                 }
-                else if (GetComponent<EnemySpawner>().transitionMode == 20) {
-                    GetComponent<EnemySpawner>().level = 16;
+                else if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 20) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 16;
                 }
-                else if (GetComponent<EnemySpawner>().transitionMode == 27) {
-                    GetComponent<EnemySpawner>().level = 20;
+                else if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 27) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 20;
                 }
-                else if (GetComponent<EnemySpawner>().transitionMode == 40) {
-                    GetComponent<EnemySpawner>().level = 28;
+                else if (PinkIsTheNewEvil.EnemySpawner.transitionMode == 40) {
+                    PinkIsTheNewEvil.EnemySpawner.level = 28;
                 }
-                GetComponent<EnemySpawner>().LevelSetup();
+                PinkIsTheNewEvil.EnemySpawner.LevelSetup();
                 lookMomImIngame = true;
                 pinkSuit.SetActive(true);
 
             }
 
-                gameObject.GetComponent<EnemySpawner>().isTransitionDone = true;
+            PinkIsTheNewEvil.EnemySpawner.isTransitionDone = true;
             switchBackMain = false;
             isAllInputEnabled(true);
         }
@@ -557,11 +532,11 @@ public class MainSystems : MonoBehaviour {
     public void isAllInputEnabled (bool isIt) {
         if (isIt == true) {
             blockAllInput.SetActive(false);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOn = true;
+            PinkIsTheNewEvil.PlayerController.isControlOn = true;
         }
         else if (isIt == false) {
             blockAllInput.SetActive(true);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOn = false;
+            PinkIsTheNewEvil.PlayerController.isControlOn = false;
         }
     }
 
@@ -572,7 +547,7 @@ public class MainSystems : MonoBehaviour {
 
     public void GoToSettings (int objective)
     {
-        GameObject.Find("Player").GetComponent<SoundManager>().PlaySound(16);
+        PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);
         GameObject objectiveCamera;
         GameObject objectiveMenu;
 
@@ -596,24 +571,24 @@ public class MainSystems : MonoBehaviour {
         }
         else if (objective == 4)
         {
-            if (GetComponent<EnemySpawner>().level == 29 && level29TutStop == true)
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && level29TutStop == true)
             {
-                GetComponent<EnemySpawner>().ShowTutorial();
+                PinkIsTheNewEvil.EnemySpawner.ShowTutorial();
                 level29TutStop = false;
                 level29TutStopCamOverride = true;
                 objectiveCamera = mainMenuCamera;
                 objectiveMenu = mainMenu;
                 mainMenu.transform.position = mainMenu.transform.position + new Vector3(0,-9999,0);
-                GetComponent<EnemySpawner>().ShowTutorial();
+                PinkIsTheNewEvil.EnemySpawner.ShowTutorial();
             }
             else
             {
                 if (firstObjective4 == true)
                 {
-                    GetComponent<EnemySpawner>().isLightingTransitioning = true;
-                    GetComponent<EnemySpawner>().lightTransitionStart = Time.time;
-                    GetComponent<EnemySpawner>().TransitionLevelObjective = GetComponent<EnemySpawner>().level;
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResumeSkyfall();
+                    PinkIsTheNewEvil.EnemySpawner.isLightingTransitioning = true;
+                    PinkIsTheNewEvil.EnemySpawner.lightTransitionStart = Time.time;
+                    PinkIsTheNewEvil.EnemySpawner.TransitionLevelObjective = PinkIsTheNewEvil.EnemySpawner.level;
+                    PinkIsTheNewEvil.PlayerController.ResumeSkyfall();
                 }
                 objectiveCamera = gameCamera;
                 objectiveMenu = null;
@@ -643,115 +618,115 @@ public class MainSystems : MonoBehaviour {
             HighScoreResetConfirmDefaultButton.Select();
         }
         else if (objective == 8) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade1Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 9) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon1Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 10) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade2Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 11) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon2Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 12) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon3Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 13) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade3Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 14) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon4Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 15) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade4Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 16) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon5Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 17) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade5Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 18) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon6Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 19) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon7Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 20) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
-            GameObject.FindWithTag("MainCamera").GetComponent<CameraLogic>().isTracking = false;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
+            PinkIsTheNewEvil.CameraLogic.isTracking = false;
             objectiveCamera = blockade6Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 21) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon8Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 22) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = blockade7Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 23) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon9Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 24) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = blockade8Cam;
             objectiveMenu = null;
             switchingToGame = false;
         }
         else if (objective == 25) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().isControlOff = true;
+            PinkIsTheNewEvil.PlayerController.isControlOff = true;
             objectiveCamera = weapon10Cam;
             objectiveMenu = null;
             switchingToGame = false;
@@ -764,7 +739,7 @@ public class MainSystems : MonoBehaviour {
         }
 
 
-        fromMenuCam = GameObject.FindWithTag("MainCamera");
+        fromMenuCam = PinkIsTheNewEvil.CameraLogic.gameObject;
         if (objective == 4) {
             if (level29TutStopCamOverride == true)
             {
@@ -807,7 +782,7 @@ public class MainSystems : MonoBehaviour {
     void ExitAfterAd () {
         Time.timeScale = 1;
         if (saveHighScore == true) {
-            currentHighScoreList[HighScoreListLength] = new HighScorePair(newname.GetComponent<Text>().text, GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().upgradePoints);
+            currentHighScoreList[HighScoreListLength] = new HighScorePair(newname.GetComponent<Text>().text, PinkIsTheNewEvil.PlayerController.upgradePoints);
             currentHighScoreList = currentHighScoreList.OrderByDescending(highScorePair => highScorePair.highScoreValue).ToArray();
 
             for (int i = 0; i < HighScoreListLength; i++) {
