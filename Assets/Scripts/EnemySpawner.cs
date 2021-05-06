@@ -82,9 +82,10 @@ public class EnemySpawner : MonoBehaviour {
     const float TimeToFadeWeapon = 2f;
     int weaponToFade;
     bool weaponIsFading = false;
+    bool weaponFadeHasInitialized = false;
     float fadingWeaponStartTime;
-    Vector3 objectOriginalScale;
-    GameObject objectToScale;
+    Vector3 weaponModelOriginalScale;
+    GameObject weaponModelToScale;
 
     enum TransitionDoneType {
         NewWeapon,
@@ -616,43 +617,45 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void FadeInWeaponModel() {
-        if (weaponIsFading == true) {
-            if (weaponToFade > 7) {
-                weapons[weaponToFade - 1].SetActive(true);
-            }
-            else {
-                weapons[weaponToFade - 1].SetActive(true);
-                objectOriginalScale = weaponModels[weaponToFade - 1].transform.localScale;
-                objectToScale = weaponModels[weaponToFade - 1];
-                GameObject dust = Instantiate(spawnDust, objectToScale.transform.position, spawnDust.transform.rotation);
-                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(13);
-                dust.transform.parent = null;
-                Destroy(dust, 4);
-            }
-
-            bool fadeErUp = true;
-
-            if (weaponToFade == 8 || weaponToFade == 9 || weaponToFade == 10) {
-                fadeErUp = false;
-            }
-
-            weaponToFade = 0;
-
-            float lerpTime = ((Time.time - fadingWeaponStartTime) / TimeToFadeWeapon);
-
-            if (fadeErUp == false) {
-                weaponIsFading = false;
-            }
-            else {
-                if (lerpTime > 1) {
-                    weaponIsFading = false;
-                }
-                else {
-                    objectToScale.transform.localScale = objectOriginalScale * Mathf.SmoothStep(0, 1, lerpTime);
-                }
-            }
+        if (weaponIsFading == false) {
+            return;
         }
 
+        if (weaponFadeHasInitialized == false) {
+            FadeInWeaponInitialize();
+        }
+
+        float lerpTime;
+        if (weaponToFade > 7) {
+            lerpTime = 2;
+        }
+        else {
+            lerpTime = (Time.time - fadingWeaponStartTime) / TimeToFadeWeapon;
+        }
+
+        if (lerpTime > 1) {
+            weaponIsFading = false;
+            weaponFadeHasInitialized = false;
+            weaponToFade = 0;
+        }
+        else {
+            weaponModelToScale.transform.localScale = weaponModelOriginalScale * Mathf.SmoothStep(0, 1, lerpTime);
+        }
+    }
+
+    void FadeInWeaponInitialize() {
+        weapons[weaponToFade - 1].SetActive(true);
+
+        if (weaponToFade < 8) {
+            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(13);
+            weaponModelToScale = weaponModels[weaponToFade - 1];
+            weaponModelOriginalScale = weaponModels[weaponToFade - 1].transform.localScale;
+            GameObject dust = Instantiate(spawnDust, weaponModelToScale.transform.position, spawnDust.transform.rotation);
+            dust.transform.parent = null;
+            Destroy(dust, 4);
+        }
+
+        weaponFadeHasInitialized = true;
     }
 
     void CheckForTransitionDoneReport() {
