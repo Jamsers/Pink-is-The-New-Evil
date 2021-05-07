@@ -141,23 +141,19 @@ public class MainSystems : MonoBehaviour {
 
     public const int HighScoreListLength = 8;
 
-    public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength+1];
+    public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength + 1];
 
-    void togglescalability()
-    {
-        if (PlayerPrefs.GetInt("LowQuality") == 1)
-        {
+    void togglescalability() {
+        if (PlayerPrefs.GetInt("LowQuality") == 1) {
             PlayerPrefs.SetInt("LowQuality", 0);
         }
-        else
-        {
+        else {
             PlayerPrefs.SetInt("LowQuality", 1);
         }
         setscalability();
     }
 
-    public void setscalability()
-    {
+    public void setscalability() {
         ScalabilitySettings scalabilitySettings;
 
         if (debugRawRender) {
@@ -213,12 +209,11 @@ public class MainSystems : MonoBehaviour {
     public ScalabilitySettings lowScalabilitySettings;
     public ScalabilitySettings highScalabilitySettings;
 
-    void Start () {
+    void Start() {
 
         Cursor.visible = true;
 
-        if (debugMenusEnabled == true)
-        {
+        if (debugMenusEnabled == true) {
             DebugMenu.SetActive(true);
             debugDisableSpawningToggle.gameObject.SetActive(true);
             debugRawRenderToggle.gameObject.SetActive(true);
@@ -233,8 +228,8 @@ public class MainSystems : MonoBehaviour {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.MainMenu);
 
         for (int i = 0; i < HighScoreListLength; i++) {
-            string highScoreNameRetrieved = PlayerPrefs.GetString("High Score Name " + (i+1));
-            int highScoreValueRetrieved = PlayerPrefs.GetInt("High Score " + (i+1));
+            string highScoreNameRetrieved = PlayerPrefs.GetString("High Score Name " + (i + 1));
+            int highScoreValueRetrieved = PlayerPrefs.GetInt("High Score " + (i + 1));
             currentHighScoreList[i] = new HighScorePair(highScoreNameRetrieved, highScoreValueRetrieved);
         }
 
@@ -242,52 +237,43 @@ public class MainSystems : MonoBehaviour {
         debugDisableSpawningToggle.isOn = debugDisableSpawning;
         debugRawRenderToggle.isOn = debugRawRender;
     }
-	
-	void Update () {
+
+    void Update() {
         if (isSwitching == true)
             SwitchToMenu();
-	}
+    }
 
     public Text debuglevel;
     public Text debugweapon;
     public Text debugpoints;
 
-    public void OpenPrompt (int mode)
-    {
+    public void OpenPrompt(int mode) {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);
-        if (mode == 1)
-        {
+        if (mode == 1) {
             resetProgress.gameObject.SetActive(true);
             ResetConfirmDefaultButton.Select();
         }
-        else if (mode == 2)
-        {
+        else if (mode == 2) {
             loadingScreen.SetActive(true);
             PlayerPrefs.DeleteAll();
             Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        else if (mode == 3)
-        {
+        else if (mode == 3) {
             progressReset.gameObject.SetActive(false);
         }
-        else if (mode == 4)
-        {
+        else if (mode == 4) {
             resetProgress.gameObject.SetActive(false);
             SettingsDefaultButton.Select();
         }
-        else if (mode == 5)
-        {
+        else if (mode == 5) {
             removeAds.gameObject.SetActive(false);
         }
-        else if (mode == 6)
-        {
+        else if (mode == 6) {
             GetComponent<EnemySpawner>().ToggleLighting();
         }
-        else if (mode == 7)
-        {
-            if (Time.timeScale != 0)
-            {
+        else if (mode == 7) {
+            if (Time.timeScale != 0) {
                 PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(false);
                 hud.SetActive(false);
                 gamePause.SetActive(true);
@@ -296,18 +282,15 @@ public class MainSystems : MonoBehaviour {
                 Cursor.visible = true;
             }
         }
-        else if (mode == 8)
-        {
-            if (Time.timeScale == 0)
-            {
+        else if (mode == 8) {
+            if (Time.timeScale == 0) {
                 PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().AllowMusicToPlayWhilePaused(true);
                 hud.SetActive(true);
                 gamePause.SetActive(false);
                 Time.timeScale = 1;
             }
         }
-        else if (mode == 9)
-        {
+        else if (mode == 9) {
             hud.SetActive(false);
             gamePause.SetActive(false);
             gameOver.SetActive(true);
@@ -320,8 +303,8 @@ public class MainSystems : MonoBehaviour {
         else if (mode == 11) {
             loadingScreen.SetActive(true);
             for (int i = 0; i < HighScoreListLength; i++) {
-                PlayerPrefs.DeleteKey("High Score Name " + (i+1));
-                PlayerPrefs.DeleteKey("High Score " + (i+1));
+                PlayerPrefs.DeleteKey("High Score Name " + (i + 1));
+                PlayerPrefs.DeleteKey("High Score " + (i + 1));
             }
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -352,84 +335,65 @@ public class MainSystems : MonoBehaviour {
             tutorialScreen6.SetActive(false);
             GoToSettings(4);
         }
-        else if (mode == 19)
-        {
+        else if (mode == 19) {
             togglescalability();
-            if (PlayerPrefs.GetInt("LowQuality") == 1)
-            {
+            if (PlayerPrefs.GetInt("LowQuality") == 1) {
                 LowScalabilitySelectSwitchToButton.Select();
             }
-            else
-            {
+            else {
                 HighScalabilitySelectSwitchToButton.Select();
             }
         }
-        else if (mode == 20)
-        {
+        else if (mode == 20) {
             int leveltoswitchto = 0;
             bool isParseSucc = int.TryParse(debuglevel.text, out leveltoswitchto);
-            if (leveltoswitchto > 29)
-            {
+            if (leveltoswitchto > 29) {
                 leveltoswitchto = 29;
             }
-            else if (leveltoswitchto < 1)
-            {
+            else if (leveltoswitchto < 1) {
                 leveltoswitchto = 1;
             }
 
-            if (isParseSucc == true)
-            {
+            if (isParseSucc == true) {
                 PlayerPrefs.SetInt("Level", leveltoswitchto);
             }
         }
-        else if (mode == 21)
-        {
+        else if (mode == 21) {
             int weapontoswitchto = 0;
             bool isParseSucc = int.TryParse(debugweapon.text, out weapontoswitchto);
-            if (weapontoswitchto > 8)
-            {
+            if (weapontoswitchto > 8) {
                 weapontoswitchto = 8;
             }
-            else if (weapontoswitchto < 1)
-            {
+            else if (weapontoswitchto < 1) {
                 weapontoswitchto = 1;
             }
 
-            if (isParseSucc == true)
-            {
+            if (isParseSucc == true) {
                 PlayerPrefs.SetInt("Weapon", weapontoswitchto);
             }
         }
-        else if (mode == 22)
-        {
+        else if (mode == 22) {
             int pointstoswitchto = 0;
             bool isParseSucc = int.TryParse(debugpoints.text, out pointstoswitchto);
-            if (pointstoswitchto > 1000000)
-            {
+            if (pointstoswitchto > 1000000) {
                 pointstoswitchto = 1000000;
             }
-            else if (pointstoswitchto < 0)
-            {
+            else if (pointstoswitchto < 0) {
                 pointstoswitchto = 0;
             }
 
-            if (isParseSucc == true)
-            {
+            if (isParseSucc == true) {
                 PlayerPrefs.SetInt("Upgrade Points", pointstoswitchto);
             }
         }
-        else if (mode == 23)
-        {
+        else if (mode == 23) {
             Application.Quit();
         }
-        else if (mode == 24)
-        {
-            if (Screen.fullScreen == true)
-            {
+        else if (mode == 24) {
+            if (Screen.fullScreen == true) {
                 Screen.SetResolution(1024, 768, false);
             }
-            else
-            {
+            else {
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             }
             setscalability();
@@ -457,21 +421,18 @@ public class MainSystems : MonoBehaviour {
 
     public bool lookMomImIngame = false;
 
-    void SwitchToMenu ()
-    {
+    void SwitchToMenu() {
         float switchTimePercent;
         if (lookMomImIngame == true) {
             switchTimePercent = (Time.time - switchTime) / switchLength;
         }
-        else if (switchingToGame == true)
-        {
+        else if (switchingToGame == true) {
             switchTimePercent = (Time.time - switchTime) / switchToGameLength;
         }
         else
             switchTimePercent = (Time.time - switchTime) / switchLength;
 
-        if (switchTimePercent > 1 || switchBackMain == true)
-        {
+        if (switchTimePercent > 1 || switchBackMain == true) {
             isSwitching = false;
             fromMenuCam.gameObject.tag = "Untagged";
             fromMenuCam.gameObject.SetActive(false);
@@ -482,8 +443,7 @@ public class MainSystems : MonoBehaviour {
             fromMenuCam.transform.rotation = fromMenuCamRot;
             fromMenuCam.gameObject.GetComponent<Camera>().fieldOfView = fromMenuCamFOV;
 
-            if (switchingToGame == true)
-            {
+            if (switchingToGame == true) {
                 PinkIsTheNewEvil.PlayerController.isControlOff = false;
                 logo.SetActive(false);
                 hud.SetActive(true);
@@ -517,8 +477,7 @@ public class MainSystems : MonoBehaviour {
             switchBackMain = false;
             isAllInputEnabled(true);
         }
-        else
-        {
+        else {
             fromMenuCam.transform.position = Vector3.Lerp(fromMenuCamPos, toMenuCam.transform.position, Mathf.SmoothStep(0f, 1f, switchTimePercent));
             fromMenuCam.transform.rotation = Quaternion.Lerp(fromMenuCamRot, toMenuCam.transform.rotation, Mathf.SmoothStep(0f, 1f, switchTimePercent));
             fromMenuCam.gameObject.GetComponent<Camera>().fieldOfView = Mathf.Lerp(fromMenuCamFOV, toMenuCam.gameObject.GetComponent<Camera>().fieldOfView, Mathf.SmoothStep(0f, 1f, switchTimePercent));
@@ -529,7 +488,7 @@ public class MainSystems : MonoBehaviour {
 
     public GameObject pinkSuit;
 
-    public void isAllInputEnabled (bool isIt) {
+    public void isAllInputEnabled(bool isIt) {
         if (isIt == true) {
             blockAllInput.SetActive(false);
             PinkIsTheNewEvil.PlayerController.isControlOn = true;
@@ -545,46 +504,38 @@ public class MainSystems : MonoBehaviour {
     bool level29TutStop = true;
     bool level29TutStopCamOverride = false;
 
-    public void GoToSettings (int objective)
-    {
+    public void GoToSettings(int objective) {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);
         GameObject objectiveCamera;
         GameObject objectiveMenu;
 
-        if (objective == 1)
-        {
+        if (objective == 1) {
             objectiveCamera = mainMenuCamera;
             objectiveMenu = mainMenu;
             MainMenuDefaultButton.Select();
         }
-        else if (objective == 2)
-        {
+        else if (objective == 2) {
             objectiveCamera = settingsMenuCamera;
             objectiveMenu = settingsMenu;
             SettingsDefaultButton.Select();
         }
-        else if (objective == 3)
-        {
+        else if (objective == 3) {
             objectiveCamera = creditsMenuCamera;
             objectiveMenu = creditsMenu;
             CreditsDefaultButton.Select();
         }
-        else if (objective == 4)
-        {
-            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && level29TutStop == true)
-            {
+        else if (objective == 4) {
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && level29TutStop == true) {
                 PinkIsTheNewEvil.EnemySpawner.ShowTutorial();
                 level29TutStop = false;
                 level29TutStopCamOverride = true;
                 objectiveCamera = mainMenuCamera;
                 objectiveMenu = mainMenu;
-                mainMenu.transform.position = mainMenu.transform.position + new Vector3(0,-9999,0);
+                mainMenu.transform.position = mainMenu.transform.position + new Vector3(0, -9999, 0);
                 PinkIsTheNewEvil.EnemySpawner.ShowTutorial();
             }
-            else
-            {
-                if (firstObjective4 == true)
-                {
+            else {
+                if (firstObjective4 == true) {
                     PinkIsTheNewEvil.EnemySpawner.isLightingTransitioning = true;
                     PinkIsTheNewEvil.EnemySpawner.lightTransitionStart = Time.time;
                     PinkIsTheNewEvil.EnemySpawner.TransitionLevelObjective = PinkIsTheNewEvil.EnemySpawner.level;
@@ -595,13 +546,12 @@ public class MainSystems : MonoBehaviour {
                 switchingToGame = true;
                 firstObjective4 = false;
             }
-                
-            
+
+
         }
-        else if (objective == 5)
-        {
+        else if (objective == 5) {
             loadingScreen.SetActive(true);
-                ExitAfterAd();
+            ExitAfterAd();
 
             objectiveCamera = mainMenuCamera;
             objectiveMenu = mainMenu;
@@ -731,23 +681,20 @@ public class MainSystems : MonoBehaviour {
             objectiveMenu = null;
             switchingToGame = false;
         }
-        else
-        {
+        else {
             objectiveCamera = null;
             objectiveMenu = null;
             Debug.Log("well damn");
         }
 
 
-        fromMenuCam = PinkIsTheNewEvil.CameraLogic.gameObject;
+        fromMenuCam = GameObject.FindWithTag("MainCamera");
         if (objective == 4) {
-            if (level29TutStopCamOverride == true)
-            {
+            if (level29TutStopCamOverride == true) {
                 level29TutStopCamOverride = false;
                 toMenuCam = objectiveCamera;
             }
-            else
-            {
+            else {
                 toMenuCam = gameCamera;
             }
         }
@@ -776,10 +723,10 @@ public class MainSystems : MonoBehaviour {
         }
 
         isSwitching = true;
-        
+
     }
 
-    void ExitAfterAd () {
+    void ExitAfterAd() {
         Time.timeScale = 1;
         if (saveHighScore == true) {
             currentHighScoreList[HighScoreListLength] = new HighScorePair(newname.GetComponent<Text>().text, PinkIsTheNewEvil.PlayerController.upgradePoints);
@@ -787,7 +734,7 @@ public class MainSystems : MonoBehaviour {
 
             for (int i = 0; i < HighScoreListLength; i++) {
                 PlayerPrefs.SetString("High Score Name " + (i + 1), currentHighScoreList[i].highScoreName);
-                PlayerPrefs.SetInt("High Score " + (i+1), currentHighScoreList[i].highScoreValue);
+                PlayerPrefs.SetInt("High Score " + (i + 1), currentHighScoreList[i].highScoreValue);
             }
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

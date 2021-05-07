@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 
     Animator animator;
 
-    public void ResumeSkyfall () {
+    public void ResumeSkyfall() {
         animator.SetFloat("fallFromSkySpeed", 1);
     }
 
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject newHighScore;
 
 
-    void CheckIfInHighscores () {
+    void CheckIfInHighscores() {
         for (int i = 0; i < MainSystems.HighScoreListLength; i++) {
             if (upgradePoints > GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().currentHighScoreList[i].highScoreValue) {
                 leburhighsc.gameObject.SetActive(true);
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void fillInHighScores () {
+    void fillInHighScores() {
         highScoreName[0].GetComponent<Text>().text = "1: " + PlayerPrefs.GetString("High Score Name 1");
         highScore[0].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 1").ToString();
         highScoreName[1].GetComponent<Text>().text = "2: " + PlayerPrefs.GetString("High Score Name 2");
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour {
         transformToShake.localPosition = moveUpperCubeorigpos;
     }
 
-    void HealthRegeneration () {
+    void HealthRegeneration() {
         int healthRegenAmount = 1;
         float healthRegenTick = .10f;
         if (currenthealth + healthRegenAmount > targetHealth) {
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour {
 
     float mouseSpecDistanceThresholdreplace;
     void Start() {
-        
+
         fillInHighScores();
         if (PlayerPrefs.HasKey("Upgrade Points"))
             upgradePoints = PlayerPrefs.GetInt("Upgrade Points");
@@ -234,8 +234,7 @@ public class PlayerController : MonoBehaviour {
 
         trailParticle.GetComponent<ParticleSystem>().Stop();
 
-        if (PlayerPrefs.GetInt("Level") == 29)
-        {
+        if (PlayerPrefs.GetInt("Level") == 29) {
             modeltoRepl.GetComponent<Renderer>().sharedMaterial = playerpinkTrim;
         }
     }
@@ -330,8 +329,7 @@ public class PlayerController : MonoBehaviour {
             attackCooldown = .5f;
             disableOtherWeapons();
             weaponModel8.SetActive(true);
-            if (PlayerPrefs.GetInt("Level") == 29)
-            {
+            if (PlayerPrefs.GetInt("Level") == 29) {
                 weaponModel8.GetComponent<MeshRenderer>().material = weapon8pinktrim;
             }
         }
@@ -359,12 +357,12 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 100;
                 setAttackMode(2);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[1-1].transform.position, gayPoofWeap.transform.rotation);
+                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[1 - 1].transform.position, gayPoofWeap.transform.rotation);
                 GameObject poof2 = Instantiate(gayPoofPLay, weaponModel2.transform.position, gayPoofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1-1].SetActive(false);
+                enemySpawner.weapons[1 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -681,7 +679,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject speedPerkBack;
     public GameObject jumpPerkIcon;
     public GameObject jumpPerkBack;
-    
+
     void GetRidOfNotEnoughPrompt() {
         backgroundNotEnough.SetActive(false);
         notEnoughPrompt.SetActive(false);
@@ -703,26 +701,23 @@ public class PlayerController : MonoBehaviour {
 
     bool hasDoneIt = false;
 
-    public void SpawnSmokeForFall () {
+    public void SpawnSmokeForFall() {
         GameObject shocking = Instantiate(shockwavePlayer2);
         shocking.transform.position = new Vector3(transform.position.x, transform.position.y + .4f, transform.position.z);
         Destroy(shocking, 4);
     }
 
-    public void StopSkyfall () {
+    public void StopSkyfall() {
         isFallingFromSky = false;
     }
 
-    void SpecialAttackManual(int mode)
-    {
-        if (orangeCircle.GetComponent<Transform>().position == startLocationOfMouseDown && orangeCircle.activeSelf == false)
-        {
+    void SpecialAttackManual(int mode) {
+        if (orangeCircle.GetComponent<Transform>().position == startLocationOfMouseDown && orangeCircle.activeSelf == false) {
             specialAttackAim = Input.mousePosition;
             CancelInvoke("VanishAndResetOrangeCircle");
             orangeCircle.SetActive(true);
         }
-        else
-        {
+        else {
             specialAttackAim = orangeCircle.GetComponent<Transform>().position;
         }
 
@@ -733,21 +728,17 @@ public class PlayerController : MonoBehaviour {
         SpecialPhase1_5 = false;
         SpecialPhase2 = false;
         SpecialPhase2_5 = false;
-        if (mode == 1)
-        {
+        if (mode == 1) {
             specialAttackMode = 1;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-            if (isSpecAttack2 == true)
-            {
+            if (isSpecAttack2 == true) {
                 speedAttackLastTrig = Time.time;
             }
         }
-        else
-        {
+        else {
             specialAttackMode = 2;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-            if (isSpecAttack1 == true)
-            {
+            if (isSpecAttack1 == true) {
                 jumpAttackLastTrig = Time.time;
             }
         }
@@ -757,15 +748,13 @@ public class PlayerController : MonoBehaviour {
         powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
         powerUpIcon.SetActive(true);
 
-        if (isSpecAttack2 == false && specialAttackMode == 1)
-        {
+        if (isSpecAttack2 == false && specialAttackMode == 1) {
             isSpecialAttackUnderWay = false;
             powerUpIcon.SetActive(false);
             orangeCircle.SetActive(false);
             CancelInvoke("removeOrangeCircle");
         }
-        else if (isSpecAttack1 == false && specialAttackMode == 2)
-        {
+        else if (isSpecAttack1 == false && specialAttackMode == 2) {
             isSpecialAttackUnderWay = false;
             powerUpIcon.SetActive(false);
             orangeCircle.SetActive(false);
@@ -773,8 +762,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void updateJoystickAim()
-    {
+    void updateJoystickAim() {
         int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
         int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
 
@@ -791,31 +779,25 @@ public class PlayerController : MonoBehaviour {
         float joystickAimMoveSpeed = 1500f;
         float resetTime = 0.75f;
 
-        if (aimHorizontal == 0 && aimVertical == 0)
-        {
+        if (aimHorizontal == 0 && aimVertical == 0) {
             Invoke("VanishAndResetOrangeCircle", resetTime);
         }
-        else
-        {
+        else {
             CancelInvoke("VanishAndResetOrangeCircle");
 
             Vector3 finalPostion = orangeCircle.GetComponent<Transform>().position + ((virtualJoystickDirection * joystickAimMoveSpeed) * Time.deltaTime);
 
-            if (finalPostion.x > screenWidth-10)
-            {
-                finalPostion.x = screenWidth-10;
+            if (finalPostion.x > screenWidth - 10) {
+                finalPostion.x = screenWidth - 10;
             }
-            else if (finalPostion.x < 10)
-            {
+            else if (finalPostion.x < 10) {
                 finalPostion.x = 10;
             }
 
-            if (finalPostion.y > screenHeight-10)
-            {
-                finalPostion.y = screenHeight-10;
+            if (finalPostion.y > screenHeight - 10) {
+                finalPostion.y = screenHeight - 10;
             }
-            else if (finalPostion.y < 10)
-            {
+            else if (finalPostion.y < 10) {
                 finalPostion.y = 10;
             }
 
@@ -827,8 +809,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    void VanishAndResetOrangeCircle()
-    {
+    void VanishAndResetOrangeCircle() {
         int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
         int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
 
@@ -840,8 +821,7 @@ public class PlayerController : MonoBehaviour {
 
     bool isMouseOverButton = false;
 
-    public void setisMouseOverButton(bool setBool)
-    {
+    public void setisMouseOverButton(bool setBool) {
         isMouseOverButton = setBool;
     }
 
@@ -850,40 +830,31 @@ public class PlayerController : MonoBehaviour {
         startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
         mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
 
-        if ((Input.GetAxis("Fire2Joystick") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
-        {
-            if (orangeCircle.transform.position != startLocationOfMouseDown)
-            {
+        if ((Input.GetAxis("Fire2Joystick") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
+            if (orangeCircle.transform.position != startLocationOfMouseDown) {
                 SpecialAttackManual(2);
             }
         }
-        else if ((Input.GetAxis("Fire1Joystick") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
-        {
-            if (orangeCircle.transform.position != startLocationOfMouseDown)
-            {
+        else if ((Input.GetAxis("Fire1Joystick") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
+            if (orangeCircle.transform.position != startLocationOfMouseDown) {
                 SpecialAttackManual(1);
             }
         }
-        else if ((Input.GetButtonDown("Fire2") == true) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
-        {
-            if (isMouseOverButton != true)
-            {
+        else if ((Input.GetButtonDown("Fire2") == true) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
+            if (isMouseOverButton != true) {
                 SpecialAttackManual(2);
-            } 
+            }
         }
-        else if ((Input.GetButtonDown("Fire1") == true) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0)
-        {
-            if (isMouseOverButton != true)
-            {
+        else if ((Input.GetButtonDown("Fire1") == true) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
+            if (isMouseOverButton != true) {
                 SpecialAttackManual(1);
             }
         }
 
-        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true) && Time.timeScale != 0)
-        {
+        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true) && Time.timeScale != 0) {
             updateJoystickAim();
         }
-        
+
 
         if (Time.timeScale == 0) {
             AudioListener.volume = 0;
@@ -929,7 +900,7 @@ public class PlayerController : MonoBehaviour {
                 if (isControlOn == true) {
                     if (Time.timeScale != 0)
                         storedMoveDirection = VirtualJoystick();
-                        MovePlayer(storedMoveDirection);
+                    MovePlayer(storedMoveDirection);
                 }
                 else if (isControlOn == false) {
                     AnimSwitchTo("goToIdle3");
@@ -960,7 +931,7 @@ public class PlayerController : MonoBehaviour {
     bool lastIsMouseDown = false;
 
     float startDurationOfMouseDown = 0;
-    Vector3 startLocationOfMouseDown = new Vector3(0,0,0);
+    Vector3 startLocationOfMouseDown = new Vector3(0, 0, 0);
 
     float startDurationOfMouseUp = 0;
     Vector3 startLocationOfMouseUp = new Vector3(0, 0, 0);
@@ -1094,7 +1065,7 @@ public class PlayerController : MonoBehaviour {
             specAttack3IsGo = true;
 
             GameObject shocking = Instantiate(shockwavePlayer2);
-            shocking.transform.position = new Vector3 (transform.position.x, transform.position.y-.4f, transform.position.z);
+            shocking.transform.position = new Vector3(transform.position.x, transform.position.y - .4f, transform.position.z);
             Destroy(shocking, 4);
 
             specialAttackPhase = 7;
@@ -1120,7 +1091,7 @@ public class PlayerController : MonoBehaviour {
 
     bool specAttack3IsGo = false;
 
-    void FixedUpdate () {
+    void FixedUpdate() {
         if (specAttack3IsGo == true) {
             transform.position = specialAttackFlightTargetPos;
 
@@ -1139,7 +1110,7 @@ public class PlayerController : MonoBehaviour {
 
     GameObject trailParticle;
 
-    void PlayerSpecialAttackLogic1 () {
+    void PlayerSpecialAttackLogic1() {
         if (specialAttackPhase == 1) {
             Vector3 virtualJoystickDirection = startLocationOfMouseDown - orangeCircle.GetComponent<Transform>().position;
             virtualJoystickDirection = new Vector3(-virtualJoystickDirection.x, 0, -virtualJoystickDirection.y);
@@ -1150,24 +1121,22 @@ public class PlayerController : MonoBehaviour {
             isControlOff = true;
             specialAttackPhase = 2;
 
-            
+
         }
         else if (specialAttackPhase == 2) {
         }
         else if (specialAttackPhase == 3) {
             RaycastHit hit;
-            Physics.Raycast(new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y+1, raycastSource.transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
+            Physics.Raycast(new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y + 1, raycastSource.transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
             Vector3 pointHit = hit.point;
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pointHit);
             specialAttackPhase = 4;
 
-            if (attackMode == 7 || attackMode == 8)
-            {
+            if (attackMode == 7 || attackMode == 8) {
                 trailParticle.transform.position = shockwavespawn2.position;
             }
-            else
-            {
+            else {
                 trailParticle.transform.position = shockwavespawn.position;
             }
 
@@ -1180,7 +1149,7 @@ public class PlayerController : MonoBehaviour {
             trailParticle.transform.localPosition = newtrailPos;
             trailParticle.transform.localScale = new Vector3(1.2f, 1.2f, .65f);
             trailParticle.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            
+
             trailParticle.GetComponent<ParticleSystem>().Play();
         }
         else if (specialAttackPhase == 4) {
@@ -1242,7 +1211,7 @@ public class PlayerController : MonoBehaviour {
 
     GameObject origOrangeCircle;
 
-    void fadeAwayOrangeGroup () {
+    void fadeAwayOrangeGroup() {
         if (isFadingOrange == true) {
 
             if (isThereNoTargetForJump == true) {
@@ -1330,7 +1299,7 @@ public class PlayerController : MonoBehaviour {
 
     int MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 0;
 
-    void SpecialAttackIndicatorsFadedXDDDD () {
+    void SpecialAttackIndicatorsFadedXDDDD() {
         if (enemySpawner.level > 14) {
             MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 2;
         }
@@ -1416,7 +1385,7 @@ public class PlayerController : MonoBehaviour {
         jumpAttackIndicatorIcon.GetComponent<Image>().color = jumpTrans;
     }
 
-    void PlayerSpecialAttack () {
+    void PlayerSpecialAttack() {
         if (isControlOff == false) {
             if (Input.GetMouseButton(0) == true) {
                 if (lastIsMouseDown == false) {
@@ -1604,7 +1573,7 @@ public class PlayerController : MonoBehaviour {
                             }
                             else {
                                 specialAttackMode = 2;
-                                powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0,0,-90);
+                                powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
                                 if (isSpecAttack1 == true) {
                                     jumpAttackLastTrig = Time.time;
                                 }
@@ -1693,17 +1662,14 @@ public class PlayerController : MonoBehaviour {
             if (verticalAxisJoystick > 0f && verticalAxisJoystick < joystickAxisLowerLimit) {
                 verticalAxisJoystick = joystickAxisLowerLimit;
             }
-            else if (verticalAxisJoystick < 0f && verticalAxisJoystick > -joystickAxisLowerLimit)
-            {
+            else if (verticalAxisJoystick < 0f && verticalAxisJoystick > -joystickAxisLowerLimit) {
                 verticalAxisJoystick = -joystickAxisLowerLimit;
             }
 
-            if (horizontalAxisJoystick != 0 || verticalAxisJoystick != 0)
-            {
+            if (horizontalAxisJoystick != 0 || verticalAxisJoystick != 0) {
                 Cursor.visible = false;
             }
-            else if (Input.mousePosition != lastMousePosition)
-            {
+            else if (Input.mousePosition != lastMousePosition) {
                 Cursor.visible = true;
                 lastMousePosition = Input.mousePosition;
             }
@@ -1714,42 +1680,32 @@ public class PlayerController : MonoBehaviour {
             float horizontalAxis = 0f;
             float verticalAxis = 0f;
 
-            if (horizontalAxisJoystick > 0 && horizontalAxisKeyboard > 0)
-            {
+            if (horizontalAxisJoystick > 0 && horizontalAxisKeyboard > 0) {
                 horizontalAxis = Mathf.Max(horizontalAxisJoystick, horizontalAxisKeyboard);
             }
-            else if (horizontalAxisJoystick < 0 && horizontalAxisKeyboard < 0)
-            {
+            else if (horizontalAxisJoystick < 0 && horizontalAxisKeyboard < 0) {
                 horizontalAxis = Mathf.Min(horizontalAxisJoystick, horizontalAxisKeyboard);
             }
-            else
-            {
-                if (horizontalAxisJoystick != 0)
-                {
+            else {
+                if (horizontalAxisJoystick != 0) {
                     horizontalAxis = horizontalAxisJoystick;
                 }
-                else
-                {
+                else {
                     horizontalAxis = horizontalAxisKeyboard;
                 }
             }
 
-            if (verticalAxisJoystick > 0 && verticalAxisKeyboard > 0)
-            {
+            if (verticalAxisJoystick > 0 && verticalAxisKeyboard > 0) {
                 verticalAxis = Mathf.Max(verticalAxisJoystick, verticalAxisKeyboard);
             }
-            else if (verticalAxisJoystick < 0 && verticalAxisKeyboard < 0)
-            {
+            else if (verticalAxisJoystick < 0 && verticalAxisKeyboard < 0) {
                 verticalAxis = Mathf.Min(verticalAxisJoystick, verticalAxisKeyboard);
             }
-            else
-            {
-                if (verticalAxisJoystick != 0)
-                {
+            else {
+                if (verticalAxisJoystick != 0) {
                     verticalAxis = verticalAxisJoystick;
                 }
-                else
-                {
+                else {
                     verticalAxis = verticalAxisKeyboard;
                 }
             }
@@ -1758,26 +1714,23 @@ public class PlayerController : MonoBehaviour {
 
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
             virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
-            
+
 
             CurrrentJoystickDirection = Vector3.SmoothDamp(CurrrentJoystickDirection, virtualJoystickDirection, ref refoutvar, 0.1f);
 
-           
+
 
             Vector3 LowerClampedJoystickDirection = CurrrentJoystickDirection;
 
-            if (LowerClampedJoystickDirection.x < lowerlimit && LowerClampedJoystickDirection.x > -lowerlimit)
-            {
+            if (LowerClampedJoystickDirection.x < lowerlimit && LowerClampedJoystickDirection.x > -lowerlimit) {
                 LowerClampedJoystickDirection.x = 0f;
             }
 
-            if (LowerClampedJoystickDirection.y < lowerlimit && LowerClampedJoystickDirection.y > -lowerlimit)
-            {
+            if (LowerClampedJoystickDirection.y < lowerlimit && LowerClampedJoystickDirection.y > -lowerlimit) {
                 LowerClampedJoystickDirection.y = 0f;
             }
 
-            if (LowerClampedJoystickDirection.z < lowerlimit && LowerClampedJoystickDirection.z > -lowerlimit)
-            {
+            if (LowerClampedJoystickDirection.z < lowerlimit && LowerClampedJoystickDirection.z > -lowerlimit) {
                 LowerClampedJoystickDirection.z = 0f;
             }
 
@@ -1820,14 +1773,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void setAttackIsDone () {
+    public void setAttackIsDone() {
         attackOnCooldown = 1;
         Invoke("AttackCooldownManager", attackCooldown);
         attackIsDone = true;
         amAttackingRightNow = false;
     }
 
-    void AttackCooldownManager () {
+    void AttackCooldownManager() {
         attackOnCooldown = 0;
     }
 
@@ -1839,11 +1792,11 @@ public class PlayerController : MonoBehaviour {
 
     public float playerLookAtRotateSpeed;
 
-    void MovePlayer (Vector3 direction) {
+    void MovePlayer(Vector3 direction) {
 
         playerCollider.SimpleMove((direction * moveSpeed) * Time.fixedDeltaTime);
 
-        if (direction != new Vector3(0,0,0)) {
+        if (direction != new Vector3(0, 0, 0)) {
             if (prevBlueArrow == false) {
                 if (SpecialPhase2 != true) {
                 }
@@ -1860,8 +1813,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (enemyTarget == null) {
-            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
-            {
+            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true) {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
 
@@ -1872,20 +1824,17 @@ public class PlayerController : MonoBehaviour {
                 else
                     AnimSwitchTo("goToAttack2");
 
-                if (isAttacking == 0)
-                {
+                if (isAttacking == 0) {
                     isAttacking = 1;
                     hasDamaged = 0;
                 }
 
-                if (attackDamageTicked == true && hasDamaged == 0)
-                {
+                if (attackDamageTicked == true && hasDamaged == 0) {
                     hasDamaged = 1;
                     attackDamageTicked = false;
                 }
 
-                if (attackIsDone == true)
-                {
+                if (attackIsDone == true) {
                     attackIsDone = false;
                     attackOnCooldown = 1;
                     isAttacking = 0;
@@ -1927,8 +1876,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 up = new Vector3(0f, 1f, 0f);
             float leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, up);
 
-            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true)
-            {
+            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true) {
                 amAttackingRightNow = true;
                 attackOnCooldown = 1;
 
@@ -1938,7 +1886,7 @@ public class PlayerController : MonoBehaviour {
                     AnimSwitchTo("goToAttack3");
                 else
                     AnimSwitchTo("goToAttack2");
-                
+
                 if (isAttacking == 0) {
                     isAttacking = 1;
                     hasDamaged = 0;
@@ -1966,7 +1914,7 @@ public class PlayerController : MonoBehaviour {
                         AnimSwitchTo("goToIdle");
                 }
                 else if (angle < 135f && angle > 45f) {
-                    
+
                     if (leftRightIdentifier < 0) {
                         if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
                             AnimSwitchTo("goToWalkLeft3");
@@ -2081,7 +2029,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void setAnimatorBoolCluster (string boolFocus) {
+    void setAnimatorBoolCluster(string boolFocus) {
         if (animator.GetBool("Idle") != false)
             animator.SetBool("Idle", false);
         if (animator.GetBool("Death") != false)
@@ -2167,12 +2115,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter (Collider other) {
+    void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy" && listOfTargets.Contains(other.gameObject) == false)
             listOfTargets.Add(other.gameObject);
     }
 
-    void OnTriggerExit (Collider other) {
+    void OnTriggerExit(Collider other) {
         if (other.tag == "Enemy" && listOfTargets.Contains(other.gameObject) == true)
             listOfTargets.Remove(other.gameObject);
     }
