@@ -14,7 +14,6 @@ public class SoundManager : MonoBehaviour {
     float musicFadingInStartTime;
     bool isMusicFadingIn = false;
     AudioSource musicToFadeIn;
-
     MusicMood currentlyPlayingMusic = MusicMood.None;
 
     public enum CharacterType {
@@ -96,10 +95,10 @@ public class SoundManager : MonoBehaviour {
                 fadeTime = 0.5f;
 
             if (currentlyPlayingMusic != MusicMood.None)
-                FadeOutMusic((int)currentlyPlayingMusic);
+                FadeSound((int)currentlyPlayingMusic);
 
             if (mood != MusicMood.None)
-                FadeInMusic((int)mood);
+                FadeOutSound((int)mood);
         }
 
         currentlyPlayingMusic = mood;
@@ -138,7 +137,7 @@ public class SoundManager : MonoBehaviour {
             audioClipsHit[arrayIndex].Stop();
     }
 
-    public void FadeOutMusic(int arrayIndex) {
+    public void FadeSound(int arrayIndex) {
         if (audioClips[arrayIndex].isPlaying == false)
             return;
 
@@ -148,7 +147,7 @@ public class SoundManager : MonoBehaviour {
         isMusicFadingOut = true;
     }
 
-    public void FadeInMusic(int arrayIndex) {
+    public void FadeOutSound(int arrayIndex) {
         if (audioClips[arrayIndex].isPlaying == true)
             return;
 

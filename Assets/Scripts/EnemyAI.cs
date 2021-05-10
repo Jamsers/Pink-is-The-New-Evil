@@ -47,7 +47,6 @@ public class EnemyAI : MonoBehaviour {
     float prevTime;
     int isAttacking = 0;
     bool isDead = false;
-    string lastTrigger = "null";
     bool pointsGiven = false;
     float decomposeStart;
     bool decomposing = false;
@@ -178,22 +177,6 @@ public class EnemyAI : MonoBehaviour {
     void Decomposition() {
         float decomposeTimePercent = (Time.time - decomposeStart) / decomposeLength;
         enemyModel.localPosition = Vector3.Lerp(enemyModelOrigLocalPosition, new Vector3(0, -2, 0), decomposeTimePercent);
-    }
-
-    void MoveUpper() {
-        enemyModel.position = new Vector3(enemyModel.position.x + shakeAmount / 2, enemyModel.position.y + shakeAmount / 2, enemyModel.position.z + shakeAmount / 2);
-    }
-
-    void MoveLower() {
-        enemyModel.position = new Vector3(enemyModel.position.x - shakeAmount, enemyModel.position.y - shakeAmount, enemyModel.position.z - shakeAmount);
-    }
-
-    void MoveUpper2() {
-        enemyModel.position = new Vector3(enemyModel.position.x + shakeAmount, enemyModel.position.y + shakeAmount, enemyModel.position.z + shakeAmount);
-    }
-
-    void MoveFinish() {
-        enemyModel.localPosition = enemyModelOrigLocalPosition;
     }
 
     void GenerateSpecialProcTick() {
@@ -511,5 +494,21 @@ public class EnemyAI : MonoBehaviour {
 
         if (animator.GetBool(trigger) != true)
             animator.SetBool(trigger, true);
+    }
+
+    void MoveUpper() {
+        enemyModel.position = new Vector3(enemyModel.position.x + shakeAmount / 2, enemyModel.position.y + shakeAmount / 2, enemyModel.position.z + shakeAmount / 2);
+    }
+
+    void MoveLower() {
+        enemyModel.position = new Vector3(enemyModel.position.x - shakeAmount, enemyModel.position.y - shakeAmount, enemyModel.position.z - shakeAmount);
+    }
+
+    void MoveUpper2() {
+        enemyModel.position = new Vector3(enemyModel.position.x + shakeAmount, enemyModel.position.y + shakeAmount, enemyModel.position.z + shakeAmount);
+    }
+
+    void MoveFinish() {
+        enemyModel.localPosition = enemyModelOrigLocalPosition;
     }
 }

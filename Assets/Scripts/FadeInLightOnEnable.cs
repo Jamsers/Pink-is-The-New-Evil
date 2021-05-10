@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class FadeInLightOnEnable : MonoBehaviour {
 
-	Light light;
+	Light lightAttachedTo;
 	float origRange;
 	bool isFading = false;
 	float fadeamount = 10f;
 
 	// Use this for initialization
 	void Start () {
-		light = GetComponent<Light>();
-		origRange = light.range;
-		light.range = 0;
+		lightAttachedTo = GetComponent<Light>();
+		origRange = lightAttachedTo.range;
+		lightAttachedTo.range = 0;
 	}
 
 	void OnEnable()
@@ -25,8 +25,8 @@ public class FadeInLightOnEnable : MonoBehaviour {
 	void Update () {
 		if (isFading)
         {
-			light.range = Mathf.MoveTowards(light.range, origRange, fadeamount * Time.deltaTime);
-			if (light.range >= origRange)
+			lightAttachedTo.range = Mathf.MoveTowards(lightAttachedTo.range, origRange, fadeamount * Time.deltaTime);
+			if (lightAttachedTo.range >= origRange)
             {
 				isFading = false;
             }

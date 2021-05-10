@@ -109,6 +109,30 @@ public class MainSystems : MonoBehaviour {
 
     public GameObject gameCamera;
 
+    public float switchLength;
+
+    public Vector3 cameraStartPosition;
+    public Quaternion cameraStartRotation;
+    public float cameraStartFOV;
+
+    public const int HighScoreListLength = 8;
+
+    public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength + 1];
+
+    public Text debuglevel;
+    public Text debugweapon;
+    public Text debugpoints;
+
+    
+
+    public ScalabilitySettings rawScalabilitySettings;
+    public ScalabilitySettings lowScalabilitySettings;
+    public ScalabilitySettings highScalabilitySettings;
+
+    public bool lookMomImIngame = false;
+
+    public GameObject pinkSuit;
+
     GameObject fromMenuCam;
     GameObject toMenuCam;
     Vector3 fromMenuCamPos;
@@ -118,16 +142,14 @@ public class MainSystems : MonoBehaviour {
     bool switchingToGame = false;
 
     bool isSwitching = false;
-
-    public float switchLength;
-
     float switchTime;
 
     bool switchBackMain = false;
 
-    public Vector3 cameraStartPosition;
-    public Quaternion cameraStartRotation;
-    public float cameraStartFOV;
+    bool firstObjective4 = true;
+
+    bool level29TutStop = true;
+    bool level29TutStopCamOverride = false;
 
     public struct HighScorePair {
         public string highScoreName;
@@ -137,59 +159,6 @@ public class MainSystems : MonoBehaviour {
             this.highScoreName = highScoreName;
             this.highScoreValue = highScoreValue;
         }
-    }
-
-    public const int HighScoreListLength = 8;
-
-    public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength + 1];
-
-    void togglescalability() {
-        if (PlayerPrefs.GetInt("LowQuality") == 1) {
-            PlayerPrefs.SetInt("LowQuality", 0);
-        }
-        else {
-            PlayerPrefs.SetInt("LowQuality", 1);
-        }
-        setscalability();
-    }
-
-    public void setscalability() {
-        ScalabilitySettings scalabilitySettings;
-
-        if (debugRawRender) {
-            scalabilitySettings = rawScalabilitySettings;
-            highsetting.interactable = false;
-            lowsetting.interactable = false;
-        }
-        else if (PlayerPrefs.GetInt("LowQuality") == 1) {
-            scalabilitySettings = lowScalabilitySettings;
-            highsetting.interactable = true;
-            lowsetting.interactable = false;
-        }
-        else {
-            scalabilitySettings = highScalabilitySettings;
-            highsetting.interactable = false;
-            lowsetting.interactable = true;
-        }
-
-        QualitySettings.vSyncCount = scalabilitySettings.vSyncCount;
-        reflectionprobe.resolution = scalabilitySettings.reflectionResolution;
-        reflectionprobe.hdr = scalabilitySettings.reflectionHdr;
-        reflectionprobe.cullingMask = scalabilitySettings.reflectionMask;
-        waterForScalability.waterQuality = scalabilitySettings.waterQuality;
-        waterForScalability.edgeBlend = scalabilitySettings.waterEdgeBlend;
-        foreach (Light light in lightsforscalability) {
-            light.shadows = scalabilitySettings.lightShadows;
-            light.shadowResolution = scalabilitySettings.lightShadowResolution;
-        }
-        foreach (Light light in lightsForToggleScalability) {
-            light.shadows = scalabilitySettings.lightShadows;
-        }
-        foreach (PostProcessingBehaviour cameraobject in camerasForScalability) {
-            cameraobject.profile = scalabilitySettings.postProcessingProfile;
-        }
-
-        reflectionprobe.RenderProbe();
     }
 
     [System.Serializable]
@@ -204,10 +173,6 @@ public class MainSystems : MonoBehaviour {
         public UnityEngine.Rendering.LightShadowResolution lightShadowResolution;
         public PostProcessingProfile postProcessingProfile;
     }
-
-    public ScalabilitySettings rawScalabilitySettings;
-    public ScalabilitySettings lowScalabilitySettings;
-    public ScalabilitySettings highScalabilitySettings;
 
     void Start() {
 
@@ -242,10 +207,6 @@ public class MainSystems : MonoBehaviour {
         if (isSwitching == true)
             SwitchToMenu();
     }
-
-    public Text debuglevel;
-    public Text debugweapon;
-    public Text debugpoints;
 
     public void OpenPrompt(int mode) {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);
@@ -419,7 +380,54 @@ public class MainSystems : MonoBehaviour {
         }
     }
 
-    public bool lookMomImIngame = false;
+    void togglescalability() {
+        if (PlayerPrefs.GetInt("LowQuality") == 1) {
+            PlayerPrefs.SetInt("LowQuality", 0);
+        }
+        else {
+            PlayerPrefs.SetInt("LowQuality", 1);
+        }
+        setscalability();
+    }
+
+    public void setscalability() {
+        ScalabilitySettings scalabilitySettings;
+
+        if (debugRawRender) {
+            scalabilitySettings = rawScalabilitySettings;
+            highsetting.interactable = false;
+            lowsetting.interactable = false;
+        }
+        else if (PlayerPrefs.GetInt("LowQuality") == 1) {
+            scalabilitySettings = lowScalabilitySettings;
+            highsetting.interactable = true;
+            lowsetting.interactable = false;
+        }
+        else {
+            scalabilitySettings = highScalabilitySettings;
+            highsetting.interactable = false;
+            lowsetting.interactable = true;
+        }
+
+        QualitySettings.vSyncCount = scalabilitySettings.vSyncCount;
+        reflectionprobe.resolution = scalabilitySettings.reflectionResolution;
+        reflectionprobe.hdr = scalabilitySettings.reflectionHdr;
+        reflectionprobe.cullingMask = scalabilitySettings.reflectionMask;
+        waterForScalability.waterQuality = scalabilitySettings.waterQuality;
+        waterForScalability.edgeBlend = scalabilitySettings.waterEdgeBlend;
+        foreach (Light light in lightsforscalability) {
+            light.shadows = scalabilitySettings.lightShadows;
+            light.shadowResolution = scalabilitySettings.lightShadowResolution;
+        }
+        foreach (Light light in lightsForToggleScalability) {
+            light.shadows = scalabilitySettings.lightShadows;
+        }
+        foreach (PostProcessingBehaviour cameraobject in camerasForScalability) {
+            cameraobject.profile = scalabilitySettings.postProcessingProfile;
+        }
+
+        reflectionprobe.RenderProbe();
+    }
 
     void SwitchToMenu() {
         float switchTimePercent;
@@ -486,8 +494,6 @@ public class MainSystems : MonoBehaviour {
 
     }
 
-    public GameObject pinkSuit;
-
     public void isAllInputEnabled(bool isIt) {
         if (isIt == true) {
             blockAllInput.SetActive(false);
@@ -498,11 +504,6 @@ public class MainSystems : MonoBehaviour {
             PinkIsTheNewEvil.PlayerController.isControlOn = false;
         }
     }
-
-    bool firstObjective4 = true;
-
-    bool level29TutStop = true;
-    bool level29TutStopCamOverride = false;
 
     public void GoToSettings(int objective) {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(16);

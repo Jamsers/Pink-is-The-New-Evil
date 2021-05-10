@@ -3,89 +3,32 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
-
-    public EnemySpawner enemySpawner;
-
     public LayerMask myLayerMask;
-
     public GameObject[] highScoreName;
-
     public GameObject[] highScore;
-
     public GameObject leburhighsc;
     public GameObject newname;
     public GameObject leburhighscnum;
     public GameObject pinklight;
-
-    public Transform transformToShake;
-
-    public int currenthealth = 100;
-
     public GameObject cylinderTargetArea;
     public GameObject boxTargetArea;
     public Transform shockwavespawn;
     public Transform shockwavespawn2;
     public GameObject shockwave;
-
-    int amAttacking = 0;
-
     public GameObject pointNumbers;
-
     public float attackAnimLength;
-
-    public Transform bloodParticleTransform;
     public GameObject particle1prefab;
     public GameObject particle2prefab;
-
-    bool initialPressStored = false;
-    Vector3 initialPressPosition = new Vector3(0, 0, 0);
     public Vector3 screenRotationCorrection;
-    public Vector3 storedMoveDirection;
-
-    CharacterController playerCollider;
     public int moveSpeed;
     public float attackRange;
     public float attackCooldown;
-    int attackOnCooldown = 0;
-    int isAttacking = 0;
-    int hasDamaged;
-
     public float shakeAmount;
-
     public float attackLength;
-
-    bool attackDamageTicked = false;
-    bool attackIsDone = false;
-
-    public int upgradePoints;
-
-    public bool amAttackingRightNow = false;
-
-    public int attackMode;
-
     public GameObject healthBloodOnScreen;
     public GameObject hudCanvas;
-
-    List<GameObject> listOfTargets = new List<GameObject>();
-    GameObject enemyTarget = null;
-
-    Animator animator;
-
-    public void ResumeSkyfall() {
-        animator.SetFloat("fallFromSkySpeed", 1);
-    }
-
-    bool isDead = false;
-
-    public bool isControlOff = true;
-
-    int damageAmount;
-
-    Vector3 moveUpperCubeorigpos = new Vector3(999, 999, 999);
-
     public GameObject backgroundNotEnough;
     public GameObject notEnoughPrompt;
-
     public GameObject weaponModel2;
     public GameObject weaponModel3;
     public GameObject weaponModel4;
@@ -93,27 +36,266 @@ public class PlayerController : MonoBehaviour {
     public GameObject weaponModel6;
     public GameObject weaponModel7;
     public GameObject weaponModel8;
-
     public GameObject trailparticle;
-
     public GameObject newHighScore;
+    public GameObject blueJoystickAim;
+    public float playerLookAtRotateSpeed;
+    public GameObject gameCamera;
+    public GameObject redAim;
+    public GameObject redCircle;
+    public GameObject speedAttackIndicatorCircle;
+    public GameObject speedAttackIndicatorIcon;
+    public GameObject speedAttackIndicatorCircleGlow;
+    public GameObject speedAttackIndicatorIconGlow;
+    public GameObject jumpAttackIndicatorCircle;
+    public GameObject jumpAttackIndicatorIcon;
+    public GameObject jumpAttackIndicatorCircleGlow;
+    public GameObject jumpAttackIndicatorIconGlow;
+    public GameObject blackBackgroundJuan;
+    public GameObject blackBackgroundDos;
+    public GameObject redTarget;
+    public GameObject redCancelIcon;
+    public GameObject greenCircle;
+    public GameObject orangeCircle;
+    public GameObject powerUpIcon;
+    public Material playerpinkTrim;
+    public Material weapon8pinktrim;
+    public GameObject poofWeap;
+    public GameObject poofPLay;
+    public GameObject backimage1;
+    public GameObject price;
+    public GameObject buybutton;
+    public GameObject pinkCaner;
+    public GameObject modeltoRepl;
+    public Material pinkGuyMaterial;
+    public GameObject ascencionScreen;
+    public GameObject healthPerkIcon;
+    public GameObject healthPerkBack;
+    public GameObject speedPerkIcon;
+    public GameObject speedPerkBack;
+    public GameObject jumpPerkIcon;
+    public GameObject jumpPerkBack;
+    public float mouseSpecDistanceThreshold;
+    public float spec2_5HoldThreshold;
+    public float specialAttackTouchTimeDownThreshold;
+    public float specialAttackTouchTimeUpThreshold;
+    public float specialAttack2_5Threshold;
+    public GameObject raycastSource;
+    public CharacterController collider1;
+    public SphereCollider collider2;
+    public BoxCollider collider3;
+    public GameObject shockwavePlayer2;
 
+    [HideInInspector] public Transform transformToShake;
+    [HideInInspector] public Transform bloodParticleTransform;
+    [HideInInspector] public Vector3 storedMoveDirection;
+    [HideInInspector] public int upgradePoints;
+    [HideInInspector] public bool amAttackingRightNow = false;
+    [HideInInspector] public int attackMode;
+    [HideInInspector] public bool isControlOff = true;
+    [HideInInspector] public bool isControlOn = true;
+    [HideInInspector] public int specialAttackMode;
+    [HideInInspector] public bool isSpecialAttackUnderWay = false;
 
-    void CheckIfInHighscores() {
-        for (int i = 0; i < MainSystems.HighScoreListLength; i++) {
-            if (upgradePoints > GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().currentHighScoreList[i].highScoreValue) {
-                leburhighsc.gameObject.SetActive(true);
-                newname.gameObject.SetActive(true);
-                leburhighscnum.gameObject.SetActive(true);
-                newHighScore.SetActive(true);
-                leburhighscnum.GetComponent<Text>().text = upgradePoints.ToString();
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().saveHighScore = true;
-                break;
+    int currenthealth = 100;
+    int amAttacking = 0;
+    CharacterController playerCollider;
+    int attackOnCooldown = 0;
+    int isAttacking = 0;
+    int hasDamaged;
+    bool attackDamageTicked = false;
+    bool attackIsDone = false;
+    List<GameObject> listOfTargets = new List<GameObject>();
+    GameObject enemyTarget = null;
+    Animator animator;
+    bool isDead = false;
+    int damageAmount;
+    Vector3 moveUpperCubeorigpos = new Vector3(999, 999, 999);
+    bool prevBlueArrow = false;
+    Vector3 refoutvar = Vector3.zero;
+    Vector3 CurrrentJoystickDirection = Vector3.zero;
+    float lowerlimit = 0.1f;
+    Vector3 lastMousePosition = Vector3.zero;
+    float orangeActivateTime;
+    float primaryCooldown;
+    float secondaryCooldown;
+    bool isSpecAttack2 = true;
+    bool isSpecAttack1 = true;
+    float speedAttackCooldown = 5;
+    float jumpAttackCooldown = 20;
+    float speedAttackLastTrig = -5;
+    float jumpAttackLastTrig = -20;
+    int playerPowerLevel = 0;
+    bool isFadingOrange = false;
+    float fadingOrangeTimeStart = 0;
+    float timeToFade = .25f;
+    float orangeGoalScale = 2f;
+    bool isThereNoTargetForJump = false;
+    GameObject origOrangeCircle;
+    Vector3 specialAttackAim;
+    float mouseSpecDistanceThresholdreplace;
+    int targetHealth = 100;
+    bool isAscending = false;
+    bool isFallingFromSky = false;
+    bool hasDoneIt = false;
+    bool isMouseOverButton = false;
+    Vector3 startLocationOfMouseDown = new Vector3(0, 0, 0);
+    float startDurationOfMouseUp = 0;
+    bool SpecialPhase1 = false;
+    bool SpecialPhase1_5 = false;
+    bool SpecialPhase2 = false;
+    bool SpecialPhase2_5 = false;
+    float spec2_5StartTime;
+    int specialAttackPhase = 1;
+    List<GameObject> targetsInRange = new List<GameObject>();
+    GameObject specialAttackEnemyTarget;
+    float specialAttackFlightStartTime;
+    Vector3 specialAttackFlightStartPos;
+    float specialAttackFlightTargetTime;
+    Vector3 specialAttackFlightTargetPos;
+    Vector3 scanPoint;
+    bool jumpAttackLastTrigRESET = false;
+    bool specAttack3IsGo = false;
+    GameObject trailParticle;
+
+    void Start() {
+        playerCollider = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+        origOrangeCircle = orangeCircle;
+
+        FillInHighScoreMenu();
+        HealthRegeneration();
+        upgradePoints = PlayerPrefs.GetInt("Upgrade Points", 0);
+        setAttackMode(PlayerPrefs.GetInt("Weapon", 1));
+        
+        if (PlayerPrefs.GetInt("Level") == 29)
+            modeltoRepl.GetComponent<Renderer>().sharedMaterial = playerpinkTrim;
+
+        trailParticle = Instantiate(trailparticle, shockwavespawn.position, shockwave.transform.rotation);
+        var main = trailParticle.GetComponent<ParticleSystem>().main;
+        var emission = trailParticle.GetComponent<ParticleSystem>().emission;
+
+        main.loop = true;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.startSpeed = 3f;
+        main.startSize = 0.65f;
+        emission.rateOverTime = 200f;
+
+        trailParticle.GetComponent<ParticleSystem>().Stop();
+    }
+
+    void Update() {
+        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
+        mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
+
+        if (isControlOn == true && isControlOff == false && Time.timeScale != 0) {
+            if (isSpecAttack1 == true) {
+                if (Input.GetAxis("Fire1Joystick") > 0.5f) {
+                    SpecialAttackManual(1);
+                }
+                else if (Input.GetButtonDown("Fire1") == true) {
+                    if (isMouseOverButton == false) {
+                        SpecialAttackManual(1);
+                    }
+                }
             }
+
+            if (isSpecAttack2 == true) {
+                if (Input.GetAxis("Fire2Joystick") > 0.5f) {
+                    SpecialAttackManual(2);
+                }
+                else if (Input.GetButtonDown("Fire2") == true) {
+                    if (isMouseOverButton == false) {
+                        SpecialAttackManual(2);
+                    }
+                }
+            }
+        }
+
+        if (isControlOn == true && isControlOff == false && (isSpecAttack2 == true || isSpecAttack1 == true) && Time.timeScale != 0)
+            updateJoystickAim();
+
+        AudioListener.volume = Time.timeScale;
+
+        if (moveUpperCubeorigpos == new Vector3(999, 999, 999))
+            moveUpperCubeorigpos = transformToShake.localPosition;
+
+        if (hasDoneIt == false) {
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29) {
+                isFallingFromSky = true;
+            }
+            animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            hasDoneIt = true;
+        }
+
+        HealthSplatterUpdate();
+        pointNumbers.GetComponent<Text>().text = upgradePoints.ToString();
+        UpdateTarget();
+        if (isSpecialAttackUnderWay == false) {
+            if (isDead == true) {
+                if (PinkIsTheNewEvil.EnemySpawner.level == 29) {
+                    AnimSwitchTo("Ascending");
+                    isControlOn = false;
+                }
+                else {
+                    AnimSwitchTo("isDead");
+                    isControlOn = false;
+                }
+            }
+            else if (isFallingFromSky == true) {
+                AnimSwitchTo("FallingFromSky");
+            }
+            else if (isAscending == true) {
+                AnimSwitchTo("Ascending");
+            }
+            else {
+                if (isControlOn == true) {
+                    if (Time.timeScale != 0)
+                        storedMoveDirection = VirtualJoystick();
+                    MovePlayer(storedMoveDirection);
+                }
+                else if (isControlOn == false) {
+                    AnimSwitchTo("goToIdle3");
+                    greenCircle.SetActive(false);
+                    blueJoystickAim.SetActive(false);
+                    backimage1.SetActive(false);
+                    price.SetActive(false);
+                    buybutton.SetActive(false);
+                    buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
+                }
+            }
+        }
+        else if (isSpecialAttackUnderWay == true) {
+            if (specialAttackMode == 1) {
+                PlayerSpecialAttackLogic1();
+            }
+            else if (specialAttackMode == 2) {
+                PlayerSpecialAttackLogic();
+            }
+        }
+
+        fadeAwayOrangeGroup();
+        FadingSpecialAttackIndicators();
+    }
+
+    void FixedUpdate() {
+        if (specAttack3IsGo == true) {
+            transform.position = specialAttackFlightTargetPos;
+
+            GameObject[] listofEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            for (int i = 0; i < listofEnemies.Length; i++) {
+                float range = 5f;
+                if (Vector3.Distance(raycastSource.transform.position, listofEnemies[i].transform.position) < range) {
+                    listofEnemies[i].GetComponent<EnemyAI>().Health(damageAmount * 4);
+                }
+            }
+
+            specAttack3IsGo = false;
         }
     }
 
-    void fillInHighScores() {
+    void FillInHighScoreMenu() {
         highScoreName[0].GetComponent<Text>().text = "1: " + PlayerPrefs.GetString("High Score Name 1");
         highScore[0].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 1").ToString();
         highScoreName[1].GetComponent<Text>().text = "2: " + PlayerPrefs.GetString("High Score Name 2");
@@ -130,6 +312,24 @@ public class PlayerController : MonoBehaviour {
         highScore[6].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 7").ToString();
         highScoreName[7].GetComponent<Text>().text = "8: " + PlayerPrefs.GetString("High Score Name 8");
         highScore[7].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 8").ToString();
+    }
+
+    public void ResumeSkyfall() {
+        animator.SetFloat("fallFromSkySpeed", 1);
+    }
+
+    void CheckIfInHighscores() {
+        for (int i = 0; i < MainSystems.HighScoreListLength; i++) {
+            if (upgradePoints > PinkIsTheNewEvil.MainSystems.currentHighScoreList[i].highScoreValue) {
+                leburhighsc.gameObject.SetActive(true);
+                newname.gameObject.SetActive(true);
+                leburhighscnum.gameObject.SetActive(true);
+                newHighScore.SetActive(true);
+                leburhighscnum.GetComponent<Text>().text = upgradePoints.ToString();
+                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().saveHighScore = true;
+                break;
+            }
+        }
     }
 
     void animateAttack() {
@@ -172,19 +372,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void MoveUpper() {
-        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount / 2, transformToShake.position.y + shakeAmount / 2, transformToShake.position.z + shakeAmount / 2);
-    }
-    void MoveLower() {
-        transformToShake.position = new Vector3(transformToShake.position.x - shakeAmount, transformToShake.position.y - shakeAmount, transformToShake.position.z - shakeAmount);
-    }
-    void MoveUpper2() {
-        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount, transformToShake.position.y + shakeAmount, transformToShake.position.z + shakeAmount);
-    }
-    void MoveFinish() {
-        transformToShake.localPosition = moveUpperCubeorigpos;
-    }
-
     void HealthRegeneration() {
         int healthRegenAmount = 1;
         float healthRegenTick = .10f;
@@ -199,49 +386,6 @@ public class PlayerController : MonoBehaviour {
         }
         Invoke("HealthRegeneration", healthRegenTick);
     }
-
-    float mouseSpecDistanceThresholdreplace;
-    void Start() {
-
-        fillInHighScores();
-        if (PlayerPrefs.HasKey("Upgrade Points"))
-            upgradePoints = PlayerPrefs.GetInt("Upgrade Points");
-        else
-            upgradePoints = 0;
-        HealthRegeneration();
-        playerCollider = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
-
-        if (PlayerPrefs.HasKey("Weapon"))
-            setAttackMode(PlayerPrefs.GetInt("Weapon"));
-        else
-            setAttackMode(1);
-
-        origOrangeCircle = orangeCircle;
-
-
-        trailParticle = (GameObject)Instantiate(trailparticle, shockwavespawn.position, shockwave.transform.rotation);
-
-        var main = trailParticle.GetComponent<ParticleSystem>().main;
-        var emission = trailParticle.GetComponent<ParticleSystem>().emission;
-
-        main.loop = true;
-        main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.startSpeed = 3f;
-        main.startSize = 0.65f;
-
-        emission.rateOverTime = 200f;
-
-        trailParticle.GetComponent<ParticleSystem>().Stop();
-
-        if (PlayerPrefs.GetInt("Level") == 29) {
-            modeltoRepl.GetComponent<Renderer>().sharedMaterial = playerpinkTrim;
-        }
-    }
-
-    public Material playerpinkTrim;
-
-    int targetHealth = 100;
 
     void HealthSplatterUpdate() {
         float x = hudCanvas.GetComponent<RectTransform>().sizeDelta.x;
@@ -335,15 +479,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public Material weapon8pinktrim;
-
-    public GameObject gayPoofWeap;
-    public GameObject gayPoofPLay;
-
-    public GameObject backimage1;
-    public GameObject price;
-    public GameObject buybutton;
-
     public void BuyWeapon(int type) {
         if (type == 420) {
             GetComponent<SoundManager>().PlaySound(14);
@@ -357,12 +492,12 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 100;
                 setAttackMode(2);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[1 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel2.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[1 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel2.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -379,13 +514,13 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 1000;
                 setAttackMode(3);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[2 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel3.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[2 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel3.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -402,14 +537,14 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 2300;
                 setAttackMode(4);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[3 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel4.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[3 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel4.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
-                enemySpawner.weapons[3 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -426,15 +561,15 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 4000;
                 setAttackMode(5);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[4 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel5.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[4 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel5.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
-                enemySpawner.weapons[3 - 1].SetActive(false);
-                enemySpawner.weapons[4 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -451,16 +586,16 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 11000;
                 setAttackMode(6);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[5 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel6.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[5 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel6.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
-                enemySpawner.weapons[3 - 1].SetActive(false);
-                enemySpawner.weapons[4 - 1].SetActive(false);
-                enemySpawner.weapons[5 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -477,17 +612,17 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 20000;
                 setAttackMode(7);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[6 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel7.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[6 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel7.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
-                enemySpawner.weapons[3 - 1].SetActive(false);
-                enemySpawner.weapons[4 - 1].SetActive(false);
-                enemySpawner.weapons[5 - 1].SetActive(false);
-                enemySpawner.weapons[6 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[6 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -504,18 +639,18 @@ public class PlayerController : MonoBehaviour {
                 upgradePoints = upgradePoints - 43000;
                 setAttackMode(8);
 
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 Destroy(poof1, 4);
                 Destroy(poof2, 4);
-                enemySpawner.weapons[1 - 1].SetActive(false);
-                enemySpawner.weapons[2 - 1].SetActive(false);
-                enemySpawner.weapons[3 - 1].SetActive(false);
-                enemySpawner.weapons[4 - 1].SetActive(false);
-                enemySpawner.weapons[5 - 1].SetActive(false);
-                enemySpawner.weapons[6 - 1].SetActive(false);
-                enemySpawner.weapons[7 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[6 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[7 - 1].SetActive(false);
                 backimage1.SetActive(false);
                 price.SetActive(false);
                 buybutton.SetActive(false);
@@ -528,10 +663,10 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 9) {
-            if (enemySpawner.level == 29 && upgradePoints >= 70000) {
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 70000) {
                 upgradePoints = upgradePoints - 70000;
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[8 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[8 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
                 poof2.transform.localScale = poof2.transform.localScale * 3;
@@ -543,7 +678,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 speedPerkIcon.SetActive(true);
                 speedPerkBack.SetActive(true);
-                enemySpawner.weapons[8 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[8 - 1].SetActive(false);
                 animator.SetFloat("specAttack1speed", 0.5f);
                 speedAttackCooldown = speedAttackCooldown + 2;
             }
@@ -560,7 +695,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 ascencionScreen.SetActive(true);
-                enemySpawner.constantlyDenyInput = true;
+                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -571,10 +706,10 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 10) {
-            if (enemySpawner.level == 29 && upgradePoints >= 90000) {
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 90000) {
                 upgradePoints = upgradePoints - 90000;
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
                 poof2.transform.localScale = poof2.transform.localScale * 3;
@@ -586,7 +721,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 jumpPerkIcon.SetActive(true);
                 jumpPerkBack.SetActive(true);
-                enemySpawner.weapons[9 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[9 - 1].SetActive(false);
                 jumpAttackCooldown = jumpAttackCooldown / 3;
             }
             else if (upgradePoints >= 100000) {
@@ -602,7 +737,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 ascencionScreen.SetActive(true);
-                enemySpawner.constantlyDenyInput = true;
+                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -613,10 +748,10 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (type == 11) {
-            if (enemySpawner.level == 29 && upgradePoints >= 30000) {
+            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 30000) {
                 upgradePoints = upgradePoints - 30000;
-                GameObject poof1 = Instantiate(gayPoofWeap, enemySpawner.weaponModels[7 - 1].transform.position, gayPoofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(gayPoofPLay, weaponModel8.transform.position, gayPoofPLay.transform.rotation);
+                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
+                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
                 poof1.transform.parent = null;
                 poof1.transform.localScale = poof1.transform.localScale * 3;
                 poof2.transform.localScale = poof2.transform.localScale * 3;
@@ -628,7 +763,7 @@ public class PlayerController : MonoBehaviour {
                 buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
                 healthPerkIcon.SetActive(true);
                 healthPerkBack.SetActive(true);
-                enemySpawner.weapons[10 - 1].SetActive(false);
+                PinkIsTheNewEvil.EnemySpawner.weapons[10 - 1].SetActive(false);
                 targetHealth = targetHealth * 2;
             }
             else if (upgradePoints >= 100000) {
@@ -644,7 +779,7 @@ public class PlayerController : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
                 GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
                 ascencionScreen.SetActive(true);
-                enemySpawner.constantlyDenyInput = true;
+                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
                 isAscending = true;
                 GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
             }
@@ -660,25 +795,10 @@ public class PlayerController : MonoBehaviour {
             buybutton.SetActive(false);
             buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
             pinkCaner.SetActive(false);
-            modeltoRepl.GetComponent<Renderer>().sharedMaterial = pinkCancer;
+            modeltoRepl.GetComponent<Renderer>().sharedMaterial = pinkGuyMaterial;
             pinklight.SetActive(true);
         }
     }
-
-    public GameObject pinkCaner;
-    public GameObject modeltoRepl;
-    public Material pinkCancer;
-
-    bool isAscending = false;
-
-    public GameObject ascencionScreen;
-
-    public GameObject healthPerkIcon;
-    public GameObject healthPerkBack;
-    public GameObject speedPerkIcon;
-    public GameObject speedPerkBack;
-    public GameObject jumpPerkIcon;
-    public GameObject jumpPerkBack;
 
     void GetRidOfNotEnoughPrompt() {
         backgroundNotEnough.SetActive(false);
@@ -694,12 +814,6 @@ public class PlayerController : MonoBehaviour {
         weaponModel7.SetActive(false);
         weaponModel8.SetActive(false);
     }
-
-    public bool isControlOn = true;
-
-    bool isFallingFromSky = false;
-
-    bool hasDoneIt = false;
 
     public void SpawnSmokeForFall() {
         GameObject shocking = Instantiate(shockwavePlayer2);
@@ -731,14 +845,14 @@ public class PlayerController : MonoBehaviour {
         if (mode == 1) {
             specialAttackMode = 1;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-            if (isSpecAttack2 == true) {
+            if (isSpecAttack1 == true) {
                 speedAttackLastTrig = Time.time;
             }
         }
         else {
             specialAttackMode = 2;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-            if (isSpecAttack1 == true) {
+            if (isSpecAttack2 == true) {
                 jumpAttackLastTrig = Time.time;
             }
         }
@@ -748,13 +862,13 @@ public class PlayerController : MonoBehaviour {
         powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
         powerUpIcon.SetActive(true);
 
-        if (isSpecAttack2 == false && specialAttackMode == 1) {
+        if (isSpecAttack1 == false && specialAttackMode == 1) {
             isSpecialAttackUnderWay = false;
             powerUpIcon.SetActive(false);
             orangeCircle.SetActive(false);
             CancelInvoke("removeOrangeCircle");
         }
-        else if (isSpecAttack1 == false && specialAttackMode == 2) {
+        else if (isSpecAttack2 == false && specialAttackMode == 2) {
             isSpecialAttackUnderWay = false;
             powerUpIcon.SetActive(false);
             orangeCircle.SetActive(false);
@@ -765,8 +879,6 @@ public class PlayerController : MonoBehaviour {
     void updateJoystickAim() {
         int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
         int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
-
-        Vector3 screenCenter = new Vector3(screenWidth * 0.5f, screenHeight * 0.65f, 0);
 
         float aimHorizontal = Input.GetAxis("HorizontalAim");
         float aimVertical = Input.GetAxis("VerticalAim");
@@ -819,161 +931,9 @@ public class PlayerController : MonoBehaviour {
         orangeCircle.SetActive(false);
     }
 
-    bool isMouseOverButton = false;
-
     public void setisMouseOverButton(bool setBool) {
         isMouseOverButton = setBool;
     }
-
-    void Update() {
-
-        startLocationOfMouseDown = new Vector3(gameCamera.GetComponent<Camera>().pixelWidth * 0.5f, gameCamera.GetComponent<Camera>().pixelHeight * 0.65f, 0);
-        mouseSpecDistanceThresholdreplace = gameCamera.GetComponent<Camera>().pixelHeight * 0.0707290533f;
-
-        if ((Input.GetAxis("Fire2Joystick") > 0.5f) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
-            if (orangeCircle.transform.position != startLocationOfMouseDown) {
-                SpecialAttackManual(2);
-            }
-        }
-        else if ((Input.GetAxis("Fire1Joystick") > 0.5f) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
-            if (orangeCircle.transform.position != startLocationOfMouseDown) {
-                SpecialAttackManual(1);
-            }
-        }
-        else if ((Input.GetButtonDown("Fire2") == true) && isSpecAttack1 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
-            if (isMouseOverButton != true) {
-                SpecialAttackManual(2);
-            }
-        }
-        else if ((Input.GetButtonDown("Fire1") == true) && isSpecAttack2 == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) {
-            if (isMouseOverButton != true) {
-                SpecialAttackManual(1);
-            }
-        }
-
-        if (isControlOn == true && isControlOff == false && (isSpecAttack1 == true || isSpecAttack2 == true) && Time.timeScale != 0) {
-            updateJoystickAim();
-        }
-
-
-        if (Time.timeScale == 0) {
-            AudioListener.volume = 0;
-
-        }
-        else {
-            AudioListener.volume = 1;
-        }
-
-        if (moveUpperCubeorigpos == new Vector3(999, 999, 999)) {
-            moveUpperCubeorigpos = transformToShake.localPosition;
-        }
-
-        if (hasDoneIt == false) {
-            if (enemySpawner.level == 29) {
-                isFallingFromSky = true;
-            }
-            animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            hasDoneIt = true;
-        }
-
-        HealthSplatterUpdate();
-        pointNumbers.GetComponent<Text>().text = upgradePoints.ToString();
-        UpdateTarget();
-        if (isSpecialAttackUnderWay == false) {
-            if (isDead == true) {
-                if (enemySpawner.level == 29) {
-                    AnimSwitchTo("Ascending");
-                    isControlOn = false;
-                }
-                else {
-                    AnimSwitchTo("isDead");
-                    isControlOn = false;
-                }
-            }
-            else if (isFallingFromSky == true) {
-                AnimSwitchTo("FallingFromSky");
-            }
-            else if (isAscending == true) {
-                AnimSwitchTo("Ascending");
-            }
-            else {
-                if (isControlOn == true) {
-                    if (Time.timeScale != 0)
-                        storedMoveDirection = VirtualJoystick();
-                    MovePlayer(storedMoveDirection);
-                }
-                else if (isControlOn == false) {
-                    AnimSwitchTo("goToIdle3");
-                    greenCircle.SetActive(false);
-                    blueJoystickAim.SetActive(false);
-                    backimage1.SetActive(false);
-                    price.SetActive(false);
-                    buybutton.SetActive(false);
-                    buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-                }
-            }
-        }
-        else if (isSpecialAttackUnderWay == true) {
-            if (specialAttackMode == 1) {
-                PlayerSpecialAttackLogic1();
-            }
-            else if (specialAttackMode == 2) {
-                PlayerSpecialAttackLogic();
-            }
-        }
-
-        fadeAwayOrangeGroup();
-        SpecialAttackIndicatorsFadedXDDDD();
-    }
-
-    public int specialAttackMode;
-
-    bool lastIsMouseDown = false;
-
-    float startDurationOfMouseDown = 0;
-    Vector3 startLocationOfMouseDown = new Vector3(0, 0, 0);
-
-    float startDurationOfMouseUp = 0;
-    Vector3 startLocationOfMouseUp = new Vector3(0, 0, 0);
-
-    public float mouseSpecDistanceThreshold;
-
-    bool SpecialPhase1 = false;
-    bool SpecialPhase1_5 = false;
-    bool SpecialPhase2 = false;
-    bool SpecialPhase2_5 = false;
-
-    float spec2_5StartTime;
-
-    public float spec2_5HoldThreshold;
-
-
-    public float specialAttackTouchTimeDownThreshold;
-    public float specialAttackTouchTimeUpThreshold;
-    public float specialAttack2_5Threshold;
-
-    int specialAttackPhase = 1;
-
-    public bool isSpecialAttackUnderWay = false;
-
-    List<GameObject> targetsInRange = new List<GameObject>();
-
-    public GameObject raycastSource;
-
-    public GameObject specialAttackAimSphere;
-
-    GameObject specialAttackEnemyTarget;
-
-    float specialAttackFlightStartTime;
-    Vector3 specialAttackFlightStartPos;
-    float specialAttackFlightTargetTime;
-    Vector3 specialAttackFlightTargetPos;
-
-    public CharacterController collider1;
-    public SphereCollider collider2;
-    public BoxCollider collider3;
-
-    Vector3 scanPoint;
 
     public void specialAttackPhaseSetPlay(int phase) {
         specialAttackPhase = phase;
@@ -990,12 +950,12 @@ public class PlayerController : MonoBehaviour {
             scanPoint = hit.point;
         }
         else if (specialAttackPhase == 2) {
-            for (int i = 0; i < enemySpawner.listOfAllEnemies.Count; i++) {
+            for (int i = 0; i < PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies.Count; i++) {
                 if (specialAttackEnemyTarget == null) {
-                    specialAttackEnemyTarget = enemySpawner.listOfAllEnemies[i];
+                    specialAttackEnemyTarget = PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i];
                 }
-                else if (Vector3.Distance(scanPoint, enemySpawner.listOfAllEnemies[i].transform.position) < Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position)) {
-                    specialAttackEnemyTarget = enemySpawner.listOfAllEnemies[i];
+                else if (Vector3.Distance(scanPoint, PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i].transform.position) < Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position)) {
+                    specialAttackEnemyTarget = PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i];
                 }
             }
 
@@ -1085,31 +1045,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    bool jumpAttackLastTrigRESET = false;
-
-    public GameObject shockwavePlayer2;
-
-    bool specAttack3IsGo = false;
-
-    void FixedUpdate() {
-        if (specAttack3IsGo == true) {
-            transform.position = specialAttackFlightTargetPos;
-
-            GameObject[] listofEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-            for (int i = 0; i < listofEnemies.Length; i++) {
-                float range = 5f;
-                if (Vector3.Distance(raycastSource.transform.position, listofEnemies[i].transform.position) < range) {
-                    listofEnemies[i].GetComponent<EnemyAI>().Health(damageAmount * 4);
-                }
-            }
-
-            specAttack3IsGo = false;
-        }
-    }
-
-    GameObject trailParticle;
-
     void PlayerSpecialAttackLogic1() {
         if (specialAttackPhase == 1) {
             Vector3 virtualJoystickDirection = startLocationOfMouseDown - orangeCircle.GetComponent<Transform>().position;
@@ -1187,29 +1122,10 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    Vector3 specialAttackAim;
-
-    public GameObject greenCircle;
-    public GameObject orangeCircle;
-    public GameObject powerUpIcon;
-
     void removeOrangeCircle() {
         orangeCircle.SetActive(false);
         CancelInvoke("removeOrangeCircle");
     }
-
-    bool isFadingOrange = false;
-    float fadingOrangeTimeStart = 0;
-    float timeToFade = .25f;
-    float orangeGoalScale = 2f;
-
-    public GameObject redTarget;
-
-    public GameObject redCancelIcon;
-
-    bool isThereNoTargetForJump = false;
-
-    GameObject origOrangeCircle;
 
     void fadeAwayOrangeGroup() {
         if (isFadingOrange == true) {
@@ -1267,54 +1183,22 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    float orangeActivateTime;
-    bool isOrangeDeact = false;
-
-    public GameObject redAim;
-    public GameObject redCircle;
-
-    float primaryCooldown;
-    float secondaryCooldown;
-
-    bool isSpecAttack1 = true;
-    bool isSpecAttack2 = true;
-
-    public GameObject speedAttackIndicatorCircle;
-    public GameObject speedAttackIndicatorIcon;
-    public GameObject speedAttackIndicatorCircleGlow;
-    public GameObject speedAttackIndicatorIconGlow;
-    public GameObject jumpAttackIndicatorCircle;
-    public GameObject jumpAttackIndicatorIcon;
-    public GameObject jumpAttackIndicatorCircleGlow;
-    public GameObject jumpAttackIndicatorIconGlow;
-
-    public GameObject blackBackgroundJuan;
-    public GameObject blackBackgroundDos;
-
-    float speedAttackCooldown = 5;
-    float jumpAttackCooldown = 20;
-
-    float speedAttackLastTrig = -5;
-    float jumpAttackLastTrig = -20;
-
-    int MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 0;
-
-    void SpecialAttackIndicatorsFadedXDDDD() {
-        if (enemySpawner.level > 14) {
-            MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 2;
+    void FadingSpecialAttackIndicators() {
+        if (PinkIsTheNewEvil.EnemySpawner.level > 14) {
+            playerPowerLevel = 2;
         }
-        else if (enemySpawner.level > 5) {
-            MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 1;
+        else if (PinkIsTheNewEvil.EnemySpawner.level > 5) {
+            playerPowerLevel = 1;
         }
         else {
-            MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH = 0;
+            playerPowerLevel = 0;
         }
 
-        if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH == 2) {
+        if (playerPowerLevel == 2) {
             blackBackgroundJuan.SetActive(false);
             blackBackgroundDos.SetActive(true);
         }
-        else if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH == 1) {
+        else if (playerPowerLevel == 1) {
             blackBackgroundJuan.SetActive(true);
             blackBackgroundDos.SetActive(false);
         }
@@ -1324,29 +1208,29 @@ public class PlayerController : MonoBehaviour {
         }
 
 
-        if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH < 1) {
-            isSpecAttack2 = false;
+        if (playerPowerLevel < 1) {
+            isSpecAttack1 = false;
         }
         else if ((Time.time - speedAttackLastTrig) > speedAttackCooldown) {
-            isSpecAttack2 = true;
-        }
-        else if ((Time.time - speedAttackLastTrig) < speedAttackCooldown) {
-            isSpecAttack2 = false;
-        }
-
-        if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH < 2) {
-            isSpecAttack1 = false;
-        }
-        else if ((Time.time - jumpAttackLastTrig) > jumpAttackCooldown) {
             isSpecAttack1 = true;
         }
-        else if ((Time.time - jumpAttackLastTrig) < jumpAttackCooldown) {
+        else if ((Time.time - speedAttackLastTrig) < speedAttackCooldown) {
             isSpecAttack1 = false;
+        }
+
+        if (playerPowerLevel < 2) {
+            isSpecAttack2 = false;
+        }
+        else if ((Time.time - jumpAttackLastTrig) > jumpAttackCooldown) {
+            isSpecAttack2 = true;
+        }
+        else if ((Time.time - jumpAttackLastTrig) < jumpAttackCooldown) {
+            isSpecAttack2 = false;
         }
 
         float a = (Time.time - speedAttackLastTrig) / speedAttackCooldown;
         Color speedTrans = speedAttackIndicatorCircle.GetComponent<Image>().color;
-        if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH < 1) {
+        if (playerPowerLevel < 1) {
             speedTrans.a = 0;
             speedAttackIndicatorCircleGlow.SetActive(false);
             speedAttackIndicatorIconGlow.SetActive(false);
@@ -1366,7 +1250,7 @@ public class PlayerController : MonoBehaviour {
 
         float b = (Time.time - jumpAttackLastTrig) / jumpAttackCooldown;
         Color jumpTrans = jumpAttackIndicatorCircle.GetComponent<Image>().color;
-        if (MUHPOWERLEVELLLLLLLOVAR9000000AAAHHHHH < 2) {
+        if (playerPowerLevel < 2) {
             jumpTrans.a = 0;
             jumpAttackIndicatorCircleGlow.SetActive(false);
             jumpAttackIndicatorIconGlow.SetActive(false);
@@ -1384,264 +1268,6 @@ public class PlayerController : MonoBehaviour {
         jumpAttackIndicatorCircle.GetComponent<Image>().color = jumpTrans;
         jumpAttackIndicatorIcon.GetComponent<Image>().color = jumpTrans;
     }
-
-    void PlayerSpecialAttack() {
-        if (isControlOff == false) {
-            if (Input.GetMouseButton(0) == true) {
-                if (lastIsMouseDown == false) {
-                    if (SpecialPhase1 == true || SpecialPhase2 == true) {
-                        float durationOfMouseUp = Time.time - startDurationOfMouseUp;
-                        if (durationOfMouseUp < specialAttackTouchTimeUpThreshold) {
-                            if (SpecialPhase2 == true) {
-                                SpecialPhase2_5 = true;
-                                spec2_5StartTime = Time.time;
-                            }
-                            else if (SpecialPhase1 == true) {
-                                float mouseUpMouseDownDiff = Vector3.Distance(startLocationOfMouseDown, Input.mousePosition);
-
-                                if (mouseUpMouseDownDiff < mouseSpecDistanceThresholdreplace) {
-                                    SpecialPhase1_5 = true;
-                                    if (isSpecAttack1 == false && isSpecAttack2 == false) {
-
-                                    }
-                                    else {
-                                        orangeCircle.GetComponent<RectTransform>().position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-                                        orangeCircle.SetActive(true);
-                                        orangeActivateTime = Time.time;
-                                        isOrangeDeact = false;
-                                    }
-                                }
-                            }
-                        }
-                        else {
-                            SpecialPhase1 = false;
-                            SpecialPhase1_5 = false;
-                            SpecialPhase2 = false;
-                            SpecialPhase2_5 = false;
-                            orangeCircle.SetActive(false);
-                            CancelInvoke("removeOrangeCircle");
-                        }
-                        startDurationOfMouseDown = 0;
-                    }
-
-                    startDurationOfMouseUp = 0;
-                    startDurationOfMouseDown = Time.time;
-                    startLocationOfMouseDown = Input.mousePosition;
-
-                    if (SpecialPhase1 == false && SpecialPhase1_5 == false && SpecialPhase2 == false && SpecialPhase2_5 == false) {
-                        orangeCircle.SetActive(false);
-                        CancelInvoke("removeOrangeCircle");
-                    }
-
-                    greenCircle.GetComponent<RectTransform>().position = new Vector3(startLocationOfMouseDown.x, startLocationOfMouseDown.y, 0);
-                    redCircle.GetComponent<RectTransform>().position = new Vector3(startLocationOfMouseDown.x, startLocationOfMouseDown.y, 0);
-
-                    if (SpecialPhase2 == true) {
-                        redTarget.GetComponent<RectTransform>().position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-                        redCircle.GetComponent<RectTransform>().position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-                        if (Vector3.Distance(startLocationOfMouseDown, Input.mousePosition) > mouseSpecDistanceThresholdreplace) {
-                            if (isSpecAttack2 == true) {
-                                redCircle.SetActive(true);
-                                redTarget.SetActive(false);
-                                redAim.SetActive(false);
-                                redAim.GetComponent<RectTransform>().position = blueJoystickAim.GetComponent<RectTransform>().position;
-                                redAim.GetComponent<RectTransform>().localRotation = blueJoystickAim.GetComponent<RectTransform>().localRotation;
-                            }
-                            else {
-                                redTarget.SetActive(false);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                        }
-                        else if (isSpecAttack1 == true) {
-                            if (isSpecAttack1 == true) {
-                                redTarget.SetActive(true);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                            else {
-                                redTarget.SetActive(false);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                        }
-                        canShowNormJoystick = false;
-                    }
-                    else {
-                    }
-                }
-                else {
-                    if (SpecialPhase2 == true) {
-                        if (Vector3.Distance(startLocationOfMouseDown, Input.mousePosition) > mouseSpecDistanceThresholdreplace) {
-                            if (isSpecAttack2 == true) {
-                                redCircle.SetActive(true);
-                                redTarget.SetActive(false);
-                                redAim.SetActive(false);
-                                redAim.GetComponent<RectTransform>().position = blueJoystickAim.GetComponent<RectTransform>().position;
-                                redAim.GetComponent<RectTransform>().localRotation = blueJoystickAim.GetComponent<RectTransform>().localRotation;
-                            }
-                            else {
-                                redTarget.SetActive(false);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                        }
-                        else if (isSpecAttack1 == true) {
-                            if (isSpecAttack1 == true) {
-                                redTarget.SetActive(true);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                            else {
-                                redTarget.SetActive(false);
-                                redCircle.SetActive(false);
-                                redAim.SetActive(false);
-                            }
-                        }
-                    }
-
-                    if ((SpecialPhase1_5 == true && SpecialPhase2 == false) && ((Time.time - orangeActivateTime) > specialAttackTouchTimeDownThreshold)) {
-                        isOrangeDeact = true;
-                        orangeCircle.SetActive(false);
-                        CancelInvoke("removeOrangeCircle");
-                    }
-
-                    if (Time.time - spec2_5StartTime > spec2_5HoldThreshold && SpecialPhase2_5 == true) {
-                        isSpecialAttackUnderWay = true;
-                        specialAttackAim = Input.mousePosition;
-                        SpecialPhase1 = false;
-                        SpecialPhase1_5 = false;
-                        SpecialPhase2 = false;
-                        SpecialPhase2_5 = false;
-                        if (Vector3.Distance(startLocationOfMouseDown, Input.mousePosition) > mouseSpecDistanceThresholdreplace) {
-                            specialAttackMode = 1;
-                            powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-                            if (isSpecAttack2 == true) {
-                                speedAttackLastTrig = Time.time;
-                            }
-                        }
-                        else {
-                            specialAttackMode = 2;
-                            powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-                            if (isSpecAttack1 == true) {
-                                jumpAttackLastTrig = Time.time;
-                            }
-                        }
-                        isFadingOrange = true;
-                        fadingOrangeTimeStart = Time.time;
-
-                        powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
-                        powerUpIcon.SetActive(true);
-
-                        if (isSpecAttack2 == false && specialAttackMode == 1) {
-                            isSpecialAttackUnderWay = false;
-                            powerUpIcon.SetActive(false);
-                            orangeCircle.SetActive(false);
-                            CancelInvoke("removeOrangeCircle");
-                        }
-                        else if (isSpecAttack1 == false && specialAttackMode == 2) {
-                            isSpecialAttackUnderWay = false;
-                            powerUpIcon.SetActive(false);
-                            orangeCircle.SetActive(false);
-                            CancelInvoke("removeOrangeCircle");
-                        }
-                    }
-                }
-                lastIsMouseDown = true;
-            }
-            else {
-                if (lastIsMouseDown == true) {
-                    if (SpecialPhase1 == false || SpecialPhase1_5 == true || SpecialPhase2_5 == true) {
-                        float durationOfMouseDown = Time.time - startDurationOfMouseDown;
-                        if (SpecialPhase2_5 == true) {
-                            isSpecialAttackUnderWay = true;
-
-                            isFadingOrange = true;
-                            fadingOrangeTimeStart = Time.time;
-
-                            canShowNormJoystick = true;
-
-                            powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
-                            powerUpIcon.SetActive(true);
-
-                            if (Vector3.Distance(startLocationOfMouseDown, Input.mousePosition) > mouseSpecDistanceThresholdreplace) {
-                                specialAttackMode = 1;
-                                powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-                                if (isSpecAttack2 == true) {
-                                    speedAttackLastTrig = Time.time;
-                                }
-                            }
-                            else {
-                                specialAttackMode = 2;
-                                powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-                                if (isSpecAttack1 == true) {
-                                    jumpAttackLastTrig = Time.time;
-                                }
-                            }
-
-                            specialAttackAim = Input.mousePosition;
-                            SpecialPhase1 = false;
-                            SpecialPhase1_5 = false;
-                            SpecialPhase2 = false;
-                            SpecialPhase2_5 = false;
-
-                            if (isSpecAttack2 == false && specialAttackMode == 1) {
-                                isSpecialAttackUnderWay = false;
-                                powerUpIcon.SetActive(false);
-                                orangeCircle.SetActive(false);
-                                CancelInvoke("removeOrangeCircle");
-                            }
-                            else if (isSpecAttack1 == false && specialAttackMode == 2) {
-                                isSpecialAttackUnderWay = false;
-                                powerUpIcon.SetActive(false);
-                                orangeCircle.SetActive(false);
-                                CancelInvoke("removeOrangeCircle");
-                            }
-                        }
-                        else if (durationOfMouseDown < specialAttackTouchTimeDownThreshold) {
-                            if (SpecialPhase1_5 == true) {
-                                SpecialPhase2 = true;
-                            }
-                            else if (SpecialPhase1 == false) {
-                                SpecialPhase1 = true;
-                            }
-                        }
-                        else {
-                            SpecialPhase1 = false;
-                            SpecialPhase1_5 = false;
-                            SpecialPhase2 = false;
-                            SpecialPhase2_5 = false;
-                            orangeCircle.SetActive(false);
-                            CancelInvoke("removeOrangeCircle");
-                        }
-                    }
-
-                    startDurationOfMouseDown = 0;
-                    startDurationOfMouseUp = Time.time;
-                    startLocationOfMouseUp = Input.mousePosition;
-
-                    greenCircle.SetActive(false);
-                }
-                else {
-                    float durationOfMouseUp = Time.time - startDurationOfMouseUp;
-                    if (durationOfMouseUp > specialAttackTouchTimeUpThreshold) {
-                        orangeCircle.SetActive(false);
-                        CancelInvoke("removeOrangeCircle");
-                    }
-                }
-                lastIsMouseDown = false;
-            }
-        }
-    }
-
-    public GameObject gameCamera;
-
-    Vector3 refoutvar = Vector3.zero;
-    Vector3 CurrrentJoystickDirection = Vector3.zero;
-
-    float lowerlimit = 0.1f;
-
-    Vector3 lastMousePosition = Vector3.zero;
 
     Vector3 VirtualJoystick() {
         if (isControlOff == false) {
@@ -1783,14 +1409,6 @@ public class PlayerController : MonoBehaviour {
     void AttackCooldownManager() {
         attackOnCooldown = 0;
     }
-
-    bool prevBlueArrow = false;
-
-    public GameObject blueJoystickAim;
-
-    bool canShowNormJoystick = true;
-
-    public float playerLookAtRotateSpeed;
 
     void MovePlayer(Vector3 direction) {
 
@@ -2113,6 +1731,19 @@ public class PlayerController : MonoBehaviour {
         else {
             return "goToIdle";
         }
+    }
+
+    void MoveUpper() {
+        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount / 2, transformToShake.position.y + shakeAmount / 2, transformToShake.position.z + shakeAmount / 2);
+    }
+    void MoveLower() {
+        transformToShake.position = new Vector3(transformToShake.position.x - shakeAmount, transformToShake.position.y - shakeAmount, transformToShake.position.z - shakeAmount);
+    }
+    void MoveUpper2() {
+        transformToShake.position = new Vector3(transformToShake.position.x + shakeAmount, transformToShake.position.y + shakeAmount, transformToShake.position.z + shakeAmount);
+    }
+    void MoveFinish() {
+        transformToShake.localPosition = moveUpperCubeorigpos;
     }
 
     void OnTriggerEnter(Collider other) {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class EnemiesInAttackArea : MonoBehaviour {
-    public List<GameObject> enemiesWithinArea = new List<GameObject>();
+    [HideInInspector] public List<GameObject> enemiesWithinArea = new List<GameObject>();
 
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy" && enemiesWithinArea.Contains(other.gameObject) == false)
