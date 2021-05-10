@@ -1,24 +1,32 @@
 ﻿using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
-
-    public int enemyType;
-
+    public CharacterType characterType;
     public AudioSource[] audioClips;
-
     public AudioSource[] audioClipsHit;
 
-    public float fadeTime;
-    float origVol;
-    float startTime;
-    bool isFading = false;
-    AudioSource sourcetofade;
+    float fadeTime = 2f;
+    float musicFadingOutOriginalVolume;
+    float musicFadingOutStartTime;
+    bool isMusicFadingOut = false;
+    AudioSource musicToFadeOut;
+    float musicFadingInOriginalVolume;
+    float musicFadingInStartTime;
+    bool isMusicFadingIn = false;
+    AudioSource musicToFadeIn;
 
-    public float fadeinTime;
-    float originVol;
-    float startinTime;
-    bool isinFading = false;
-    AudioSource sourcetofadein;
+    MusicMood currentlyPlayingMusic = MusicMood.None;
+
+    public enum CharacterType {
+        Player,
+        Enemy1,
+        Enemy2,
+        Enemy3,
+        Enemy4,
+        Enemy5,
+        Enemy6,
+        Enemy7
+    }
 
     public enum MusicMood {
         None = 0,
@@ -30,7 +38,35 @@ public class SoundManager : MonoBehaviour {
         Ascend = 22
     };
 
-    MusicMood currentlyPlayingMusic = MusicMood.None;
+    void Start() {
+        if (characterType == CharacterType.Player)
+            AllowMusicToPlayWhilePaused(true);
+    }
+
+    void Update() {
+        if (isMusicFadingOut == true) {
+            float lerp = ((Time.time - musicFadingOutStartTime) / fadeTime);
+            if (lerp > 1) {
+                musicToFadeOut.Stop();
+                musicToFadeOut.volume = musicFadingOutOriginalVolume;
+                isMusicFadingOut = false;
+            }
+            else {
+                musicToFadeOut.volume = Mathf.Lerp(musicFadingOutOriginalVolume, 0, lerp);
+            }
+        }
+
+        if (isMusicFadingIn == true) {
+            float lerp = ((Time.time - musicFadingInStartTime) / fadeTime);
+            if (lerp > 1) {
+                musicToFadeIn.volume = musicFadingInOriginalVolume;
+                isMusicFadingIn = false;
+            }
+            else {
+                musicToFadeIn.volume = Mathf.Lerp(0, musicFadingInOriginalVolume, lerp);
+            }
+        }
+    }
 
     public void AllowMusicToPlayWhilePaused(bool can) {
         audioClips[(int)MusicMood.MainMenu].ignoreListenerPause = can;
@@ -48,62 +84,33 @@ public class SoundManager : MonoBehaviour {
         audioClips[(int)MusicMood.Ascend].ignoreListenerVolume = can;
     }
 
-    void Start() {
-        if (enemyType == 8)
-            AllowMusicToPlayWhilePaused(true);
-    }
-
-    void Update() {
-        if (isFading == true) {
-            float lerp = ((Time.time - startTime) / fadeTime);
-            if (lerp > 1) {
-                sourcetofade.volume = origVol;
-                isFading = false;
-                sourcetofade.Stop();
-            }
-            else {
-                sourcetofade.volume = Mathf.Lerp(origVol, 0, lerp);
-            }
-        }
-        if (isinFading == true) {
-            float lerpin = ((Time.time - startinTime) / fadeinTime);
-            if (lerpin > 1) {
-                sourcetofadein.volume = originVol;
-                isinFading = false;
-            }
-            else {
-                sourcetofadein.volume = Mathf.Lerp(0, originVol, lerpin);
-            }
-        }
-    }
-
     public void MusicManager(MusicMood mood) {
-        if (currentlyPlayingMusic != mood) {
-            if (mood == MusicMood.MainMenu) {
-                PlaySound((int)mood);
-            }
-            else {
-                if (mood == MusicMood.Ascend) {
-                    fadeTime = 0.5f;
-                    fadeinTime = 0.5f;
-                }
+        if (currentlyPlayingMusic == mood)
+            return;
 
-                if (currentlyPlayingMusic != MusicMood.None) {
-                    FadeSound((int)currentlyPlayingMusic);
-                }
-                if (mood != MusicMood.None) {
-                    FadeInSound((int)mood);
-                }
-            }
-            currentlyPlayingMusic = mood;
+        if (mood == MusicMood.MainMenu) {
+            PlaySound((int)mood);
         }
+        else {
+            if (mood == MusicMood.Ascend)
+                fadeTime = 0.5f;
+
+            if (currentlyPlayingMusic != MusicMood.None)
+                FadeOutMusic((int)currentlyPlayingMusic);
+
+            if (mood != MusicMood.None)
+                FadeInMusic((int)mood);
+        }
+
+        currentlyPlayingMusic = mood;
     }
 
     public void PlaySound(int arrayIndex) {
-        if (enemyType == 1 && arrayIndex == 1 && audioClips[1].isPlaying == true) {
+        // hacky overlapping audio logic
+        if (characterType == CharacterType.Enemy1 && arrayIndex == 1 && audioClips[arrayIndex].isPlaying == true) {
             audioClips[2].Play();
         }
-        else if (enemyType == 8 && arrayIndex == 0 && audioClips[0].isPlaying == true) {
+        else if (characterType == CharacterType.Player && arrayIndex == 0 && audioClips[arrayIndex].isPlaying == true) {
             if (audioClips[1].isPlaying == true) {
                 audioClips[6].Play();
             }
@@ -111,47 +118,44 @@ public class SoundManager : MonoBehaviour {
                 audioClips[1].Play();
             }
         }
-        else if (audioClips[arrayIndex].isPlaying == false) {
+
+        if (audioClips[arrayIndex].isPlaying == false)
             audioClips[arrayIndex].Play();
-        }
     }
 
     public void StopSound(int arrayIndex) {
-        if (audioClips[arrayIndex].isPlaying == true) {
+        if (audioClips[arrayIndex].isPlaying == true)
             audioClips[arrayIndex].Stop();
-        }
-    }
-
-
-
-    public void FadeSound(int arrayIndex) {
-        if (audioClips[arrayIndex].isPlaying == true) {
-            sourcetofade = audioClips[arrayIndex];
-            origVol = audioClips[arrayIndex].volume;
-            startTime = Time.time;
-            isFading = true;
-        }
-    }
-
-    public void FadeInSound(int arrayIndex) {
-        if (audioClips[arrayIndex].isPlaying == false) {
-            sourcetofadein = audioClips[arrayIndex];
-            originVol = audioClips[arrayIndex].volume;
-            startinTime = Time.time;
-            isinFading = true;
-            sourcetofadein.Play();
-        }
     }
 
     public void PlaySoundHit(int arrayIndex) {
-        if (audioClipsHit[arrayIndex].isPlaying == false) {
+        if (audioClipsHit[arrayIndex].isPlaying == false)
             audioClipsHit[arrayIndex].Play();
-        }
     }
 
     public void StopSoundHit(int arrayIndex) {
-        if (audioClipsHit[arrayIndex].isPlaying == true) {
+        if (audioClipsHit[arrayIndex].isPlaying == true)
             audioClipsHit[arrayIndex].Stop();
-        }
+    }
+
+    public void FadeOutMusic(int arrayIndex) {
+        if (audioClips[arrayIndex].isPlaying == false)
+            return;
+
+        musicToFadeOut = audioClips[arrayIndex];
+        musicFadingOutOriginalVolume = audioClips[arrayIndex].volume;
+        musicFadingOutStartTime = Time.time;
+        isMusicFadingOut = true;
+    }
+
+    public void FadeInMusic(int arrayIndex) {
+        if (audioClips[arrayIndex].isPlaying == true)
+            return;
+
+        musicToFadeIn = audioClips[arrayIndex];
+        musicFadingInOriginalVolume = audioClips[arrayIndex].volume;
+        musicFadingInStartTime = Time.time;
+        isMusicFadingIn = true;
+        musicToFadeIn.Play();
     }
 }
