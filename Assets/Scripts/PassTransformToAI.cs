@@ -9,7 +9,7 @@ public class PassTransformToAI : MonoBehaviour {
 	void Start () {
         //pass transform up to enemyai
         enemyAI = transform.parent.GetComponent<EnemyAI>();
-        enemyAI.transformToShake = transform;
+        enemyAI.enemyModel = transform;
 	}
 	
 	// Update is called once per frame
