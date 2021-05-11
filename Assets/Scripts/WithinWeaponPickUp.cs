@@ -26,7 +26,7 @@ public class WithinWeaponPickUp : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        func = new UnityAction(delegate () { GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().BuyWeapon(weaponType); });
+        func = new UnityAction(delegate () { PinkIsTheNewEvil.PlayerController.BuyWeapon(weaponType); });
     }
 	
 	// Update is called once per frame
@@ -50,19 +50,19 @@ public class WithinWeaponPickUp : MonoBehaviour {
                 price.SetActive(true);
                 buybutton.SetActive(true);
                 if (weaponType == 9 || weaponType == 10 || weaponType == 11) {
-                    price.GetComponent<Text>().text = "Ascencion: " + weaponPrice;
+                    price.GetComponent<Text>().text = "Ascencion: 100000";
                     price.GetComponent<Text>().font = poiretFont;
 
                     if (weaponType == 9 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
-                        price.GetComponent<Text>().text = "Extended Rush: 70000";
+                        price.GetComponent<Text>().text = "Extended Rush: " + weaponPrice;
                         price.GetComponent<Text>().font = poiretFont;
                     }
                     else if (weaponType == 10 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
-                        price.GetComponent<Text>().text = "Fast-Charge Jump: 90000";
+                        price.GetComponent<Text>().text = "Fast-Charge Jump: " + weaponPrice;
                         price.GetComponent<Text>().font = poiretFont;
                     }
                     else if (weaponType == 11 && GameObject.Find("Main Systems").GetComponent<EnemySpawner>().level == 29) {
-                        price.GetComponent<Text>().text = "Double Health: 30000";
+                        price.GetComponent<Text>().text = "Double Health: " + weaponPrice;
                         price.GetComponent<Text>().font = poiretFont;
                     }
                 }

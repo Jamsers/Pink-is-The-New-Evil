@@ -313,6 +313,22 @@ public class EnemySpawner : MonoBehaviour {
     public void LevelSetup() {
         PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().PlaySound(15);
 
+        if (level > 14) {
+            PinkIsTheNewEvil.PlayerController.playerPowerLevel = 2;
+            PinkIsTheNewEvil.PlayerController.blackBackgroundJuan.SetActive(false);
+            PinkIsTheNewEvil.PlayerController.blackBackgroundDos.SetActive(true);
+        }
+        else if (level > 5) {
+            PinkIsTheNewEvil.PlayerController.playerPowerLevel = 1;
+            PinkIsTheNewEvil.PlayerController.blackBackgroundJuan.SetActive(true);
+            PinkIsTheNewEvil.PlayerController.blackBackgroundDos.SetActive(false);
+        }
+        else {
+            PinkIsTheNewEvil.PlayerController.playerPowerLevel = 0;
+            PinkIsTheNewEvil.PlayerController.blackBackgroundJuan.SetActive(false);
+            PinkIsTheNewEvil.PlayerController.blackBackgroundDos.SetActive(false);
+        }
+
         for (int i = 0; i < weapons.Length; i++) {
             if (i < PinkIsTheNewEvil.PlayerController.attackMode - 1) {
                 weapons[i].SetActive(false);
@@ -354,23 +370,23 @@ public class EnemySpawner : MonoBehaviour {
         transitionBeginningTime = Time.time;
 
         if (level < 7) {
-            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.BridgeSection);
+            PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.BridgeSection);
         }
         else if (level < 20) {
-            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
+            PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.WorldOpenUp);
         }
         else if (level < 28) {
-            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.NorthernPart);
+            PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.NorthernPart);
         }
         else if (level == 28) {
-            PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
+            PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.Nightmare);
         }
         else if (level == 29) {
             if (PlayerPrefs.GetInt("Is Survival Lighting Flipped") == 1) {
-                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Nightmare);
+                PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.Nightmare);
             }
             else {
-                PinkIsTheNewEvil.PlayerController.GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.WorldOpenUp);
+                PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.WorldOpenUp);
             }
 
         }

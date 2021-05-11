@@ -2,55 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+// Heavily intertwined class. Only refactored lightly. Apologies for the mess.
 public class PlayerController : MonoBehaviour {
-    public LayerMask myLayerMask;
-    public GameObject[] highScoreName;
-    public GameObject[] highScore;
-    public GameObject leburhighsc;
-    public GameObject newname;
-    public GameObject leburhighscnum;
-    public GameObject pinklight;
-    public GameObject cylinderTargetArea;
-    public GameObject boxTargetArea;
-    public Transform shockwavespawn;
-    public Transform shockwavespawn2;
-    public GameObject shockwave;
-    public GameObject pointNumbers;
+    [Header("Data")]
     public float attackAnimLength;
-    public GameObject particle1prefab;
-    public GameObject particle2prefab;
     public Vector3 screenRotationCorrection;
     public int moveSpeed;
     public float attackRange;
     public float attackCooldown;
     public float shakeAmount;
     public float attackLength;
+    public float playerLookAtRotateSpeed;
+    public float mouseSpecDistanceThreshold;
+    public float spec2_5HoldThreshold;
+    public float specialAttackTouchTimeDownThreshold;
+    public float specialAttackTouchTimeUpThreshold;
+    public float specialAttack2_5Threshold;
+    public LayerMask myLayerMask;
+    public SpecialAttackData specialAttack1Data;
+    public SpecialAttackData specialAttack2Data;
+    public WeaponStats[] weaponStats;
+
+    [Header("References")]
+    public GameObject pinklight;
+    public GameObject cylinderTargetArea;
+    public GameObject boxTargetArea;
+    public Transform shockwavespawn;
+    public Transform shockwavespawn2;
+    public GameObject shockwave;
+    public GameObject particle1prefab;
+    public GameObject particle2prefab;
+    public GameObject trailparticle;
+    public GameObject gameCamera;
+    public Material playerpinkTrim;
+    public Material weapon8pinktrim;
+    public GameObject poofWeap;
+    public GameObject poofPLay;
+    public GameObject pinkCaner;
+    public GameObject modeltoRepl;
+    public Material pinkGuyMaterial;
+    public GameObject raycastSource;
+    public CharacterController collider1;
+    public SphereCollider collider2;
+    public BoxCollider collider3;
+    public GameObject shockwavePlayer2;
+
+    [Header("UI")]
+    public GameObject leburhighsc;
+    public GameObject newname;
+    public GameObject leburhighscnum;
+    public GameObject pointNumbers;
     public GameObject healthBloodOnScreen;
     public GameObject hudCanvas;
     public GameObject backgroundNotEnough;
     public GameObject notEnoughPrompt;
-    public GameObject weaponModel2;
-    public GameObject weaponModel3;
-    public GameObject weaponModel4;
-    public GameObject weaponModel5;
-    public GameObject weaponModel6;
-    public GameObject weaponModel7;
-    public GameObject weaponModel8;
-    public GameObject trailparticle;
     public GameObject newHighScore;
     public GameObject blueJoystickAim;
-    public float playerLookAtRotateSpeed;
-    public GameObject gameCamera;
     public GameObject redAim;
     public GameObject redCircle;
-    public GameObject speedAttackIndicatorCircle;
-    public GameObject speedAttackIndicatorIcon;
-    public GameObject speedAttackIndicatorCircleGlow;
-    public GameObject speedAttackIndicatorIconGlow;
-    public GameObject jumpAttackIndicatorCircle;
-    public GameObject jumpAttackIndicatorIcon;
-    public GameObject jumpAttackIndicatorCircleGlow;
-    public GameObject jumpAttackIndicatorIconGlow;
     public GameObject blackBackgroundJuan;
     public GameObject blackBackgroundDos;
     public GameObject redTarget;
@@ -58,16 +67,9 @@ public class PlayerController : MonoBehaviour {
     public GameObject greenCircle;
     public GameObject orangeCircle;
     public GameObject powerUpIcon;
-    public Material playerpinkTrim;
-    public Material weapon8pinktrim;
-    public GameObject poofWeap;
-    public GameObject poofPLay;
     public GameObject backimage1;
     public GameObject price;
     public GameObject buybutton;
-    public GameObject pinkCaner;
-    public GameObject modeltoRepl;
-    public Material pinkGuyMaterial;
     public GameObject ascencionScreen;
     public GameObject healthPerkIcon;
     public GameObject healthPerkBack;
@@ -75,16 +77,6 @@ public class PlayerController : MonoBehaviour {
     public GameObject speedPerkBack;
     public GameObject jumpPerkIcon;
     public GameObject jumpPerkBack;
-    public float mouseSpecDistanceThreshold;
-    public float spec2_5HoldThreshold;
-    public float specialAttackTouchTimeDownThreshold;
-    public float specialAttackTouchTimeUpThreshold;
-    public float specialAttack2_5Threshold;
-    public GameObject raycastSource;
-    public CharacterController collider1;
-    public SphereCollider collider2;
-    public BoxCollider collider3;
-    public GameObject shockwavePlayer2;
 
     [HideInInspector] public Transform transformToShake;
     [HideInInspector] public Transform bloodParticleTransform;
@@ -96,6 +88,7 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public bool isControlOn = true;
     [HideInInspector] public int specialAttackMode;
     [HideInInspector] public bool isSpecialAttackUnderWay = false;
+    [HideInInspector] public int playerPowerLevel = 0;
 
     int currenthealth = 100;
     int amAttacking = 0;
@@ -111,21 +104,17 @@ public class PlayerController : MonoBehaviour {
     bool isDead = false;
     int damageAmount;
     Vector3 moveUpperCubeorigpos = new Vector3(999, 999, 999);
-    bool prevBlueArrow = false;
     Vector3 refoutvar = Vector3.zero;
     Vector3 CurrrentJoystickDirection = Vector3.zero;
-    float lowerlimit = 0.1f;
+    const float LowerLimit = 0.1f;
     Vector3 lastMousePosition = Vector3.zero;
     float orangeActivateTime;
     float primaryCooldown;
     float secondaryCooldown;
     bool isSpecAttack2 = true;
     bool isSpecAttack1 = true;
-    float speedAttackCooldown = 5;
-    float jumpAttackCooldown = 20;
-    float speedAttackLastTrig = -5;
-    float jumpAttackLastTrig = -20;
-    int playerPowerLevel = 0;
+    float specialAttack1LastTrig;
+    float specialAttack2LastTrig;
     bool isFadingOrange = false;
     float fadingOrangeTimeStart = 0;
     float timeToFade = .25f;
@@ -140,7 +129,6 @@ public class PlayerController : MonoBehaviour {
     bool hasDoneIt = false;
     bool isMouseOverButton = false;
     Vector3 startLocationOfMouseDown = new Vector3(0, 0, 0);
-    float startDurationOfMouseUp = 0;
     bool SpecialPhase1 = false;
     bool SpecialPhase1_5 = false;
     bool SpecialPhase2 = false;
@@ -157,19 +145,43 @@ public class PlayerController : MonoBehaviour {
     bool jumpAttackLastTrigRESET = false;
     bool specAttack3IsGo = false;
     GameObject trailParticle;
+    const float shakeInterval = .0625f;
+
+    [System.Serializable]
+    public struct SpecialAttackData {
+        public int mode;
+        public float cooldown;
+        public GameObject indicatorCircle;
+        public GameObject indicatorCircleGlow;
+        public GameObject indicatorIcon;
+        public GameObject indicatorIconGlow;
+    }
+
+    [System.Serializable]
+    public struct WeaponStats {
+        public float attackLength;
+        public float attackRange;
+        public int damageAmount;
+        public float attackCooldown;
+        public GameObject weaponModel;
+        public WithinWeaponPickUp weaponPickup;
+    }
 
     void Start() {
         playerCollider = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         origOrangeCircle = orangeCircle;
+        specialAttack1LastTrig = -specialAttack1Data.cooldown;
+        specialAttack2LastTrig = -specialAttack2Data.cooldown;
 
-        FillInHighScoreMenu();
         HealthRegeneration();
         upgradePoints = PlayerPrefs.GetInt("Upgrade Points", 0);
         setAttackMode(PlayerPrefs.GetInt("Weapon", 1));
-        
-        if (PlayerPrefs.GetInt("Level") == 29)
+
+        if (PlayerPrefs.GetInt("Level") == 29) {
             modeltoRepl.GetComponent<Renderer>().sharedMaterial = playerpinkTrim;
+            weaponStats[8 - 1].weaponModel.GetComponent<MeshRenderer>().material = weapon8pinktrim;
+        }
 
         trailParticle = Instantiate(trailparticle, shockwavespawn.position, shockwave.transform.rotation);
         var main = trailParticle.GetComponent<ParticleSystem>().main;
@@ -194,20 +206,17 @@ public class PlayerController : MonoBehaviour {
                     SpecialAttackManual(1);
                 }
                 else if (Input.GetButtonDown("Fire1") == true) {
-                    if (isMouseOverButton == false) {
+                    if (isMouseOverButton == false)
                         SpecialAttackManual(1);
-                    }
                 }
             }
-
             if (isSpecAttack2 == true) {
                 if (Input.GetAxis("Fire2Joystick") > 0.5f) {
                     SpecialAttackManual(2);
                 }
                 else if (Input.GetButtonDown("Fire2") == true) {
-                    if (isMouseOverButton == false) {
+                    if (isMouseOverButton == false)
                         SpecialAttackManual(2);
-                    }
                 }
             }
         }
@@ -228,9 +237,10 @@ public class PlayerController : MonoBehaviour {
             hasDoneIt = true;
         }
 
-        HealthSplatterUpdate();
         pointNumbers.GetComponent<Text>().text = upgradePoints.ToString();
+        HealthSplatterUpdate();
         UpdateTarget();
+
         if (isSpecialAttackUnderWay == false) {
             if (isDead == true) {
                 if (PinkIsTheNewEvil.EnemySpawner.level == 29) {
@@ -250,8 +260,9 @@ public class PlayerController : MonoBehaviour {
             }
             else {
                 if (isControlOn == true) {
-                    if (Time.timeScale != 0)
+                    if (Time.timeScale != 0) {
                         storedMoveDirection = VirtualJoystick();
+                    }
                     MovePlayer(storedMoveDirection);
                 }
                 else if (isControlOn == false) {
@@ -270,48 +281,29 @@ public class PlayerController : MonoBehaviour {
                 PlayerSpecialAttackLogic1();
             }
             else if (specialAttackMode == 2) {
-                PlayerSpecialAttackLogic();
+                PlayerSpecialAttackLogic2();
             }
         }
 
         fadeAwayOrangeGroup();
-        FadingSpecialAttackIndicators();
+        SpecialAttackTimerLogic();
     }
 
     void FixedUpdate() {
-        if (specAttack3IsGo == true) {
-            transform.position = specialAttackFlightTargetPos;
+        if (specAttack3IsGo == false)
+            return;
 
-            GameObject[] listofEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        transform.position = specialAttackFlightTargetPos;
+        GameObject[] listofEnemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-            for (int i = 0; i < listofEnemies.Length; i++) {
-                float range = 5f;
-                if (Vector3.Distance(raycastSource.transform.position, listofEnemies[i].transform.position) < range) {
-                    listofEnemies[i].GetComponent<EnemyAI>().Health(damageAmount * 4);
-                }
+        for (int i = 0; i < listofEnemies.Length; i++) {
+            float range = 5f;
+            if (Vector3.Distance(raycastSource.transform.position, listofEnemies[i].transform.position) < range) {
+                listofEnemies[i].GetComponent<EnemyAI>().Health(damageAmount * 4);
             }
-
-            specAttack3IsGo = false;
         }
-    }
 
-    void FillInHighScoreMenu() {
-        highScoreName[0].GetComponent<Text>().text = "1: " + PlayerPrefs.GetString("High Score Name 1");
-        highScore[0].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 1").ToString();
-        highScoreName[1].GetComponent<Text>().text = "2: " + PlayerPrefs.GetString("High Score Name 2");
-        highScore[1].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 2").ToString();
-        highScoreName[2].GetComponent<Text>().text = "3: " + PlayerPrefs.GetString("High Score Name 3");
-        highScore[2].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 3").ToString();
-        highScoreName[3].GetComponent<Text>().text = "4: " + PlayerPrefs.GetString("High Score Name 4");
-        highScore[3].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 4").ToString();
-        highScoreName[4].GetComponent<Text>().text = "5: " + PlayerPrefs.GetString("High Score Name 5");
-        highScore[4].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 5").ToString();
-        highScoreName[5].GetComponent<Text>().text = "6: " + PlayerPrefs.GetString("High Score Name 6");
-        highScore[5].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 6").ToString();
-        highScoreName[6].GetComponent<Text>().text = "7: " + PlayerPrefs.GetString("High Score Name 7");
-        highScore[6].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 7").ToString();
-        highScoreName[7].GetComponent<Text>().text = "8: " + PlayerPrefs.GetString("High Score Name 8");
-        highScore[7].GetComponent<Text>().text = PlayerPrefs.GetInt("High Score 8").ToString();
+        specAttack3IsGo = false;
     }
 
     public void ResumeSkyfall() {
@@ -326,18 +318,20 @@ public class PlayerController : MonoBehaviour {
                 leburhighscnum.gameObject.SetActive(true);
                 newHighScore.SetActive(true);
                 leburhighscnum.GetComponent<Text>().text = upgradePoints.ToString();
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().saveHighScore = true;
+                PinkIsTheNewEvil.MainSystems.saveHighScore = true;
                 break;
             }
         }
     }
 
     void animateAttack() {
-        if (amAttacking == 0) {
-            amAttacking = 1;
-            AnimSwitchTo("goToAttack");
-            Invoke("amAttackingSwitchBack", attackAnimLength);
-        }
+        if (amAttacking == 1)
+            return;
+
+        amAttacking = 1;
+        AnimSwitchTo("goToAttack");
+        Invoke("amAttackingSwitchBack", attackAnimLength);
+
     }
 
     void amAttackingSwitchBack() {
@@ -345,29 +339,30 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void Health(int value) {
-        if (isSpecialAttackUnderWay == false) {
-            if (isControlOn == true && PinkIsTheNewEvil.MainSystems.debugInvulnerable == false) {
-                currenthealth = currenthealth + value;
-                Vector3 bloodpos = new Vector3(transform.position.x, transform.position.y + .6f, transform.position.z);
-                GameObject particle = (GameObject)Instantiate(particle2prefab, bloodpos, particle2prefab.transform.rotation);
-                Destroy(particle, 1.0f);
-                GetComponent<SoundManager>().PlaySound(7);
-            }
+        if (isSpecialAttackUnderWay == true)
+            return;
 
-            if (currenthealth <= 0) {
-                isDead = true;
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().OpenPrompt(9);
-                if (PlayerPrefs.GetInt("Level") == 29)
-                    CheckIfInHighscores();
-            }
-            else {
-                if (isControlOn == true) {
-                    MoveUpper();
-                    Invoke("MoveLower", .0625f);
-                    Invoke("MoveUpper2", .125f);
-                    Invoke("MoveLower", .1875f);
-                    Invoke("MoveFinish", .25f);
-                }
+        if (isControlOn == true && PinkIsTheNewEvil.MainSystems.debugInvulnerable == false) {
+            currenthealth += value;
+            Vector3 bloodpos = new Vector3(transform.position.x, transform.position.y + .6f, transform.position.z);
+            GameObject particle = Instantiate(particle2prefab, bloodpos, particle2prefab.transform.rotation);
+            Destroy(particle, 1.0f);
+            GetComponent<SoundManager>().PlaySound(7);
+        }
+
+        if (currenthealth <= 0) {
+            isDead = true;
+            PinkIsTheNewEvil.MainSystems.OpenPrompt(9);
+            if (PlayerPrefs.GetInt("Level") == 29)
+                CheckIfInHighscores();
+        }
+        else {
+            if (isControlOn == true) {
+                Invoke("MoveUpper", shakeInterval * 0);
+                Invoke("MoveLower", shakeInterval * 1);
+                Invoke("MoveUpper2", shakeInterval * 2);
+                Invoke("MoveLower", shakeInterval * 3);
+                Invoke("MoveFinish", shakeInterval * 4);
             }
         }
     }
@@ -375,6 +370,7 @@ public class PlayerController : MonoBehaviour {
     void HealthRegeneration() {
         int healthRegenAmount = 1;
         float healthRegenTick = .10f;
+
         if (currenthealth + healthRegenAmount > targetHealth) {
             currenthealth = targetHealth;
         }
@@ -384,14 +380,14 @@ public class PlayerController : MonoBehaviour {
         else {
             currenthealth = currenthealth + healthRegenAmount;
         }
+
         Invoke("HealthRegeneration", healthRegenTick);
     }
 
     void HealthSplatterUpdate() {
-        float x = hudCanvas.GetComponent<RectTransform>().sizeDelta.x;
-        float y = hudCanvas.GetComponent<RectTransform>().sizeDelta.y;
-        healthBloodOnScreen.GetComponent<RectTransform>().sizeDelta = new Vector2(x, y);
+        healthBloodOnScreen.GetComponent<RectTransform>().sizeDelta = hudCanvas.GetComponent<RectTransform>().sizeDelta;
         float scale;
+
         if (currenthealth < targetHealth) {
             float targetHealthconv = targetHealth;
             scale = Mathf.Lerp(1, 2, currenthealth / targetHealthconv);
@@ -399,420 +395,132 @@ public class PlayerController : MonoBehaviour {
         else {
             scale = 2.9f;
         }
+
         healthBloodOnScreen.transform.localScale = new Vector3(scale, scale, 1);
     }
 
     public void setAttackMode(int mode) {
-        if (mode == 1) {
-            attackLength = .7f;
-            attackMode = 1;
-            attackRange = 1.2f;
-            damageAmount = -30;
-            attackCooldown = .5f;
-            disableOtherWeapons();
+        attackMode = mode;
+        attackLength = weaponStats[mode - 1].attackLength;
+        attackRange = weaponStats[mode - 1].attackRange;
+        damageAmount = weaponStats[mode - 1].damageAmount;
+        attackCooldown = weaponStats[mode - 1].attackCooldown;
+
+        foreach (WeaponStats weaponStat in weaponStats) {
+            weaponStat.weaponModel.SetActive(false);
         }
-        else if (mode == 2) {
-            attackLength = .5f;
-            attackMode = 2;
-            attackRange = 1.6f;
-            damageAmount = -50;
-            attackCooldown = 1f;
-            disableOtherWeapons();
-            weaponModel2.SetActive(true);
-        }
-        else if (mode == 3) {
-            attackLength = 0.5f;
-            attackMode = 3;
-            attackRange = 1.7f;
-            damageAmount = -90;
-            attackCooldown = 1f;
-            disableOtherWeapons();
-            weaponModel3.SetActive(true);
-        }
-        else if (mode == 4) {
-            attackLength = 0.5f;
-            attackMode = 4;
-            attackRange = 1.6f;
-            damageAmount = -150;
-            attackCooldown = .5f;
-            disableOtherWeapons();
-            weaponModel4.SetActive(true);
-        }
-        else if (mode == 5) {
-            attackLength = 0.5f;
-            attackMode = 5;
-            attackRange = 2f;
-            damageAmount = -300;
-            attackCooldown = .5f;
-            disableOtherWeapons();
-            weaponModel5.SetActive(true);
-        }
-        else if (mode == 6) {
-            attackLength = 1f;
-            attackMode = 6;
-            attackRange = 2.9f;
-            damageAmount = -600;
-            attackCooldown = .5f;
-            disableOtherWeapons();
-            weaponModel6.SetActive(true);
-        }
-        else if (mode == 7) {
-            attackLength = 1f;
-            attackMode = 7;
-            attackRange = 3.9f;
-            damageAmount = -800;
-            attackCooldown = .5f;
-            disableOtherWeapons();
-            weaponModel7.SetActive(true);
-        }
-        else if (mode == 8) {
-            attackLength = 1f;
-            attackMode = 8;
-            attackRange = 3.9f;
-            damageAmount = -1200;
-            attackCooldown = .5f;
-            disableOtherWeapons();
-            weaponModel8.SetActive(true);
-            if (PlayerPrefs.GetInt("Level") == 29) {
-                weaponModel8.GetComponent<MeshRenderer>().material = weapon8pinktrim;
-            }
-        }
+
+        weaponStats[mode - 1].weaponModel.SetActive(true);
     }
 
     public void BuyWeapon(int type) {
         if (type == 420) {
-            GetComponent<SoundManager>().PlaySound(14);
+            BuyWeaponEffects(type);
+            ClearWeaponBuyPopUp();
+        }
+        else if ((PinkIsTheNewEvil.EnemySpawner.level == 28 && type > 8) && upgradePoints >= 100000) {
+            BuyWeaponEffects(type);
+            ClearWeaponBuyPopUp();
+        }
+        else if (upgradePoints >= weaponStats[type-1].weaponPickup.weaponPrice) {
+            CreatePoofBuyWeapon(type);
+            BuyWeaponEffects(type);
+            ClearWeaponBuyPopUp();
         }
         else {
             GetComponent<SoundManager>().PlaySound(12);
+            backgroundNotEnough.SetActive(true);
+            notEnoughPrompt.SetActive(true);
+            Invoke("GetRidOfNotEnoughPrompt", 3);
         }
+    }
 
-        if (type == 2) {
-            if (upgradePoints >= 100) {
-                upgradePoints = upgradePoints - 100;
-                setAttackMode(2);
-
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[1 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel2.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
+    void BuyWeaponEffects(int type) {
+        if (type == 420) {
+            GetComponent<SoundManager>().PlaySound(14);
+            pinkCaner.SetActive(false);
+            pinklight.SetActive(true);
+            modeltoRepl.GetComponent<Renderer>().sharedMaterial = pinkGuyMaterial;
         }
-        else if (type == 3) {
-            if (upgradePoints >= 1000) {
-                upgradePoints = upgradePoints - 1000;
-                setAttackMode(3);
+        else if (PinkIsTheNewEvil.EnemySpawner.level == 28 && type > 8) {
+            upgradePoints -= 100000;
 
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[2 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel3.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 4) {
-            if (upgradePoints >= 2300) {
-                upgradePoints = upgradePoints - 2300;
-                setAttackMode(4);
+            PinkIsTheNewEvil.MainSystems.hud.SetActive(false);
+            PinkIsTheNewEvil.MainSystems.gamePause.SetActive(false);
+            PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
+            PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.Ascend);
+            ascencionScreen.SetActive(true);
+            isAscending = true;
 
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[3 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel4.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
+            PlayerPrefs.SetInt("Level", 29);
+            PlayerPrefs.SetInt("Upgrade Points", 0);
+            PlayerPrefs.SetInt("Weapon", 8);
+            PlayerPrefs.Save();
         }
-        else if (type == 5) {
-            if (upgradePoints >= 4000) {
-                upgradePoints = upgradePoints - 4000;
-                setAttackMode(5);
+        else if (type > 8) {
+            upgradePoints = upgradePoints - weaponStats[type - 1].weaponPickup.weaponPrice;
+            GetComponent<SoundManager>().PlaySound(12);
+            PinkIsTheNewEvil.EnemySpawner.weapons[(type - 1) - 1].SetActive(false);
 
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[4 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel5.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 6) {
-            if (upgradePoints >= 11000) {
-                upgradePoints = upgradePoints - 11000;
-                setAttackMode(6);
-
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[5 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel6.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 7) {
-            if (upgradePoints >= 20000) {
-                upgradePoints = upgradePoints - 20000;
-                setAttackMode(7);
-
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[6 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel7.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[6 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 8) {
-            if (upgradePoints >= 43000) {
-                upgradePoints = upgradePoints - 43000;
-                setAttackMode(8);
-
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                PinkIsTheNewEvil.EnemySpawner.weapons[1 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[2 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[3 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[4 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[5 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[6 - 1].SetActive(false);
-                PinkIsTheNewEvil.EnemySpawner.weapons[7 - 1].SetActive(false);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 9) {
-            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 70000) {
-                upgradePoints = upgradePoints - 70000;
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[8 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                poof1.transform.localScale = poof1.transform.localScale * 3;
-                poof2.transform.localScale = poof2.transform.localScale * 3;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
+            if (type == 9) {
                 speedPerkIcon.SetActive(true);
                 speedPerkBack.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.weapons[8 - 1].SetActive(false);
                 animator.SetFloat("specAttack1speed", 0.5f);
-                speedAttackCooldown = speedAttackCooldown + 2;
+                specialAttack1Data.cooldown += 2;
             }
-            else if (upgradePoints >= 100000) {
-                upgradePoints = upgradePoints - 100000;
-                PlayerPrefs.SetInt("Level", 29);
-                PlayerPrefs.SetInt("Upgrade Points", 0);
-                PlayerPrefs.SetInt("Weapon", 8);
-                PlayerPrefs.Save();
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                ascencionScreen.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
-                isAscending = true;
-                GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 10) {
-            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 90000) {
-                upgradePoints = upgradePoints - 90000;
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                poof1.transform.localScale = poof1.transform.localScale * 3;
-                poof2.transform.localScale = poof2.transform.localScale * 3;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
+            else if (type == 10) {
                 jumpPerkIcon.SetActive(true);
                 jumpPerkBack.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.weapons[9 - 1].SetActive(false);
-                jumpAttackCooldown = jumpAttackCooldown / 3;
+                specialAttack2Data.cooldown /= 3;
             }
-            else if (upgradePoints >= 100000) {
-                upgradePoints = upgradePoints - 100000;
-                PlayerPrefs.SetInt("Level", 29);
-                PlayerPrefs.SetInt("Upgrade Points", 0);
-                PlayerPrefs.SetInt("Weapon", 8);
-                PlayerPrefs.Save();
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                ascencionScreen.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
-                isAscending = true;
-                GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
-        }
-        else if (type == 11) {
-            if (PinkIsTheNewEvil.EnemySpawner.level == 29 && upgradePoints >= 30000) {
-                upgradePoints = upgradePoints - 30000;
-                GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[7 - 1].transform.position, poofWeap.transform.rotation);
-                GameObject poof2 = Instantiate(poofPLay, weaponModel8.transform.position, poofPLay.transform.rotation);
-                poof1.transform.parent = null;
-                poof1.transform.localScale = poof1.transform.localScale * 3;
-                poof2.transform.localScale = poof2.transform.localScale * 3;
-                Destroy(poof1, 4);
-                Destroy(poof2, 4);
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
+            else if (type == 11) {
                 healthPerkIcon.SetActive(true);
                 healthPerkBack.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.weapons[10 - 1].SetActive(false);
                 targetHealth = targetHealth * 2;
             }
-            else if (upgradePoints >= 100000) {
-                upgradePoints = upgradePoints - 100000;
-                PlayerPrefs.SetInt("Level", 29);
-                PlayerPrefs.SetInt("Upgrade Points", 0);
-                PlayerPrefs.SetInt("Weapon", 8);
-                PlayerPrefs.Save();
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().hud.SetActive(false);
-                GameObject.FindGameObjectWithTag("Systems Process").GetComponent<MainSystems>().gamePause.SetActive(false);
-                ascencionScreen.SetActive(true);
-                PinkIsTheNewEvil.EnemySpawner.constantlyDenyInput = true;
-                isAscending = true;
-                GameObject.Find("Player").GetComponent<SoundManager>().MusicManager(SoundManager.MusicMood.Ascend);
-            }
-            else {
-                backgroundNotEnough.SetActive(true);
-                notEnoughPrompt.SetActive(true);
-                Invoke("GetRidOfNotEnoughPrompt", 3);
-            }
         }
-        else if (type == 420) {
-            backimage1.SetActive(false);
-            price.SetActive(false);
-            buybutton.SetActive(false);
-            buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
-            pinkCaner.SetActive(false);
-            modeltoRepl.GetComponent<Renderer>().sharedMaterial = pinkGuyMaterial;
-            pinklight.SetActive(true);
+        else {
+            upgradePoints = upgradePoints - weaponStats[type - 1].weaponPickup.weaponPrice;
+            GetComponent<SoundManager>().PlaySound(12);
+            for (int i = 0; i < type - 1; i++) {
+                PinkIsTheNewEvil.EnemySpawner.weapons[i].SetActive(false);
+            }
+            setAttackMode(type);
         }
+    }
+
+    void CreatePoofBuyWeapon(int type) {
+        int poof2Target;
+
+        if (type > 8) {
+            poof2Target = 8 - 1;
+        }
+        else {
+            poof2Target = type - 1;
+        }
+
+        GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[(type - 1) - 1].transform.position, poofWeap.transform.rotation);
+        GameObject poof2 = Instantiate(poofPLay, weaponStats[poof2Target].weaponModel.transform.position, poofPLay.transform.rotation);
+        poof1.transform.parent = null;
+        Destroy(poof1, 4);
+        Destroy(poof2, 4);
+
+        if (type > 8) {
+            poof1.transform.localScale = poof1.transform.localScale * 3;
+            poof2.transform.localScale = poof2.transform.localScale * 3;
+        }
+    }
+
+    void ClearWeaponBuyPopUp() {
+        backimage1.SetActive(false);
+        price.SetActive(false);
+        buybutton.SetActive(false);
+        buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
     void GetRidOfNotEnoughPrompt() {
         backgroundNotEnough.SetActive(false);
         notEnoughPrompt.SetActive(false);
-    }
-
-    void disableOtherWeapons() {
-        weaponModel2.SetActive(false);
-        weaponModel3.SetActive(false);
-        weaponModel4.SetActive(false);
-        weaponModel5.SetActive(false);
-        weaponModel6.SetActive(false);
-        weaponModel7.SetActive(false);
-        weaponModel8.SetActive(false);
     }
 
     public void SpawnSmokeForFall() {
@@ -842,33 +550,28 @@ public class PlayerController : MonoBehaviour {
         SpecialPhase1_5 = false;
         SpecialPhase2 = false;
         SpecialPhase2_5 = false;
+
         if (mode == 1) {
             specialAttackMode = 1;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
             if (isSpecAttack1 == true) {
-                speedAttackLastTrig = Time.time;
+                specialAttack1LastTrig = Time.time;
             }
         }
-        else {
+        else if (mode == 2) {
             specialAttackMode = 2;
             powerUpIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
             if (isSpecAttack2 == true) {
-                jumpAttackLastTrig = Time.time;
+                specialAttack2LastTrig = Time.time;
             }
         }
+
         isFadingOrange = true;
         fadingOrangeTimeStart = Time.time;
-
         powerUpIcon.GetComponent<RectTransform>().position = new Vector3(orangeCircle.GetComponent<RectTransform>().position.x, orangeCircle.GetComponent<RectTransform>().position.y, 0);
         powerUpIcon.SetActive(true);
 
-        if (isSpecAttack1 == false && specialAttackMode == 1) {
-            isSpecialAttackUnderWay = false;
-            powerUpIcon.SetActive(false);
-            orangeCircle.SetActive(false);
-            CancelInvoke("removeOrangeCircle");
-        }
-        else if (isSpecAttack2 == false && specialAttackMode == 2) {
+        if ((isSpecAttack1 == false && specialAttackMode == 1) || (isSpecAttack2 == false && specialAttackMode == 2)) {
             isSpecialAttackUnderWay = false;
             powerUpIcon.SetActive(false);
             orangeCircle.SetActive(false);
@@ -879,12 +582,10 @@ public class PlayerController : MonoBehaviour {
     void updateJoystickAim() {
         int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
         int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
-
         float aimHorizontal = Input.GetAxis("HorizontalAim");
         float aimVertical = Input.GetAxis("VerticalAim");
 
         Vector3 virtualJoystickDirection = new Vector3(aimHorizontal, aimVertical, 0);
-
         virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
         virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
 
@@ -902,14 +603,14 @@ public class PlayerController : MonoBehaviour {
             if (finalPostion.x > screenWidth - 10) {
                 finalPostion.x = screenWidth - 10;
             }
-            else if (finalPostion.x < 10) {
+            else if (finalPostion.x < 0 + 10) {
                 finalPostion.x = 10;
             }
 
             if (finalPostion.y > screenHeight - 10) {
                 finalPostion.y = screenHeight - 10;
             }
-            else if (finalPostion.y < 10) {
+            else if (finalPostion.y < 0 + 10) {
                 finalPostion.y = 10;
             }
 
@@ -918,15 +619,12 @@ public class PlayerController : MonoBehaviour {
             orangeCircle.SetActive(true);
             orangeCircle.GetComponent<Transform>().position = finalPostion;
         }
-
     }
 
     void VanishAndResetOrangeCircle() {
         int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
         int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
-
         Vector3 screenCenter = new Vector3(screenWidth * 0.5f, screenHeight * 0.65f, 0);
-
         orangeCircle.GetComponent<Transform>().position = screenCenter;
         orangeCircle.SetActive(false);
     }
@@ -939,7 +637,7 @@ public class PlayerController : MonoBehaviour {
         specialAttackPhase = phase;
     }
 
-    void PlayerSpecialAttackLogic() {
+    void PlayerSpecialAttackLogic2() {
         if (specialAttackPhase == 1) {
             AnimSwitchTo("SpecAttack3");
             isControlOff = true;
@@ -954,8 +652,12 @@ public class PlayerController : MonoBehaviour {
                 if (specialAttackEnemyTarget == null) {
                     specialAttackEnemyTarget = PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i];
                 }
-                else if (Vector3.Distance(scanPoint, PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i].transform.position) < Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position)) {
-                    specialAttackEnemyTarget = PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i];
+                else {
+                    float distanceToCurrentEnemy = Vector3.Distance(scanPoint, PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i].transform.position);
+                    float distanceToStoredEnemy = Vector3.Distance(scanPoint, specialAttackEnemyTarget.transform.position);
+
+                    if (distanceToCurrentEnemy < distanceToStoredEnemy)
+                        specialAttackEnemyTarget = PinkIsTheNewEvil.EnemySpawner.listOfAllEnemies[i];
                 }
             }
 
@@ -964,11 +666,9 @@ public class PlayerController : MonoBehaviour {
                     specialAttackEnemyTarget = null;
                 }
             }
+
             if (specialAttackEnemyTarget != null) {
-                backimage1.SetActive(false);
-                price.SetActive(false);
-                buybutton.SetActive(false);
-                buybutton.GetComponent<Button>().onClick.RemoveAllListeners();
+                ClearWeaponBuyPopUp();
                 specialAttackPhase = 3;
                 transform.LookAt(specialAttackEnemyTarget.transform.position);
                 transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
@@ -1038,8 +738,9 @@ public class PlayerController : MonoBehaviour {
             isSpecialAttackUnderWay = false;
             specialAttackPhase = 1;
             specialAttackEnemyTarget = null;
+
             if (jumpAttackLastTrigRESET == true) {
-                jumpAttackLastTrig = Time.time - (jumpAttackCooldown - 1f);
+                specialAttack2LastTrig = Time.time - (specialAttack1Data.cooldown - 1f);
                 jumpAttackLastTrigRESET = false;
             }
         }
@@ -1055,17 +756,15 @@ public class PlayerController : MonoBehaviour {
             AnimSwitchTo("SpecAttack1");
             isControlOff = true;
             specialAttackPhase = 2;
-
-
         }
         else if (specialAttackPhase == 2) {
         }
         else if (specialAttackPhase == 3) {
             RaycastHit hit;
-            Physics.Raycast(new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y + 1, raycastSource.transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
-            Vector3 pointHit = hit.point;
+            Vector3 rayOrigin = new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y + 1, raycastSource.transform.position.z);
+            Physics.Raycast(rayOrigin, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
             gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
-            gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pointHit);
+            gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(hit.point);
             specialAttackPhase = 4;
 
             if (attackMode == 7 || attackMode == 8) {
@@ -1076,7 +775,6 @@ public class PlayerController : MonoBehaviour {
             }
 
             trailParticle.transform.SetParent(this.transform);
-
             Vector3 newtrailPos = trailParticle.transform.localPosition;
             newtrailPos.y = newtrailPos.y - 0.3f;
             newtrailPos.z = newtrailPos.z - 1.25f;
@@ -1084,7 +782,6 @@ public class PlayerController : MonoBehaviour {
             trailParticle.transform.localPosition = newtrailPos;
             trailParticle.transform.localScale = new Vector3(1.2f, 1.2f, .65f);
             trailParticle.transform.localRotation = Quaternion.Euler(0, 0, 0);
-
             trailParticle.GetComponent<ParticleSystem>().Play();
         }
         else if (specialAttackPhase == 4) {
@@ -1117,7 +814,6 @@ public class PlayerController : MonoBehaviour {
             targetsInRange = new List<GameObject>();
             isSpecialAttackUnderWay = false;
             specialAttackPhase = 1;
-
             trailParticle.GetComponent<ParticleSystem>().Stop();
         }
     }
@@ -1127,283 +823,254 @@ public class PlayerController : MonoBehaviour {
         CancelInvoke("removeOrangeCircle");
     }
 
+    // Can't keep track anymore of all that this function does, left untouched 😳
     void fadeAwayOrangeGroup() {
-        if (isFadingOrange == true) {
+        if (isFadingOrange == false)
+            return;
 
-            if (isThereNoTargetForJump == true) {
-                orangeCircle.SetActive(false);
-                redCancelIcon.SetActive(true);
-                redCancelIcon.transform.position = orangeCircle.transform.position;
-            }
+        if (isThereNoTargetForJump == true) {
+            orangeCircle.SetActive(false);
+            redCancelIcon.SetActive(true);
+            redCancelIcon.transform.position = orangeCircle.transform.position;
+        }
 
-            Color orangeColor = orangeCircle.GetComponent<Image>().color;
-            float lerpPoint = (((fadingOrangeTimeStart + timeToFade) - Time.time) / timeToFade);
-            orangeColor.a = Mathf.Lerp(0, 1, lerpPoint);
+        Color orangeColor = orangeCircle.GetComponent<Image>().color;
+        float lerpPoint = (((fadingOrangeTimeStart + timeToFade) - Time.time) / timeToFade);
+        orangeColor.a = Mathf.Lerp(0, 1, lerpPoint);
+        orangeCircle.GetComponent<Image>().color = orangeColor;
+
+        CancelInvoke("removeOrangeCircle");
+
+        Color powerColor = powerUpIcon.GetComponent<Image>().color;
+        powerColor.a = orangeColor.a + .50f;
+        powerUpIcon.GetComponent<Image>().color = powerColor;
+
+        Color redColor = redTarget.GetComponent<Image>().color;
+        redColor.a = orangeColor.a;
+        redTarget.GetComponent<Image>().color = redColor;
+        redCircle.GetComponent<Image>().color = redColor;
+        redAim.GetComponent<Image>().color = redColor;
+
+        float groupScale = Mathf.Lerp(orangeGoalScale, 1, lerpPoint);
+        orangeCircle.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
+        powerUpIcon.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
+
+        if (lerpPoint <= 0) {
+            isThereNoTargetForJump = false;
+            orangeCircle.SetActive(false);
+            VanishAndResetOrangeCircle();
+            redCancelIcon.SetActive(false);
+
+            isFadingOrange = false;
+            orangeColor.a = 1;
+            powerColor.a = 1;
+            redColor.a = 1;
             orangeCircle.GetComponent<Image>().color = orangeColor;
-
-            CancelInvoke("removeOrangeCircle");
-
-            Color powerColor = powerUpIcon.GetComponent<Image>().color;
-            powerColor.a = orangeColor.a + .50f;
             powerUpIcon.GetComponent<Image>().color = powerColor;
-
-            Color redColor = redTarget.GetComponent<Image>().color;
-            redColor.a = orangeColor.a;
             redTarget.GetComponent<Image>().color = redColor;
             redCircle.GetComponent<Image>().color = redColor;
             redAim.GetComponent<Image>().color = redColor;
-
-            float groupScale = Mathf.Lerp(orangeGoalScale, 1, lerpPoint);
-            orangeCircle.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
-            powerUpIcon.GetComponent<RectTransform>().localScale = new Vector3(groupScale, groupScale, 0);
-
-            if (lerpPoint <= 0) {
-                isThereNoTargetForJump = false;
-                orangeCircle.SetActive(false);
-                VanishAndResetOrangeCircle();
-                redCancelIcon.SetActive(false);
-
-                isFadingOrange = false;
-                orangeColor.a = 1;
-                powerColor.a = 1;
-                redColor.a = 1;
-                orangeCircle.GetComponent<Image>().color = orangeColor;
-                powerUpIcon.GetComponent<Image>().color = powerColor;
-                redTarget.GetComponent<Image>().color = redColor;
-                redCircle.GetComponent<Image>().color = redColor;
-                redAim.GetComponent<Image>().color = redColor;
-                orangeCircle.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 0);
-                powerUpIcon.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 0);
-                orangeCircle.SetActive(false);
-                powerUpIcon.SetActive(false);
-                redTarget.SetActive(false);
-                redAim.SetActive(false);
-                redCircle.SetActive(false);
-            }
+            orangeCircle.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 0);
+            powerUpIcon.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 0);
+            orangeCircle.SetActive(false);
+            powerUpIcon.SetActive(false);
+            redTarget.SetActive(false);
+            redAim.SetActive(false);
+            redCircle.SetActive(false);
         }
     }
 
-    void FadingSpecialAttackIndicators() {
-        if (PinkIsTheNewEvil.EnemySpawner.level > 14) {
-            playerPowerLevel = 2;
-        }
-        else if (PinkIsTheNewEvil.EnemySpawner.level > 5) {
-            playerPowerLevel = 1;
-        }
-        else {
-            playerPowerLevel = 0;
-        }
-
-        if (playerPowerLevel == 2) {
-            blackBackgroundJuan.SetActive(false);
-            blackBackgroundDos.SetActive(true);
-        }
-        else if (playerPowerLevel == 1) {
-            blackBackgroundJuan.SetActive(true);
-            blackBackgroundDos.SetActive(false);
-        }
-        else {
-            blackBackgroundJuan.SetActive(false);
-            blackBackgroundDos.SetActive(false);
-        }
-
-
+    void SpecialAttackTimerLogic() {
         if (playerPowerLevel < 1) {
             isSpecAttack1 = false;
         }
-        else if ((Time.time - speedAttackLastTrig) > speedAttackCooldown) {
+        else if ((Time.time - specialAttack1LastTrig) > specialAttack1Data.cooldown) {
             isSpecAttack1 = true;
         }
-        else if ((Time.time - speedAttackLastTrig) < speedAttackCooldown) {
+        else if ((Time.time - specialAttack1LastTrig) < specialAttack1Data.cooldown) {
             isSpecAttack1 = false;
         }
 
         if (playerPowerLevel < 2) {
             isSpecAttack2 = false;
         }
-        else if ((Time.time - jumpAttackLastTrig) > jumpAttackCooldown) {
+        else if ((Time.time - specialAttack2LastTrig) > specialAttack2Data.cooldown) {
             isSpecAttack2 = true;
         }
-        else if ((Time.time - jumpAttackLastTrig) < jumpAttackCooldown) {
+        else if ((Time.time - specialAttack2LastTrig) < specialAttack2Data.cooldown) {
             isSpecAttack2 = false;
         }
 
-        float a = (Time.time - speedAttackLastTrig) / speedAttackCooldown;
-        Color speedTrans = speedAttackIndicatorCircle.GetComponent<Image>().color;
-        if (playerPowerLevel < 1) {
-            speedTrans.a = 0;
-            speedAttackIndicatorCircleGlow.SetActive(false);
-            speedAttackIndicatorIconGlow.SetActive(false);
-        }
-        else if (a > 1) {
-            speedTrans.a = 1;
-            speedAttackIndicatorCircleGlow.SetActive(true);
-            speedAttackIndicatorIconGlow.SetActive(true);
-        }
-        else {
-            speedTrans.a = Mathf.Lerp(0, 1, a) - .2f;
-            speedAttackIndicatorCircleGlow.SetActive(false);
-            speedAttackIndicatorIconGlow.SetActive(false);
-        }
-        speedAttackIndicatorCircle.GetComponent<Image>().color = speedTrans;
-        speedAttackIndicatorIcon.GetComponent<Image>().color = speedTrans;
+        FadeSpecialAttackIndicators(specialAttack1Data);
+        FadeSpecialAttackIndicators(specialAttack2Data);
+    }
 
-        float b = (Time.time - jumpAttackLastTrig) / jumpAttackCooldown;
-        Color jumpTrans = jumpAttackIndicatorCircle.GetComponent<Image>().color;
-        if (playerPowerLevel < 2) {
-            jumpTrans.a = 0;
-            jumpAttackIndicatorCircleGlow.SetActive(false);
-            jumpAttackIndicatorIconGlow.SetActive(false);
-        }
-        else if (b > 1) {
-            jumpTrans.a = 1;
-            jumpAttackIndicatorCircleGlow.SetActive(true);
-            jumpAttackIndicatorIconGlow.SetActive(true);
+    void FadeSpecialAttackIndicators(SpecialAttackData specialAttackData) {
+        float lastTrig;
+
+        if (specialAttackData.mode == 1) {
+            lastTrig = specialAttack2LastTrig;
         }
         else {
-            jumpTrans.a = Mathf.Lerp(0, 1, b) - .2f;
-            jumpAttackIndicatorCircleGlow.SetActive(false);
-            jumpAttackIndicatorIconGlow.SetActive(false);
+            lastTrig = specialAttack1LastTrig;
         }
-        jumpAttackIndicatorCircle.GetComponent<Image>().color = jumpTrans;
-        jumpAttackIndicatorIcon.GetComponent<Image>().color = jumpTrans;
+
+        float fadeLerp = (Time.time - lastTrig) / specialAttackData.cooldown;
+        Color circleColor = specialAttackData.indicatorCircle.GetComponent<Image>().color;
+
+        if (playerPowerLevel < specialAttackData.mode) {
+            circleColor.a = 0;
+            specialAttackData.indicatorCircleGlow.SetActive(false);
+            specialAttackData.indicatorIconGlow.SetActive(false);
+        }
+        else if (fadeLerp > 1) {
+            circleColor.a = 1;
+            specialAttackData.indicatorCircleGlow.SetActive(true);
+            specialAttackData.indicatorIconGlow.SetActive(true);
+        }
+        else {
+            circleColor.a = Mathf.Lerp(0, 1, fadeLerp) - .2f;
+            specialAttackData.indicatorCircleGlow.SetActive(false);
+            specialAttackData.indicatorIconGlow.SetActive(false);
+        }
+
+        specialAttackData.indicatorCircle.GetComponent<Image>().color = circleColor;
+        specialAttackData.indicatorIcon.GetComponent<Image>().color = circleColor;
     }
 
     Vector3 VirtualJoystick() {
-        if (isControlOff == false) {
-            float horizontalAxisKeyboard = Input.GetAxis("HorizontalKeyboard");
-            float verticalAxisKeyboard = Input.GetAxis("VerticalKeyboard");
-            float horizontalAxisJoystick = Input.GetAxis("HorizontalJoystick");
-            float verticalAxisJoystick = Input.GetAxis("VerticalJoystick");
+        if (isControlOff == true)
+            return Vector3.zero;
 
-            float joystickAxisLowerLimit = 0.5f;
+        float rawHorizontalAxisKeyboard = Input.GetAxis("HorizontalKeyboard");
+        float rawVerticalAxisKeyboard = Input.GetAxis("VerticalKeyboard");
+        float rawHorizontalAxisJoystick = Input.GetAxis("HorizontalJoystick");
+        float rawVerticalAxisJoystick = Input.GetAxis("VerticalJoystick");
 
-            if (horizontalAxisJoystick > 0f && horizontalAxisJoystick < joystickAxisLowerLimit) {
-                horizontalAxisJoystick = joystickAxisLowerLimit;
-            }
-            else if (horizontalAxisJoystick < 0f && horizontalAxisJoystick > -joystickAxisLowerLimit) {
-                horizontalAxisJoystick = -joystickAxisLowerLimit;
-            }
+        float rawJoystickAxisLowerLimit = 0.5f;
 
-            if (verticalAxisJoystick > 0f && verticalAxisJoystick < joystickAxisLowerLimit) {
-                verticalAxisJoystick = joystickAxisLowerLimit;
-            }
-            else if (verticalAxisJoystick < 0f && verticalAxisJoystick > -joystickAxisLowerLimit) {
-                verticalAxisJoystick = -joystickAxisLowerLimit;
-            }
+        if (rawHorizontalAxisJoystick > 0f && rawHorizontalAxisJoystick < rawJoystickAxisLowerLimit) {
+            rawHorizontalAxisJoystick = rawJoystickAxisLowerLimit;
+        }
+        else if (rawHorizontalAxisJoystick < 0f && rawHorizontalAxisJoystick > -rawJoystickAxisLowerLimit) {
+            rawHorizontalAxisJoystick = -rawJoystickAxisLowerLimit;
+        }
 
-            if (horizontalAxisJoystick != 0 || verticalAxisJoystick != 0) {
-                Cursor.visible = false;
-            }
-            else if (Input.mousePosition != lastMousePosition) {
-                Cursor.visible = true;
-                lastMousePosition = Input.mousePosition;
-            }
-            else if (horizontalAxisKeyboard != 0 || verticalAxisKeyboard != 0) {
-                Cursor.visible = true;
-            }
+        if (rawVerticalAxisJoystick > 0f && rawVerticalAxisJoystick < rawJoystickAxisLowerLimit) {
+            rawVerticalAxisJoystick = rawJoystickAxisLowerLimit;
+        }
+        else if (rawVerticalAxisJoystick < 0f && rawVerticalAxisJoystick > -rawJoystickAxisLowerLimit) {
+            rawVerticalAxisJoystick = -rawJoystickAxisLowerLimit;
+        }
 
-            float horizontalAxis = 0f;
-            float verticalAxis = 0f;
+        if (rawHorizontalAxisJoystick != 0 || rawVerticalAxisJoystick != 0) {
+            Cursor.visible = false;
+        }
+        else if (Input.mousePosition != lastMousePosition) {
+            Cursor.visible = true;
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (rawHorizontalAxisKeyboard != 0 || rawVerticalAxisKeyboard != 0) {
+            Cursor.visible = true;
+        }
 
-            if (horizontalAxisJoystick > 0 && horizontalAxisKeyboard > 0) {
-                horizontalAxis = Mathf.Max(horizontalAxisJoystick, horizontalAxisKeyboard);
-            }
-            else if (horizontalAxisJoystick < 0 && horizontalAxisKeyboard < 0) {
-                horizontalAxis = Mathf.Min(horizontalAxisJoystick, horizontalAxisKeyboard);
-            }
-            else {
-                if (horizontalAxisJoystick != 0) {
-                    horizontalAxis = horizontalAxisJoystick;
-                }
-                else {
-                    horizontalAxis = horizontalAxisKeyboard;
-                }
-            }
+        float horizontalAxis;
+        float verticalAxis;
 
-            if (verticalAxisJoystick > 0 && verticalAxisKeyboard > 0) {
-                verticalAxis = Mathf.Max(verticalAxisJoystick, verticalAxisKeyboard);
-            }
-            else if (verticalAxisJoystick < 0 && verticalAxisKeyboard < 0) {
-                verticalAxis = Mathf.Min(verticalAxisJoystick, verticalAxisKeyboard);
-            }
-            else {
-                if (verticalAxisJoystick != 0) {
-                    verticalAxis = verticalAxisJoystick;
-                }
-                else {
-                    verticalAxis = verticalAxisKeyboard;
-                }
-            }
-
-            Vector3 virtualJoystickDirection = new Vector3(horizontalAxis, 0, verticalAxis);
-
-            virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
-            virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
-
-
-            CurrrentJoystickDirection = Vector3.SmoothDamp(CurrrentJoystickDirection, virtualJoystickDirection, ref refoutvar, 0.1f);
-
-
-
-            Vector3 LowerClampedJoystickDirection = CurrrentJoystickDirection;
-
-            if (LowerClampedJoystickDirection.x < lowerlimit && LowerClampedJoystickDirection.x > -lowerlimit) {
-                LowerClampedJoystickDirection.x = 0f;
-            }
-
-            if (LowerClampedJoystickDirection.y < lowerlimit && LowerClampedJoystickDirection.y > -lowerlimit) {
-                LowerClampedJoystickDirection.y = 0f;
-            }
-
-            if (LowerClampedJoystickDirection.z < lowerlimit && LowerClampedJoystickDirection.z > -lowerlimit) {
-                LowerClampedJoystickDirection.z = 0f;
-            }
-
-            return LowerClampedJoystickDirection;
-
+        if (rawHorizontalAxisJoystick > 0 && rawHorizontalAxisKeyboard > 0) {
+            horizontalAxis = Mathf.Max(rawHorizontalAxisJoystick, rawHorizontalAxisKeyboard);
+        }
+        else if (rawHorizontalAxisJoystick < 0 && rawHorizontalAxisKeyboard < 0) {
+            horizontalAxis = Mathf.Min(rawHorizontalAxisJoystick, rawHorizontalAxisKeyboard);
         }
         else {
-            return new Vector3(0, 0, 0);
+            if (rawHorizontalAxisJoystick != 0) {
+                horizontalAxis = rawHorizontalAxisJoystick;
+            }
+            else {
+                horizontalAxis = rawHorizontalAxisKeyboard;
+            }
         }
+
+        if (rawVerticalAxisJoystick > 0 && rawVerticalAxisKeyboard > 0) {
+            verticalAxis = Mathf.Max(rawVerticalAxisJoystick, rawVerticalAxisKeyboard);
+        }
+        else if (rawVerticalAxisJoystick < 0 && rawVerticalAxisKeyboard < 0) {
+            verticalAxis = Mathf.Min(rawVerticalAxisJoystick, rawVerticalAxisKeyboard);
+        }
+        else {
+            if (rawVerticalAxisJoystick != 0) {
+                verticalAxis = rawVerticalAxisJoystick;
+            }
+            else {
+                verticalAxis = rawVerticalAxisKeyboard;
+            }
+        }
+
+        Vector3 virtualJoystickDirection = new Vector3(horizontalAxis, 0, verticalAxis);
+        virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
+        virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
+
+        CurrrentJoystickDirection = Vector3.SmoothDamp(CurrrentJoystickDirection, virtualJoystickDirection, ref refoutvar, 0.1f);
+
+        Vector3 LowerClampedJoystickDirection = CurrrentJoystickDirection;
+
+        if (LowerClampedJoystickDirection.x < LowerLimit && LowerClampedJoystickDirection.x > -LowerLimit) {
+            LowerClampedJoystickDirection.x = 0f;
+        }
+
+        if (LowerClampedJoystickDirection.y < LowerLimit && LowerClampedJoystickDirection.y > -LowerLimit) {
+            LowerClampedJoystickDirection.y = 0f;
+        }
+
+        if (LowerClampedJoystickDirection.z < LowerLimit && LowerClampedJoystickDirection.z > -LowerLimit) {
+            LowerClampedJoystickDirection.z = 0f;
+        }
+
+        return LowerClampedJoystickDirection;
     }
 
     public void attackDamageTickedSet() {
+        EnemiesInAttackArea cylindertargetarea = cylinderTargetArea.GetComponent<EnemiesInAttackArea>();
+        EnemiesInAttackArea boxtargetarea = boxTargetArea.GetComponent<EnemiesInAttackArea>();
         attackDamageTicked = true;
 
-        if (attackMode == 2 || attackMode == 3 || attackMode == 4 || attackMode == 5) {
-            EnemiesInAttackArea targetarea = cylinderTargetArea.GetComponent<EnemiesInAttackArea>();
-            for (int i = 0; i < listOfTargets.Count; i++) {
-                if (targetarea.enemiesWithinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
-                    listOfTargets[i].GetComponent<EnemyAI>().Health(damageAmount);
+        if (attackMode == 7 || attackMode == 8)
+            shockwavespawn = shockwavespawn2;
+
+        switch (attackMode) {
+            case 1:
+                if (Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange)
+                    enemyTarget.GetComponent<EnemyAI>().Health(damageAmount);
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                foreach (GameObject target in listOfTargets) {
+                    if (cylindertargetarea.enemiesWithinArea.Contains(target) == true && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+                        target.GetComponent<EnemyAI>().Health(damageAmount);
                 }
-            }
-        }
-        else if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-            EnemiesInAttackArea targetarea = boxTargetArea.GetComponent<EnemiesInAttackArea>();
-            if (attackMode == 7 || attackMode == 8)
-                shockwavespawn = shockwavespawn2;
-            GameObject shackwavebrah = (GameObject)Instantiate(shockwave, shockwavespawn.position, shockwave.transform.rotation);
-            shackwavebrah.transform.localScale = new Vector3(.4f, .4f, .2f);
-            Destroy(shackwavebrah, 1);
-            for (int i = 0; i < listOfTargets.Count; i++) {
-                if (targetarea.enemiesWithinArea.Contains(listOfTargets[i]) == true && Vector3.Distance(transform.position, listOfTargets[i].transform.position) <= attackRange) {
-                    listOfTargets[i].GetComponent<EnemyAI>().Health(damageAmount);
+                break;
+            case 6:
+            case 7:
+            case 8:
+                GameObject shockwaveInstance = Instantiate(shockwave, shockwavespawn.position, shockwave.transform.rotation);
+                shockwaveInstance.transform.localScale = new Vector3(.4f, .4f, .2f);
+                Destroy(shockwaveInstance, 1);
+                foreach (GameObject target in listOfTargets) {
+                    if (boxtargetarea.enemiesWithinArea.Contains(target) == true && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+                        target.GetComponent<EnemyAI>().Health(damageAmount);
                 }
-            }
-        }
-        else {
-            if (Vector3.Distance(transform.position, enemyTarget.transform.position) <= attackRange) {
-                enemyTarget.GetComponent<EnemyAI>().Health(damageAmount);
-            }
+                break;
         }
     }
 
     public void setAttackIsDone() {
         attackOnCooldown = 1;
-        Invoke("AttackCooldownManager", attackCooldown);
         attackIsDone = true;
         amAttackingRightNow = false;
+        Invoke("AttackCooldownManager", attackCooldown);
     }
 
     void AttackCooldownManager() {
@@ -1411,240 +1078,184 @@ public class PlayerController : MonoBehaviour {
     }
 
     void MovePlayer(Vector3 direction) {
+        float leftRightIdentifier;
+        float angle;
 
         playerCollider.SimpleMove((direction * moveSpeed) * Time.fixedDeltaTime);
 
-        if (direction != new Vector3(0, 0, 0)) {
-            if (prevBlueArrow == false) {
-                if (SpecialPhase2 != true) {
-                }
-                else {
-
-                }
-            }
-            prevBlueArrow = true;
+        if (enemyTarget != null) {
+            AimAtEnemyLogic(direction, out angle, out leftRightIdentifier);
         }
         else {
-            if (prevBlueArrow == true) {
-            }
-            prevBlueArrow = false;
-        }
-
-        if (enemyTarget == null) {
-            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true) {
-                amAttackingRightNow = true;
-                attackOnCooldown = 1;
-
-                if (attackMode == 1)
-                    AnimSwitchTo("goToAttack");
-                else if (attackMode == 6 || attackMode == 7 || attackMode == 8)
-                    AnimSwitchTo("goToAttack3");
-                else
-                    AnimSwitchTo("goToAttack2");
-
-                if (isAttacking == 0) {
-                    isAttacking = 1;
-                    hasDamaged = 0;
-                }
-
-                if (attackDamageTicked == true && hasDamaged == 0) {
-                    hasDamaged = 1;
-                    attackDamageTicked = false;
-                }
-
-                if (attackIsDone == true) {
-                    attackIsDone = false;
-                    attackOnCooldown = 1;
-                    isAttacking = 0;
-                }
-            }
-            else if (direction == new Vector3(0, 0, 0)) {
-                if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                    AnimSwitchTo("goToIdle3");
-                }
-                else
-                    AnimSwitchTo("goToIdle");
-                transform.LookAt(transform.position + direction);
-            }
-            else {
-                if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                    AnimSwitchTo("goToWalkForward3");
-                }
-                else
-                    AnimSwitchTo("goToWalkForward");
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation((transform.position + direction) - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
-            }
-
             isAttacking = 0;
+            transformToShake.localPosition = Vector3.zero;
+            angle = 0;
+            leftRightIdentifier = 0;
+        }
 
-            transformToShake.localPosition = new Vector3(0, 0, 0);
+        if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true) {
+            AttackingAnimLogic();
         }
         else {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(enemyTarget.transform.position - transform.position), playerLookAtRotateSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-
-            Vector3 enemyAim = enemyTarget.transform.position - transform.position;
-            enemyAim = new Vector3(enemyAim.x, 0f, enemyAim.z).normalized;
-
-            Vector3 walkAim = direction;
-
-            float angle = Vector3.Angle(enemyAim, walkAim);
-
-            Vector3 enemyWalkPerpendicular = Vector3.Cross(enemyAim, walkAim);
-            Vector3 up = new Vector3(0f, 1f, 0f);
-            float leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, up);
-
-            if (((Input.GetButton("Fire3") == true && isControlOn == true && isControlOff == false && Time.timeScale != 0) && attackOnCooldown == 0) || amAttackingRightNow == true) {
-                amAttackingRightNow = true;
-                attackOnCooldown = 1;
-
-                if (attackMode == 1)
-                    AnimSwitchTo("goToAttack");
-                else if (attackMode == 6 || attackMode == 7 || attackMode == 8)
-                    AnimSwitchTo("goToAttack3");
-                else
-                    AnimSwitchTo("goToAttack2");
-
-                if (isAttacking == 0) {
-                    isAttacking = 1;
-                    hasDamaged = 0;
-                }
-
-                if (attackDamageTicked == true && hasDamaged == 0) {
-                    hasDamaged = 1;
-                    attackDamageTicked = false;
-                }
-
-                if (attackIsDone == true) {
-                    attackIsDone = false;
-                    attackOnCooldown = 1;
-                    isAttacking = 0;
-                }
-            }
-            else {
+            if (enemyTarget != null)
                 amAttackingRightNow = false;
 
-                if (direction == new Vector3(0, 0, 0)) {
-                    if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                        AnimSwitchTo("goToIdle3");
-                    }
-                    else
-                        AnimSwitchTo("goToIdle");
-                }
-                else if (angle < 135f && angle > 45f) {
-
-                    if (leftRightIdentifier < 0) {
-                        if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                            AnimSwitchTo("goToWalkLeft3");
-                        }
-                        else
-                            AnimSwitchTo("goToWalkLeft");
-                    }
-                    else if (leftRightIdentifier > 0) {
-                        if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                            AnimSwitchTo("goToWalkRight3");
-                        }
-                        else
-                            AnimSwitchTo("goToWalkRight");
-                    }
-                }
-                else if (angle < 45f) {
-                    if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                        AnimSwitchTo("goToWalkForward3");
-                    }
-                    else
-                        AnimSwitchTo("goToWalkForward");
-                }
-                else if (angle > 135f) {
-                    if (attackMode == 6 || attackMode == 7 || attackMode == 8) {
-                        AnimSwitchTo("goToWalkBack3");
-                    }
-                    else
-                        AnimSwitchTo("goToWalkBack");
-                }
+            if (direction == new Vector3(0, 0, 0)) {
+                IdleAnimLogic();
             }
+            else if (angle < 135f && angle > 45f) {
+                if (leftRightIdentifier < 0)
+                    WalkLeftAnimLogic();
+                else if (leftRightIdentifier > 0)
+                    WalkRightAnimLogic();
+            }
+            else if (angle < 45f) {
+                WalkForwardAnimLogic(direction);
+            }
+            else if (angle > 135f) {
+                WalkBackwardsAnimLogic();
+            }
+        }
+
+    }
+
+    void AimAtEnemyLogic(Vector3 direction, out float angle, out float leftRightIdentifier) {
+        Quaternion rotateTowards = Quaternion.LookRotation(enemyTarget.transform.position - transform.position);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTowards, playerLookAtRotateSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+        Vector3 enemyAim = enemyTarget.transform.position - transform.position;
+        enemyAim = new Vector3(enemyAim.x, 0f, enemyAim.z).normalized;
+        Vector3 enemyWalkPerpendicular = Vector3.Cross(enemyAim, direction);
+
+        angle = Vector3.Angle(enemyAim, direction);
+        leftRightIdentifier = Vector3.Dot(enemyWalkPerpendicular, Vector3.up);
+    }
+
+    void IdleAnimLogic() {
+        if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToIdle3");
+        else
+            AnimSwitchTo("goToIdle");
+    }
+
+    void WalkLeftAnimLogic() {
+        if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToWalkLeft3");
+        else
+            AnimSwitchTo("goToWalkLeft");
+    }
+
+    void WalkRightAnimLogic() {
+        if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToWalkRight3");
+        else
+            AnimSwitchTo("goToWalkRight");
+    }
+
+    void WalkForwardAnimLogic(Vector3 direction) {
+        Quaternion rotateTowards = Quaternion.LookRotation((transform.position + direction) - transform.position);
+
+        if (enemyTarget == null)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTowards, playerLookAtRotateSpeed * Time.deltaTime);
+
+        if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToWalkForward3");
+        else
+            AnimSwitchTo("goToWalkForward");
+    }
+
+    void WalkBackwardsAnimLogic() {
+        if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToWalkBack3");
+        else
+            AnimSwitchTo("goToWalkBack");
+    }
+
+    void AttackingAnimLogic() {
+        amAttackingRightNow = true;
+        attackOnCooldown = 1;
+
+        if (attackMode == 1)
+            AnimSwitchTo("goToAttack");
+        else if (attackMode == 6 || attackMode == 7 || attackMode == 8)
+            AnimSwitchTo("goToAttack3");
+        else
+            AnimSwitchTo("goToAttack2");
+
+        if (isAttacking == 0) {
+            isAttacking = 1;
+            hasDamaged = 0;
+        }
+
+        if (attackDamageTicked == true && hasDamaged == 0) {
+            hasDamaged = 1;
+            attackDamageTicked = false;
+        }
+
+        if (attackIsDone == true) {
+            attackIsDone = false;
+            attackOnCooldown = 1;
+            isAttacking = 0;
         }
     }
 
     void UpdateTarget() {
         if (listOfTargets.Count == 0) {
             enemyTarget = null;
+            return;
         }
-        else {
-            for (int i = 0; i < listOfTargets.Count; i++) {
-                if (enemyTarget == null) {
-                    enemyTarget = listOfTargets[i];
-                }
-                else if (listOfTargets[i] == null || listOfTargets[i].gameObject.tag != "Enemy") {
-                    listOfTargets.RemoveAt(i);
-                }
-                else if (Vector3.Distance(transform.position, listOfTargets[i].transform.position) < Vector3.Distance(transform.position, enemyTarget.transform.position)) {
-                    enemyTarget = listOfTargets[i];
-                }
-                else {
-                }
+
+        foreach (GameObject target in listOfTargets) {
+            if (enemyTarget == null) {
+                enemyTarget = target;
+            }
+            else if (target == null || target.gameObject.tag != "Enemy") {
+                listOfTargets.Remove(target);
+            }
+            else if (Vector3.Distance(transform.position, target.transform.position) < Vector3.Distance(transform.position, enemyTarget.transform.position)) {
+                enemyTarget = target;
             }
         }
     }
 
     void AnimSwitchTo(string trigger) {
-        if (trigger == "goToAttack") {
+        if (trigger == "goToAttack")
             setAnimatorBoolCluster("Attack1");
-        }
-        else if (trigger == "goToAttack2") {
+        else if (trigger == "goToAttack2")
             setAnimatorBoolCluster("Attack2");
-        }
-        else if (trigger == "goToAttack3") {
+        else if (trigger == "goToAttack3")
             setAnimatorBoolCluster("Attack3");
-        }
-        else if (trigger == "isDead") {
+        else if (trigger == "isDead")
             setAnimatorBoolCluster("Death");
-        }
-        else if (trigger == "goToWalkRight") {
+        else if (trigger == "goToWalkRight")
             setAnimatorBoolCluster("RunningL");
-        }
-        else if (trigger == "goToWalkBack") {
+        else if (trigger == "goToWalkBack")
             setAnimatorBoolCluster("RunningB");
-        }
-        else if (trigger == "goToWalkForward") {
+        else if (trigger == "goToWalkForward")
             setAnimatorBoolCluster("RunningF");
-        }
-        else if (trigger == "goToWalkLeft") {
+        else if (trigger == "goToWalkLeft")
             setAnimatorBoolCluster("RunningR");
-        }
-        else if (trigger == "goToIdle3") {
+        else if (trigger == "goToIdle3")
             setAnimatorBoolCluster("Idle3");
-        }
-        else if (trigger == "goToWalkForward3") {
+        else if (trigger == "goToWalkForward3")
             setAnimatorBoolCluster("RunningF3");
-        }
-        else if (trigger == "goToWalkRight3") {
+        else if (trigger == "goToWalkRight3")
             setAnimatorBoolCluster("RunningL3");
-        }
-        else if (trigger == "goToWalkLeft3") {
+        else if (trigger == "goToWalkLeft3")
             setAnimatorBoolCluster("RunningR3");
-        }
-        else if (trigger == "goToWalkBack3") {
+        else if (trigger == "goToWalkBack3")
             setAnimatorBoolCluster("RunningB3");
-        }
-        else if (trigger == "goToIdle") {
+        else if (trigger == "goToIdle")
             setAnimatorBoolCluster("Idle");
-        }
-        else if (trigger == "SpecAttack1") {
+        else if (trigger == "SpecAttack1")
             setAnimatorBoolCluster("SpecAttack1");
-        }
-        else if (trigger == "SpecAttack3") {
+        else if (trigger == "SpecAttack3")
             setAnimatorBoolCluster("SpecAttack3");
-        }
-        else if (trigger == "Ascending") {
+        else if (trigger == "Ascending")
             setAnimatorBoolCluster("Ascending");
-        }
-        else if (trigger == "FallingFromSky") {
+        else if (trigger == "FallingFromSky")
             setAnimatorBoolCluster("FallingFromSky");
-        }
-        else {
-            Debug.Log("ERROR: Animation not found!");
-        }
     }
 
     void setAnimatorBoolCluster(string boolFocus) {
@@ -1689,48 +1300,34 @@ public class PlayerController : MonoBehaviour {
     }
 
     string ReturnCurrentTrigger() {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("AttackPunch")) {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("AttackPunch"))
             return "goToAttack";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("attackBat_001")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("attackBat_001"))
             return "goToAttack2";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_3")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_3"))
             return "goToAttack3";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("die")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("die"))
             return "isDead";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningL")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningL"))
             return "goToWalkRight";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningB")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningB"))
             return "goToWalkBack";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningF")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningF"))
             return "goToWalkForward";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningR")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningR"))
             return "goToWalkLeft";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Standing_Idle")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Standing_Idle"))
             return "goToIdle3";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Forward")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Forward"))
             return "goToWalkForward3";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Left")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Left"))
             return "goToWalkRight3";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Right")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Right"))
             return "goToWalkLeft3";
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Backwards")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Backwards"))
             return "goToWalkBack3";
-        }
-        else {
+        else
             return "goToIdle";
-        }
     }
 
     void MoveUpper() {

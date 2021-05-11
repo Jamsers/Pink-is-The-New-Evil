@@ -195,8 +195,11 @@ public class MainSystems : MonoBehaviour {
         for (int i = 0; i < HighScoreListLength; i++) {
             string highScoreNameRetrieved = PlayerPrefs.GetString("High Score Name " + (i + 1));
             int highScoreValueRetrieved = PlayerPrefs.GetInt("High Score " + (i + 1));
+            highScoreName[i].GetComponent<Text>().text = highScoreNameRetrieved;
+            highScore[i].GetComponent<Text>().text = highScoreValueRetrieved.ToString();
             currentHighScoreList[i] = new HighScorePair(highScoreNameRetrieved, highScoreValueRetrieved);
         }
+
 
         debugPlayerInvulnerabilityToggle.isOn = debugInvulnerable;
         debugDisableSpawningToggle.isOn = debugDisableSpawning;

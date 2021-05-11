@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
+// Heavily intertwined class. Only refactored lightly. Apologies for the mess.
 public class EnemyAI : MonoBehaviour {
     public int enemyType;
     public int currenthealth;
