@@ -406,8 +406,8 @@ public class PlayerController : MonoBehaviour {
         damageAmount = weaponStats[mode - 1].damageAmount;
         attackCooldown = weaponStats[mode - 1].attackCooldown;
 
-        foreach (WeaponStats weaponStat in weaponStats) {
-            weaponStat.weaponModel.SetActive(false);
+        for (int i = 0; i < 8; i++) {
+            weaponStats[i].weaponModel.SetActive(false);
         }
 
         weaponStats[mode - 1].weaponModel.SetActive(true);
@@ -490,14 +490,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     void CreatePoofBuyWeapon(int type) {
-        int poof2Target;
+        int poof2Target = type - 1;
 
-        if (type > 8) {
+        if (type > 8)
             poof2Target = 8 - 1;
-        }
-        else {
-            poof2Target = type - 1;
-        }
 
         GameObject poof1 = Instantiate(poofWeap, PinkIsTheNewEvil.EnemySpawner.weaponModels[(type - 1) - 1].transform.position, poofWeap.transform.rotation);
         GameObject poof2 = Instantiate(poofPLay, weaponStats[poof2Target].weaponModel.transform.position, poofPLay.transform.rotation);
@@ -506,8 +502,8 @@ public class PlayerController : MonoBehaviour {
         Destroy(poof2, 4);
 
         if (type > 8) {
-            poof1.transform.localScale = poof1.transform.localScale * 3;
-            poof2.transform.localScale = poof2.transform.localScale * 3;
+            poof1.transform.localScale *= 3;
+            poof2.transform.localScale *= 3;
         }
     }
 
