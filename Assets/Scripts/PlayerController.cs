@@ -736,7 +736,7 @@ public class PlayerController : MonoBehaviour {
             specialAttackEnemyTarget = null;
 
             if (jumpAttackLastTrigRESET == true) {
-                specialAttack2LastTrig = Time.time - (specialAttack1Data.cooldown - 1f);
+                specialAttack2LastTrig = Time.time - (specialAttack2Data.cooldown - 1f);
                 jumpAttackLastTrigRESET = false;
             }
         }
@@ -905,10 +905,10 @@ public class PlayerController : MonoBehaviour {
         float lastTrig;
 
         if (specialAttackData.mode == 1) {
-            lastTrig = specialAttack2LastTrig;
+            lastTrig = specialAttack1LastTrig;
         }
         else {
-            lastTrig = specialAttack1LastTrig;
+            lastTrig = specialAttack2LastTrig;
         }
 
         float fadeLerp = (Time.time - lastTrig) / specialAttackData.cooldown;
@@ -1202,15 +1202,15 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        foreach (GameObject target in listOfTargets) {
+        for (int i = 0; i < listOfTargets.Count; i++) {
             if (enemyTarget == null) {
-                enemyTarget = target;
+                enemyTarget = listOfTargets[i];
             }
-            else if (target == null || target.gameObject.tag != "Enemy") {
-                listOfTargets.Remove(target);
+            else if (listOfTargets[i] == null || listOfTargets[i].gameObject.tag != "Enemy") {
+                listOfTargets.RemoveAt(i);
             }
-            else if (Vector3.Distance(transform.position, target.transform.position) < Vector3.Distance(transform.position, enemyTarget.transform.position)) {
-                enemyTarget = target;
+            else if (Vector3.Distance(transform.position, listOfTargets[i].transform.position) < Vector3.Distance(transform.position, enemyTarget.transform.position)) {
+                enemyTarget = listOfTargets[i];
             }
         }
     }
