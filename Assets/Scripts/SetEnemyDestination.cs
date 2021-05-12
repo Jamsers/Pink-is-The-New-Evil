@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.AI;
 
 public class SetEnemyDestination : MonoBehaviour {
+    NavMeshAgent navMeshAgent;
 
-    Transform player;
-    UnityEngine.AI.NavMeshAgent nav;
-
-    // Use this for initialization
-    void Start () {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    void Start() {
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        nav.SetDestination(player.position);
+
+    void Update() {
+        navMeshAgent.SetDestination(PinkIsTheNewEvil.PlayerController.transform.position);
     }
 }

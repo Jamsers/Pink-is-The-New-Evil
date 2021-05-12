@@ -1,36 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FadeInLightOnEnable : MonoBehaviour {
+    Light lightAttachedTo;
+    float origRange;
+    bool isFading = false;
+    const float fadeamount = 10f;
 
-	Light lightAttachedTo;
-	float origRange;
-	bool isFading = false;
-	float fadeamount = 10f;
-
-	// Use this for initialization
-	void Start () {
-		lightAttachedTo = GetComponent<Light>();
-		origRange = lightAttachedTo.range;
-		lightAttachedTo.range = 0;
-	}
-
-	void OnEnable()
-    {
-		isFading = true;
+    void Start() {
+        lightAttachedTo = GetComponent<Light>();
+        origRange = lightAttachedTo.range;
+        lightAttachedTo.range = 0;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		if (isFading)
-        {
-			lightAttachedTo.range = Mathf.MoveTowards(lightAttachedTo.range, origRange, fadeamount * Time.deltaTime);
-			if (lightAttachedTo.range >= origRange)
-            {
-				isFading = false;
-            }
-		}
-		
-	}
+
+    void OnEnable() {
+        isFading = true;
+    }
+
+    void Update() {
+        if (isFading == false)
+            return;
+
+        lightAttachedTo.range = Mathf.MoveTowards(lightAttachedTo.range, origRange, fadeamount * Time.deltaTime);
+
+        if (lightAttachedTo.range >= origRange) {
+            isFading = false;
+            lightAttachedTo.range = origRange;
+        }
+    }
 }

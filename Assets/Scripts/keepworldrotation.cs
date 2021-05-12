@@ -1,18 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KeepWorldRotation : MonoBehaviour {
+    Quaternion origRotation;
 
-	Quaternion origRotation;
+    void Start() {
+        origRotation = GetComponent<Transform>().rotation;
+    }
 
-	// Use this for initialization
-	void Start () {
-		origRotation = GetComponent<Transform>().rotation;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		GetComponent<Transform>().rotation = origRotation;
-	}
+    void Update() {
+        GetComponent<Transform>().rotation = origRotation;
+    }
 }
