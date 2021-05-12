@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour {
     public LevelText[] levelTexts;
 
     [Header("References")]
-    public GameObject[] tutorialScreens;
     public GameObject[] enemies;
     public GameObject[] blockades;
     public GameObject[] weapons;
@@ -169,11 +168,11 @@ public class EnemySpawner : MonoBehaviour {
         LevelTitleTransition();
 
         if (constantlyDenyInput == true) {
-            PinkIsTheNewEvil.MainSystems.isAllInputEnabled(false);
+            PinkIsTheNewEvil.MainSystems.IsAllInputEnabled(false);
             inputRestored = false;
         }
         else if (constantlyDenyInput == false && inputRestored == false) {
-            PinkIsTheNewEvil.MainSystems.isAllInputEnabled(true);
+            PinkIsTheNewEvil.MainSystems.IsAllInputEnabled(true);
             inputRestored = true;
         }
     }
@@ -529,22 +528,22 @@ public class EnemySpawner : MonoBehaviour {
     public void ShowTutorial() {
         switch (level) {
             case 1:
-                tutorialScreens[1 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[1 - 1].SetActive(true);
                 break;
             case 3:
-                tutorialScreens[2 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[2 - 1].SetActive(true);
                 break;
             case 6:
-                tutorialScreens[3 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[3 - 1].SetActive(true);
                 break;
             case 15:
-                tutorialScreens[4 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[4 - 1].SetActive(true);
                 break;
             case 28:
-                tutorialScreens[5 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[5 - 1].SetActive(true);
                 break;
             case 29:
-                tutorialScreens[6 - 1].SetActive(true);
+                PinkIsTheNewEvil.MainSystems.tutorialScreens[6 - 1].SetActive(true);
                 break;
         }
 
@@ -623,7 +622,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void AllEnemiesDeadTransition (int transitionTo, int settingsType) {
-        PinkIsTheNewEvil.MainSystems.GoToSettings(settingsType);
+        PinkIsTheNewEvil.MainSystems.CameraTransition(settingsType);
         if (level != 2) {
             transitionMode = transitionTo;
         }
@@ -802,58 +801,58 @@ public class EnemySpawner : MonoBehaviour {
 
         switch (transitionMode) {
             case 2:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
             case 0:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(9);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(9);
                 break;
             case 5:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(11);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(11);
                 break;
             case 7:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(12);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(12);
                 break;
             case 9:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
             case 12:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(14);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(14);
                 break;
             case 14:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
             case 17:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(16);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(16);
                 break;
             case 19:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
             case 22:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(18);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(18);
                 break;
             case 24:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(19);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(19);
                 break;
             case 26:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
             case 29:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(21);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(21);
                 break;
             case 31:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(22);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(22);
                 break;
             case 33:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(23);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(23);
                 break;
             case 35:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(24);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(24);
                 break;
             case 37:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(25);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(25);
                 break;
             case 39:
-                PinkIsTheNewEvil.MainSystems.GoToSettings(4);
+                PinkIsTheNewEvil.MainSystems.CameraTransition(4);
                 break;
         }
 
