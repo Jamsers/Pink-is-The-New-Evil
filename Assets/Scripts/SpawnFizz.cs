@@ -1,66 +1,65 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpawnFizz : MonoBehaviour {
-
     public float fizzExpandOrDexpand;
     public float fizzLife;
-    public GameObject particle;
-    public GameObject damageSphere;
-    public Light fizzlight;
     public float fizzlightorig;
+    public Light fizzlight;
+    public GameObject particle;
+    public GameObject damageSphere;    
+
     float spawnTime;
     Vector3 originalScale;
     Vector3 originalParticleScale;
-    bool existing;
     bool countingExisting = false;
     bool spawningOut = false;
 
-	// Use this for initialization
-	void Start () {
-        fizzlightorig = fizzlight.range;
+    void Start() {
         damageSphere.SetActive(false);
+        fizzlightorig = fizzlight.range;
         originalScale = transform.localScale;
         originalParticleScale = particle.transform.localScale;
-        transform.localScale = new Vector3(0, 0, 0);
-        particle.transform.localScale = new Vector3(0, 0, 0);
+
         fizzlight.range = 0;
+        transform.localScale = Vector3.zero;
+        particle.transform.localScale = Vector3.zero;
+        
         spawnTime = Time.time;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    void Update() {
         float scalePercent = (Time.time - spawnTime) / fizzExpandOrDexpand;
+
         if ((scalePercent < 1) && spawningOut == false) {
-            if (scalePercent > 0.25) {
+            if (scalePercent > 0.25)
                 damageSphere.SetActive(true);
-            }
-            transform.localScale = Vector3.Lerp(new Vector3(0, 0, 0), originalScale, scalePercent);
-            particle.transform.localScale = Vector3.Lerp(new Vector3(0, 0, 0), originalParticleScale, scalePercent);
+
             fizzlight.range = Mathf.Lerp(0, fizzlightorig, scalePercent);
+            transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, scalePercent);
+            particle.transform.localScale = Vector3.Lerp(Vector3.zero, originalParticleScale, scalePercent);
         }
         else if (countingExisting == false) {
+            fizzlight.range = fizzlightorig;
             transform.localScale = originalScale;
             particle.transform.localScale = originalParticleScale;
-            fizzlight.range = fizzlightorig;
+            
             countingExisting = true;
             Invoke("LetsSpawnOut", fizzLife);
         }
         else if (spawningOut == true) {
-            if (scalePercent > 0.75) {
+            if (scalePercent > 0.75) 
                 damageSphere.SetActive(false);
-            }
-            transform.localScale = Vector3.Lerp(originalScale, new Vector3(0,0,0), scalePercent);
-            particle.transform.localScale = Vector3.Lerp(originalParticleScale, new Vector3(0,0,0), scalePercent);
+
             fizzlight.range = Mathf.Lerp(fizzlightorig, 0, scalePercent);
-            if (scalePercent > fizzExpandOrDexpand) {
+            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, scalePercent);
+            particle.transform.localScale = Vector3.Lerp(originalParticleScale, Vector3.zero, scalePercent);
+
+            if (scalePercent > fizzExpandOrDexpand)
                 Destroy(gameObject);
-            }
         }
+    }
 
-	}
-
-    void LetsSpawnOut () {
+    void LetsSpawnOut() {
         spawningOut = true;
         spawnTime = Time.time;
     }

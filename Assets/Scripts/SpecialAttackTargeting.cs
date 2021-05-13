@@ -1,31 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class SpecialAttackTargeting : MonoBehaviour {
+    [HideInInspector] public List<GameObject> withinTargetZone = new List<GameObject>();
 
-    public List<GameObject> withinTargetZone = new List<GameObject>();
-    GameObject target = null;
+    public GameObject RetrieveTarget() {
+        GameObject targetToReturn = null;
 
-	void Start () {
-	
-	}
-	
-	void Update () {
-        //Debug.Log(RetrieveTarget());
-        //Debug.Log(withinTargetZone.Count);
-    }
-
-    public GameObject RetrieveTarget () {
-        for (int i = 0; i < withinTargetZone.Count; i++) {
-            if (target == null) {
-                target = withinTargetZone[i];
+        foreach (GameObject target in withinTargetZone) {
+            if (targetToReturn == null) {
+                targetToReturn = target;
+                break;
             }
-            else if (Vector3.Distance(transform.position, withinTargetZone[i].transform.position) < Vector3.Distance(transform.position, target.transform.position)) {
-                target = withinTargetZone[i];
-            }
+
+            float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+            float distanceToCurrentTarget = Vector3.Distance(transform.position, targetToReturn.transform.position);
+
+            if (distanceToTarget < distanceToCurrentTarget)
+                targetToReturn = target;
         }
-        return target;
+
+        return targetToReturn;
     }
 
     void OnTriggerEnter(Collider other) {

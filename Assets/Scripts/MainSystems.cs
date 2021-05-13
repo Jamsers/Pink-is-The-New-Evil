@@ -16,6 +16,7 @@ public class MainSystems : MonoBehaviour {
     public bool debugRawRender;
     public bool debugDisableSpawning;
     public bool debugInvulnerable;
+    public bool debugNoCooldown;
 
     [Header("Scalability Data")]
     public ScalabilitySettings rawScalabilitySettings;
@@ -81,6 +82,7 @@ public class MainSystems : MonoBehaviour {
     public Toggle debugPlayerInvulnerabilityToggle;
     public Toggle debugDisableSpawningToggle;
     public Toggle debugRawRenderToggle;
+    public Toggle debugNoCooldownToggle;
 
     [HideInInspector] public const int HighScoreListLength = 8;
     [HideInInspector] public HighScorePair[] currentHighScoreList = new HighScorePair[HighScoreListLength + 1];
@@ -160,12 +162,23 @@ public class MainSystems : MonoBehaviour {
             debugPlayerInvulnerabilityToggle.isOn = debugInvulnerable;
             debugDisableSpawningToggle.isOn = debugDisableSpawning;
             debugRawRenderToggle.isOn = debugRawRender;
+            debugNoCooldownToggle.isOn = debugNoCooldown;
+            DebugDisableSpecialAttackCooldown();
         }
     }
 
     void Update() {
         if (isSwitching == true)
             SwitchToMenu();
+    }
+
+    void DebugDisableSpecialAttackCooldown() {
+        if (debugNoCooldown == false)
+            return;
+
+        debugNoCooldownToggle.interactable = false;
+        PinkIsTheNewEvil.PlayerController.specialAttack1Data.cooldown = 0.5f;
+        PinkIsTheNewEvil.PlayerController.specialAttack2Data.cooldown = 0.5f;
     }
 
     public void OpenPrompt(int mode) {
@@ -320,6 +333,10 @@ public class MainSystems : MonoBehaviour {
             case 28:
                 debugRawRender = debugRawRenderToggle.isOn;
                 SetScalability();
+                break;
+            case 29:
+                debugNoCooldown = debugNoCooldownToggle.isOn;
+                DebugDisableSpecialAttackCooldown();
                 break;
         }
     }
