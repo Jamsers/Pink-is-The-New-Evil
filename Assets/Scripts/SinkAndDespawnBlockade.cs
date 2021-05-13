@@ -1,99 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SinkAndDespawnBlockade : MonoBehaviour {
-
-    Vector3 moveUpperCubeorigpos;
     public float shakeAmount;
     public float shakeInterval;
     public Transform objectsContainer;
-
-    void Start () {
-        
-        
-        
-    }
-	
-	void Update () {
-        Sink();
-
-	}
-
-    void MoveUpper()
-    {
-        moveUpperCubeorigpos = objectsContainer.localPosition;
-        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x + shakeAmount / 2, objectsContainer.localPosition.y + shakeAmount / 2, objectsContainer.localPosition.z + shakeAmount / 2);
-        Invoke("MoveLower", shakeInterval);
-        Invoke("MoveUpper2", shakeInterval*2);
-        Invoke("MoveLower", shakeInterval*3);
-        Invoke("MoveFinish", shakeInterval*4);
-        //Debug.Log("moveup");
-    }
-
-    void MoveLower()
-    {
-        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x - shakeAmount, objectsContainer.localPosition.y - shakeAmount, objectsContainer.localPosition.z - shakeAmount);
-        //Debug.Log("movelow");
-    }
-
-    void MoveUpper2()
-    {
-        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x + shakeAmount, objectsContainer.localPosition.y + shakeAmount, objectsContainer.localPosition.z + shakeAmount);
-        //Debug.Log("moveup");
-    }
-
-    void MoveFinish()
-    {
-        //cube.position = new Vector3(cube.position.x + .05f, cube.position.y + .05f, cube.position.z + .05f);
-        objectsContainer.localPosition = moveUpperCubeorigpos;
-        Invoke("MoveUpper", shakeInterval);
-        //Debug.Log("moveup");
-    }
-
     public GameObject[] smokes;
 
-    public void DespawnBlockade () {
+    const float sinkLength = 5;
+    float initiateStartTime;
+    bool initiateSink = false;
+    bool hasInitialized = false;
+    Vector3 moveUpperCubeorigpos;
+    Vector3 beginPos;
+    Vector3 endPos;
+
+    void Update() {
+        if (initiateSink == false)
+            return;
+
+        if (hasInitialized == false) {
+            PinkIsTheNewEvil.PlayerSoundManager.PlaySound(13);
+            beginPos = transform.position;
+            endPos = new Vector3(transform.position.x, transform.position.y - 5, transform.position.z);
+            MoveStart();
+
+            foreach (GameObject smoke in smokes) {
+                smoke.SetActive(true);
+                smoke.transform.parent = null;
+                Destroy(smoke, 3);
+            }
+
+            hasInitialized = true;
+            return;
+        }
+
+        float lerp = (Time.time - initiateStartTime) / sinkLength;
+        float smoothedLerp = Mathf.SmoothStep(0f, 1f, lerp);
+
+        if (lerp > 1) {
+            initiateSink = false;
+            hasInitialized = false;
+            gameObject.SetActive(false);
+        }
+        else {
+            transform.position = Vector3.Lerp(beginPos, endPos, smoothedLerp);
+        }
+    }
+
+    public void DespawnBlockade() {
         initiateSink = true;
         initiateStartTime = Time.time;
     }
 
-    bool initiateSink = false;
-    float initiateStartTime;
-    bool hasCreatedInitalParams = false;
+    void MoveStart() {
+        moveUpperCubeorigpos = objectsContainer.localPosition;
+        Invoke("MoveUpper", shakeInterval * 0);
+        Invoke("MoveLower", shakeInterval * 1);
+        Invoke("MoveUpper2", shakeInterval * 2);
+        Invoke("MoveLower", shakeInterval * 3);
+        Invoke("MoveFinish", shakeInterval * 4);
+    }
 
-    Vector3 beginPos;
-    Vector3 endPos;
+    void MoveUpper() {
+        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x + shakeAmount / 2, objectsContainer.localPosition.y + shakeAmount / 2, objectsContainer.localPosition.z + shakeAmount / 2);
+    }
 
-    float sinkLength = 5;
+    void MoveLower() {
+        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x - shakeAmount, objectsContainer.localPosition.y - shakeAmount, objectsContainer.localPosition.z - shakeAmount);
+    }
 
-    void Sink() {
-        if (initiateSink == true) {
-            if (hasCreatedInitalParams == false) {
-                MoveUpper();
-                GameObject.FindWithTag("Player").GetComponent<PlaySoundEffect>().PlaySound(13);
-                beginPos = transform.position;
-                endPos = new Vector3(transform.position.x, transform.position.y - 5, transform.position.z);
+    void MoveUpper2() {
+        objectsContainer.localPosition = new Vector3(objectsContainer.localPosition.x + shakeAmount, objectsContainer.localPosition.y + shakeAmount, objectsContainer.localPosition.z + shakeAmount);
+    }
 
-                for (int i = 0; i < smokes.Length; i++) {
-                    smokes[i].SetActive(true);
-                    smokes[i].transform.parent = null;
-                    Destroy(smokes[i], 3);
-                }
-
-                hasCreatedInitalParams = true;
-            }
-            else {
-                float lerp = (Time.time - initiateStartTime) / sinkLength;
-                if (lerp > 1) {
-                    initiateSink = false;
-                    hasCreatedInitalParams = false;
-                    gameObject.SetActive(false);
-                }
-                else {
-                    transform.position = Vector3.Lerp(beginPos, endPos, Mathf.SmoothStep(0f, 1f, lerp));
-                }
-            }
-        }
+    void MoveFinish() {
+        objectsContainer.localPosition = moveUpperCubeorigpos;
+        Invoke("MoveStart", shakeInterval);
     }
 }

@@ -1,6 +1,5 @@
 # Pink-is-The-New-Evil
 Project folder and source for Pink is The New Evil.  
-WARNING: Absolutely horrendous code within. You've been warned.
   
 Development Environment:  
 Unity 5.5.0f3: https://download.unity3d.com/download_unity/38b4efef76f0/Windows64EditorInstaller/UnitySetup64-5.5.0f3.exe  
