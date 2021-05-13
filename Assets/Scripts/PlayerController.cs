@@ -260,9 +260,8 @@ public class PlayerController : MonoBehaviour {
             }
             else {
                 if (isControlOn == true) {
-                    if (Time.timeScale != 0) {
+                    if (Time.timeScale != 0)
                         storedMoveDirection = VirtualJoystick();
-                    }
                     MovePlayer(storedMoveDirection);
                 }
                 else if (isControlOn == false) {
@@ -756,19 +755,12 @@ public class PlayerController : MonoBehaviour {
         else if (specialAttackPhase == 2) {
         }
         else if (specialAttackPhase == 3) {
-            RaycastHit hit;
-            Vector3 rayOrigin = new Vector3(raycastSource.transform.position.x, raycastSource.transform.position.y + 1, raycastSource.transform.position.z);
-            Physics.Raycast(rayOrigin, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, myLayerMask);
-            gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
-            gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(hit.point);
-            specialAttackPhase = 4;
+            gameObject.layer = LayerMask.NameToLayer("Player Special 1");
 
-            if (attackMode == 7 || attackMode == 8) {
+            if (attackMode == 7 || attackMode == 8)
                 trailParticle.transform.position = shockwavespawn2.position;
-            }
-            else {
+            else
                 trailParticle.transform.position = shockwavespawn.position;
-            }
 
             trailParticle.transform.SetParent(this.transform);
             Vector3 newtrailPos = trailParticle.transform.localPosition;
@@ -779,8 +771,12 @@ public class PlayerController : MonoBehaviour {
             trailParticle.transform.localScale = new Vector3(1.2f, 1.2f, .65f);
             trailParticle.transform.localRotation = Quaternion.Euler(0, 0, 0);
             trailParticle.GetComponent<ParticleSystem>().Play();
+
+            specialAttackPhase = 4;
         }
         else if (specialAttackPhase == 4) {
+            playerCollider.SimpleMove((transform.forward * 500) * Time.fixedDeltaTime);
+
             EnemiesInAttackArea targetarea = boxTargetArea.GetComponent<EnemiesInAttackArea>();
             List<GameObject> targetsInRangeDup = targetsInRange;
 
@@ -800,7 +796,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
         else if (specialAttackPhase == 5) {
-            gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+            gameObject.layer = LayerMask.NameToLayer("Player");
             specialAttackPhase = 6;
         }
         else if (specialAttackPhase == 6) {
