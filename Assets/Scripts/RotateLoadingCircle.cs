@@ -7,7 +7,7 @@ public class RotateLoadingCircle : MonoBehaviour {
 
     void Update() {
         currentRotation = rectTransform.rotation.eulerAngles;
-        currentRotation.z += RotationSpeed * Time.deltaTime;
+        currentRotation.z -= RotationSpeed * Time.deltaTime;
         rectTransform.rotation = Quaternion.Euler(currentRotation);
     }
 }
