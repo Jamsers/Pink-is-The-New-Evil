@@ -175,6 +175,7 @@ public class PlayerController : MonoBehaviour {
         specialAttack2LastTrig = -specialAttack2Data.cooldown;
 
         HealthRegeneration();
+        InitializeControlImages();
         upgradePoints = PlayerPrefs.GetInt("Upgrade Points", 0);
         setAttackMode(PlayerPrefs.GetInt("Weapon", 1));
 
@@ -303,6 +304,19 @@ public class PlayerController : MonoBehaviour {
         }
 
         specAttack3IsGo = false;
+    }
+
+    void InitializeControlImages() {
+        int screenWidth = gameCamera.GetComponent<Camera>().pixelWidth;
+        int screenHeight = gameCamera.GetComponent<Camera>().pixelHeight;
+        Vector3 screenCenter = new Vector3(screenWidth * 0.5f, screenHeight * 0.65f, 0);
+
+        greenCircle.GetComponent<Transform>().position = screenCenter;
+        orangeCircle.GetComponent<Transform>().position = screenCenter;
+        powerUpIcon.GetComponent<Transform>().position = screenCenter;
+        redCircle.GetComponent<Transform>().position = screenCenter;
+        redTarget.GetComponent<Transform>().position = screenCenter;
+        redCancelIcon.GetComponent<Transform>().position = screenCenter;
     }
 
     public void ResumeSkyfall() {
@@ -743,7 +757,8 @@ public class PlayerController : MonoBehaviour {
 
     void PlayerSpecialAttackLogic1() {
         if (specialAttackPhase == 1) {
-            Vector3 virtualJoystickDirection = startLocationOfMouseDown - orangeCircle.GetComponent<Transform>().position;
+            Vector3 playerCurrentLocationInScreenSpace = gameCamera.GetComponent<Camera>().WorldToScreenPoint(transform.position);
+            Vector3 virtualJoystickDirection = playerCurrentLocationInScreenSpace - orangeCircle.GetComponent<Transform>().position;
             virtualJoystickDirection = new Vector3(-virtualJoystickDirection.x, 0, -virtualJoystickDirection.y);
             virtualJoystickDirection = Quaternion.Euler(screenRotationCorrection) * virtualJoystickDirection;
             transform.LookAt(transform.position + virtualJoystickDirection.normalized);
