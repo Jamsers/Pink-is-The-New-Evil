@@ -68,13 +68,16 @@ public class SoundManager : MonoBehaviour {
     }
 
     public void AllowMusicToPlayWhilePaused(bool can) {
+        if (PlayerPrefs.GetInt("IsSoundOff") == 1)
+            can = false;
+
         audioClips[(int)MusicMood.MainMenu].ignoreListenerPause = can;
         audioClips[(int)MusicMood.BridgeSection].ignoreListenerPause = can;
         audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerPause = can;
         audioClips[(int)MusicMood.NorthernPart].ignoreListenerPause = can;
         audioClips[(int)MusicMood.Nightmare].ignoreListenerPause = can;
         audioClips[(int)MusicMood.Ascend].ignoreListenerPause = can;
-
+        
         audioClips[(int)MusicMood.MainMenu].ignoreListenerVolume = can;
         audioClips[(int)MusicMood.BridgeSection].ignoreListenerVolume = can;
         audioClips[(int)MusicMood.WorldOpenUp].ignoreListenerVolume = can;

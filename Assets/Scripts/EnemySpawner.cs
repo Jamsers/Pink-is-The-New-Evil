@@ -526,6 +526,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     public void ShowTutorial() {
+        PinkIsTheNewEvil.PlayerSoundManager.AllowMusicToPlayWhilePaused(true);
         switch (level) {
             case 1:
                 PinkIsTheNewEvil.MainSystems.tutorialScreens[1 - 1].SetActive(true);
@@ -548,7 +549,7 @@ public class EnemySpawner : MonoBehaviour {
         }
 
         if (level != 29) {
-            Time.timeScale = 0;
+            PinkIsTheNewEvil.MainSystems.IsGamePaused(true);
         }
 
         Cursor.visible = true;

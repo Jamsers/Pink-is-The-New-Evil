@@ -225,8 +225,6 @@ public class PlayerController : MonoBehaviour {
         if (isControlOn == true && isControlOff == false && (isSpecAttack2 == true || isSpecAttack1 == true) && Time.timeScale != 0)
             updateJoystickAim();
 
-        AudioListener.volume = Time.timeScale;
-
         if (moveUpperCubeorigpos == new Vector3(999, 999, 999))
             moveUpperCubeorigpos = transformToShake.localPosition;
 

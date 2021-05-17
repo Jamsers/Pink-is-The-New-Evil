@@ -53,6 +53,10 @@ public class MainSystems : MonoBehaviour {
     public GameObject settingsMenu;
     public GameObject creditsMenu;
     public GameObject highScoremenu;
+    public GameObject mainMenuSoundOnIcon;
+    public GameObject mainMenuSoundOffIcon;
+    public GameObject pauseMenuSoundOnIcon;
+    public GameObject pauseMenuSoundOffIcon;
     public GameObject[] tutorialScreens;
     public GameObject[] highScoreName;
     public GameObject[] highScore;
@@ -143,6 +147,8 @@ public class MainSystems : MonoBehaviour {
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
         PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.MainMenu);
+        SetSound();
+        IsGamePaused(false);
 
         SetScalability();
         Invoke("SetScalability", 1f);
@@ -171,6 +177,18 @@ public class MainSystems : MonoBehaviour {
             SwitchToMenu();
     }
 
+    public void IsGamePaused(bool isIt) {
+        if (isIt == true) {
+            Time.timeScale = 0;
+            AudioListener.pause = true;
+        }
+        else {
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            SetSound();
+        }
+    }
+
     void DebugDisableSpecialAttackCooldown() {
         if (debugNoCooldown == false)
             return;
@@ -178,6 +196,33 @@ public class MainSystems : MonoBehaviour {
         debugNoCooldownToggle.interactable = false;
         PinkIsTheNewEvil.PlayerController.specialAttack1Data.cooldown = 0.5f;
         PinkIsTheNewEvil.PlayerController.specialAttack2Data.cooldown = 0.5f;
+    }
+
+    void SetSound() {
+        if (PlayerPrefs.GetInt("IsSoundOff") == 1) {
+            AudioListener.volume = 0;
+            PinkIsTheNewEvil.PlayerSoundManager.AllowMusicToPlayWhilePaused(false);
+            ToggleSoundIcons(false);
+        }
+        else {
+            AudioListener.volume = 1;
+            ToggleSoundIcons(true);
+        }
+    }
+
+    void ToggleSoundIcons(bool isOn) {
+        if (isOn == true) {
+            mainMenuSoundOnIcon.SetActive(true);
+            pauseMenuSoundOnIcon.SetActive(true);
+            mainMenuSoundOffIcon.SetActive(false);
+            pauseMenuSoundOffIcon.SetActive(false);
+        }
+        else {
+            mainMenuSoundOnIcon.SetActive(false);
+            pauseMenuSoundOnIcon.SetActive(false);
+            mainMenuSoundOffIcon.SetActive(true);
+            pauseMenuSoundOffIcon.SetActive(true);
+        }
     }
 
     public void OpenPrompt(int mode) {
@@ -191,7 +236,7 @@ public class MainSystems : MonoBehaviour {
             case 2:
                 PlayerPrefs.DeleteAll();
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
-                SceneManager.LoadScene(0);
+                ReloadGame();
                 break;
             case 3:
                 progressReset.gameObject.SetActive(false);
@@ -209,17 +254,16 @@ public class MainSystems : MonoBehaviour {
                 PinkIsTheNewEvil.PlayerSoundManager.AllowMusicToPlayWhilePaused(false);
                 hud.SetActive(false);
                 gamePause.SetActive(true);
-                Time.timeScale = 0;
+                IsGamePaused(true);
                 PauseScreenDefaultButton.Select();
                 Cursor.visible = true;
                 break;
             case 8:
                 if (Time.timeScale != 0)
                     break;
-                PinkIsTheNewEvil.PlayerSoundManager.AllowMusicToPlayWhilePaused(true);
                 hud.SetActive(true);
                 gamePause.SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 9:
                 hud.SetActive(false);
@@ -236,27 +280,27 @@ public class MainSystems : MonoBehaviour {
                     PlayerPrefs.DeleteKey("High Score Name " + (i + 1));
                     PlayerPrefs.DeleteKey("High Score " + (i + 1));
                 }
-                SceneManager.LoadScene(0);
+                ReloadGame();
                 break;
             case 13:
                 tutorialScreens[1 - 1].SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 14:
                 tutorialScreens[2 - 1].SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 15:
                 tutorialScreens[3 - 1].SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 16:
                 tutorialScreens[4 - 1].SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 17:
                 tutorialScreens[5 - 1].SetActive(false);
-                Time.timeScale = 1;
+                IsGamePaused(false);
                 break;
             case 18:
                 tutorialScreens[6 - 1].SetActive(false);
@@ -334,6 +378,13 @@ public class MainSystems : MonoBehaviour {
             case 29:
                 debugNoCooldown = debugNoCooldownToggle.isOn;
                 DebugDisableSpecialAttackCooldown();
+                break;
+            case 30:
+                if (PlayerPrefs.GetInt("IsSoundOff") == 1)
+                    PlayerPrefs.SetInt("IsSoundOff", 0);
+                else
+                    PlayerPrefs.SetInt("IsSoundOff", 1);
+                SetSound();
                 break;
         }
     }
@@ -657,7 +708,7 @@ public class MainSystems : MonoBehaviour {
     }
 
     void SaveHighScores() {
-        Time.timeScale = 1;
+        IsGamePaused(false);
 
         if (saveHighScore == true) {
             currentHighScoreList[HighScoreListLength] = new HighScorePair(highScoreNewName.GetComponent<Text>().text, PinkIsTheNewEvil.PlayerController.upgradePoints);
@@ -668,6 +719,12 @@ public class MainSystems : MonoBehaviour {
             }
         }
 
+        ReloadGame();
+    }
+
+    void ReloadGame() {
+        QualitySettings.vSyncCount = 0;
+        AudioListener.pause = true;
         SceneManager.LoadScene(0);
     }
 }
