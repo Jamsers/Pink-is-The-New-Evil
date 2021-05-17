@@ -44,7 +44,6 @@ public class MainSystems : MonoBehaviour {
     public GameObject resetProgress;
     public GameObject progressReset;
     public GameObject resetScoreConfirm;
-    public GameObject loadingScreen;
     public GameObject toggleLightingButton;
     public GameObject gamePause;
     public GameObject hud;
@@ -190,10 +189,9 @@ public class MainSystems : MonoBehaviour {
                 ResetConfirmDefaultButton.Select();
                 break;
             case 2:
-                loadingScreen.SetActive(true);
                 PlayerPrefs.DeleteAll();
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene(0);
                 break;
             case 3:
                 progressReset.gameObject.SetActive(false);
@@ -234,12 +232,11 @@ public class MainSystems : MonoBehaviour {
                 HighScoreDefaultButton.Select();
                 break;
             case 11:
-                loadingScreen.SetActive(true);
                 for (int i = 0; i < HighScoreListLength; i++) {
                     PlayerPrefs.DeleteKey("High Score Name " + (i + 1));
                     PlayerPrefs.DeleteKey("High Score " + (i + 1));
                 }
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene(0);
                 break;
             case 13:
                 tutorialScreens[1 - 1].SetActive(false);
@@ -515,7 +512,6 @@ public class MainSystems : MonoBehaviour {
                 break;
             case 5:
                 cameraSwitchMode = CameraSwitchMode.ToMenu;
-                loadingScreen.SetActive(true);
                 SaveHighScores();
                 objectiveCamera = mainMenuCamera;
                 objectiveMenu = mainMenu;
@@ -672,6 +668,6 @@ public class MainSystems : MonoBehaviour {
             }
         }
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(0);
     }
 }
