@@ -238,7 +238,7 @@ public class EnemyAI : MonoBehaviour {
 
             if (isAttacking == 0) {
                 isAttacking = 1;
-                navMeshAgent.Stop();
+                navMeshAgent.isStopped = true;
                 transform.LookAt(PinkIsTheNewEvil.PlayerController.transform.position);
                 transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
             }
@@ -274,7 +274,7 @@ public class EnemyAI : MonoBehaviour {
 
             AnimSwitchTo("isWalking");
             navMeshAgent.SetDestination(PinkIsTheNewEvil.PlayerController.transform.position);
-            navMeshAgent.Resume();
+            navMeshAgent.isStopped = false;
         }
     }
 
@@ -288,14 +288,14 @@ public class EnemyAI : MonoBehaviour {
             AnimSwitchTo("specialAttack");
             transform.LookAt(PinkIsTheNewEvil.PlayerController.transform.position);
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-            navMeshAgent.Stop();
+            navMeshAgent.isStopped = true;
         }
         else if (specialAttackPhase == 2) {
             AnimSwitchTo("specialAttack");
             RaycastHit hit;
             var layerMask = 1 << 9;
             Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask);
-            navMeshAgent.Resume();
+            navMeshAgent.isStopped = false;
             navMeshAgent.SetDestination(hit.point);
             navSelfSpeedStorage = navMeshAgent.speed;
             navMeshAgent.speed = specialMovementSpeed;
@@ -312,7 +312,7 @@ public class EnemyAI : MonoBehaviour {
         }
         else if (specialAttackPhase == 4) {
             AnimSwitchTo("specialAttack");
-            navMeshAgent.Stop();
+            navMeshAgent.isStopped = true;
             navMeshAgent.speed = navSelfSpeedStorage;
         }
         else if (specialAttackPhase == 5) {
@@ -432,7 +432,7 @@ public class EnemyAI : MonoBehaviour {
         if (specialAttackPhase == 1) {
             specialUnderway = true;
             AnimSwitchTo("specialAttack");
-            navMeshAgent.Stop();
+            navMeshAgent.isStopped = true;
         }
         else if (specialAttackPhase == 2) {
             enemy7SpikeyReference = Instantiate(enemy7Spikey, enemy7Spikey.transform.position, enemy7Spikey.transform.rotation);
