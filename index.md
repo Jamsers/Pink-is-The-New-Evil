@@ -13,6 +13,6 @@ CPU: Any CPU in the last decade
 GPU: GeForce 940/Radeon 450 equivalent DX11 GPU  
 RAM: 1 GB RAM  
 
-Pink is The New Evil requires 350 MB free disk space to install.
+Pink is The New Evil requires 300 MB free disk space to install.
 
 An Xbox One controller is required to play with a controller.
