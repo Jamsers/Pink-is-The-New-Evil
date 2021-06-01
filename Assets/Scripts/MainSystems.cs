@@ -5,6 +5,7 @@ using UnityEngine.PostProcessing;
 using System.Linq;
 using UnityStandardAssets.Water;
 using UnityEngine.Rendering;
+using System.Collections;
 
 public class MainSystems : MonoBehaviour {
     public float switchToGameLength;
@@ -35,6 +36,9 @@ public class MainSystems : MonoBehaviour {
     public Button PauseScreenDefaultButton;
 
     [Header("UI")]
+    public GameObject resolutionSliderBackground;
+    public GameObject resolutionSliderTitle;
+    public GameObject resolutionSlider;
     public GameObject blockAllInput;
     public GameObject highScoreMessage;
     public GameObject highScoreNewName;
@@ -106,6 +110,7 @@ public class MainSystems : MonoBehaviour {
     bool firstObjective4 = true;
     bool level29TutStop = true;
     bool level29TutStopCamOverride = false;
+    bool isFirstFullscreenValueSet = true;
     CameraSwitchMode cameraSwitchMode = CameraSwitchMode.None;
 
     enum CameraSwitchMode {
@@ -146,6 +151,11 @@ public class MainSystems : MonoBehaviour {
         mainMenu.gameObject.tag = "Active Menu";
         mainMenuCamera.gameObject.SetActive(true);
         mainMenuCamera.gameObject.tag = "MainCamera";
+        resolutionSlider.GetComponent<Slider>().value = PlayerPrefs.GetInt("Resolution Scale", 4);
+        isFirstFullscreenValueSet = false;
+        resolutionSlider.SetActive(Screen.fullScreen);
+        resolutionSliderBackground.SetActive(Screen.fullScreen);
+        resolutionSliderTitle.SetActive(Screen.fullScreen);
         PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.MainMenu);
         SetSound();
         IsGamePaused(false);
@@ -225,6 +235,23 @@ public class MainSystems : MonoBehaviour {
         }
     }
 
+    IEnumerator SetFullScreen(int interval) {
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+        resolutionSlider.GetComponent<Slider>().interactable = false;
+
+        yield return new WaitForSeconds(0.01f);
+
+        interval -= 1;
+        float ratio = (float)Screen.currentResolution.width / (float)Screen.currentResolution.height;
+        float lerp = (float)interval / 3f;
+        float origwidth = Mathf.Lerp(522 * ratio, Screen.currentResolution.width, lerp);
+        float origheight = Mathf.Lerp(522, Screen.currentResolution.height, lerp);
+        int width = Mathf.CeilToInt(origwidth);
+        int height = Mathf.CeilToInt(origheight);
+        Screen.SetResolution(width, height, true);
+        resolutionSlider.GetComponent<Slider>().interactable = true;
+    }
+
     public void OpenPrompt(int mode) {
         PinkIsTheNewEvil.PlayerSoundManager.PlaySound(16);
 
@@ -235,8 +262,8 @@ public class MainSystems : MonoBehaviour {
                 break;
             case 2:
                 PlayerPrefs.DeleteAll();
-                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
-                ReloadGame();
+                StartCoroutine("SetFullScreen", 4);
+                Invoke("ReloadGame", 0.02f);
                 break;
             case 3:
                 progressReset.gameObject.SetActive(false);
@@ -353,10 +380,15 @@ public class MainSystems : MonoBehaviour {
                 Application.Quit();
                 break;
             case 24:
+                resolutionSlider.SetActive(!Screen.fullScreen);
+                resolutionSliderBackground.SetActive(!Screen.fullScreen);
+                resolutionSliderTitle.SetActive(!Screen.fullScreen);
+
                 if (Screen.fullScreen == true)
                     Screen.SetResolution(1024, 768, false);
                 else
-                    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+                    StartCoroutine("SetFullScreen", PlayerPrefs.GetInt("Resolution Scale", 4));
+
                 SetScalability();
                 break;
             case 25:
@@ -385,6 +417,14 @@ public class MainSystems : MonoBehaviour {
                 else
                     PlayerPrefs.SetInt("IsSoundOff", 1);
                 SetSound();
+                break;
+            case 31:
+                if (isFirstFullscreenValueSet) {
+                    break;
+                }
+                int value = (int)resolutionSlider.GetComponent<Slider>().value;
+                PlayerPrefs.SetInt("Resolution Scale", value);
+                StartCoroutine("SetFullScreen", value);
                 break;
         }
     }
