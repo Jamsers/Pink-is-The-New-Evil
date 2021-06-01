@@ -153,7 +153,7 @@ public class MainSystems : MonoBehaviour {
         mainMenuCamera.gameObject.tag = "MainCamera";
         resolutionSlider.GetComponent<Slider>().value = PlayerPrefs.GetInt("Resolution Scale", 4);
         isFirstFullscreenValueSet = false;
-        resolutionSlider.SetActive(Screen.fullScreen);
+        resolutionSlider.GetComponent<Slider>().interactable = Screen.fullScreen;
         resolutionSliderBackground.SetActive(Screen.fullScreen);
         resolutionSliderTitle.SetActive(Screen.fullScreen);
         PinkIsTheNewEvil.PlayerSoundManager.MusicManager(SoundManager.MusicMood.MainMenu);
@@ -250,6 +250,7 @@ public class MainSystems : MonoBehaviour {
         int height = Mathf.CeilToInt(origheight);
         Screen.SetResolution(width, height, true);
         resolutionSlider.GetComponent<Slider>().interactable = true;
+        resolutionSlider.GetComponent<Slider>().Select();
     }
 
     public void OpenPrompt(int mode) {
@@ -380,7 +381,7 @@ public class MainSystems : MonoBehaviour {
                 Application.Quit();
                 break;
             case 24:
-                resolutionSlider.SetActive(!Screen.fullScreen);
+                resolutionSlider.GetComponent<Slider>().interactable = !Screen.fullScreen;
                 resolutionSliderBackground.SetActive(!Screen.fullScreen);
                 resolutionSliderTitle.SetActive(!Screen.fullScreen);
 
@@ -419,9 +420,8 @@ public class MainSystems : MonoBehaviour {
                 SetSound();
                 break;
             case 31:
-                if (isFirstFullscreenValueSet) {
+                if (isFirstFullscreenValueSet)
                     break;
-                }
                 int value = (int)resolutionSlider.GetComponent<Slider>().value;
                 PlayerPrefs.SetInt("Resolution Scale", value);
                 StartCoroutine("SetFullScreen", value);
