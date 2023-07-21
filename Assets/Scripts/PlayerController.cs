@@ -597,7 +597,7 @@ public class PlayerController : MonoBehaviour {
         virtualJoystickDirection = Vector3.ClampMagnitude(virtualJoystickDirection, 1f);
 
         float joystickAimMoveSpeed = 1500f;
-        float resetTime = 0.75f;
+        float resetTime = 5.0f;
 
         if (aimHorizontal == 0 && aimVertical == 0) {
             Invoke("VanishAndResetOrangeCircle", resetTime);
