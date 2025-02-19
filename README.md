@@ -4,10 +4,9 @@ Project folder and source for Pink is The New Evil.
 https://github.com/Jamsers/Pink-is-The-New-Evil/assets/39361911/04d198cf-1688-4ee8-b22f-fbf10cd418e3
 
 Development Environment:  
-Unity 5.6.7f1: https://download.unity3d.com/download_unity/e80cc3114ac1/Windows64EditorInstaller/UnitySetup64-5.6.7f1.exe  
-Blender 2.77: https://download.blender.org/release/Blender2.77/blender-2.77a-windows64.msi  
-Unity 5.5 didn't like audio files "from the future"; you can change audio file modified dates using: https://www.nirsoft.net/utils/filedatech.zip  
-NSIS 3.06.1: https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3.06.1-setup.exe
+Unity 5.6.7: https://unity.com/releases/editor/whats-new/5.6.7
+Blender 2.79: https://download.blender.org/release/Blender2.79/  
+NSIS 3.10: https://sourceforge.net/projects/nsis/files/NSIS%203/3.10/
   
 Minimum specs:  
 Any CPU in the last decade  
