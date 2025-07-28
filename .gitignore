@@ -6,7 +6,7 @@
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
-/[Bb]uild/
+#/[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
@@ -106,3 +106,7 @@ Assets/SubstanceFiles/
 
 ## Base level (too big, maybe add to LFS when can afford?)
 #Assets/Scenes/Level1.unity
+
+# Export folders
+Build/pink-is-the-new-evil-windows/*
+!Build/pink-is-the-new-evil-windows/.itch.toml
