@@ -32,14 +32,6 @@ Pink-is-The-New-Evil is built in Windows.
 1. Clone or download this repository. Open the repository folder with Unity.
 1. Go to File and select Build & Run.
 
-To build the Windows installer:
-
-1. Install [NSIS](https://nsis.sourceforge.io/Main_Page).
-1. Open the repository folder, go to `.\NSIS script\`, and compile `Pink_is_The_New_Evil_Installer.nsi` with the NSIS compiler. (`makensisw.exe`)
-
-> [!IMPORTANT]  
-> The NSIS script expects you to have built at `Build\Pink_is_The_New_Evil.exe`.
-
 ## License
 
 Unless stated otherwise within the [**`ATTRIBUTION`**](ATTRIBUTION) file or directly alongside specific files/folders, the following licenses apply:
