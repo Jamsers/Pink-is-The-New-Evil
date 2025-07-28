@@ -1,0 +1,8 @@
+[[actions]]
+name = "play"
+path = "Pink_is_The_New_Evil.exe"
+platform = "windows"
+sandbox = true
+
+[[prereqs]]
+name = "vcredist-2015-x64"
