@@ -1,8 +1,8 @@
 # Pink-is-The-New-Evil
-A top down whack-a-mole action game. Available for Windows, on itch.io.  
+A top down whack-a-mole action game. Featuring 28 rounds of mayhem, a survival mode where you fight infinite hordes of monsters and try to get the highest score, 7 unique weapons, 2 powerful skills to use, and perks in survival mode to make you even more powerful. Available for Windows, on itch.io.  
 Originally published as an Android game.
 
-![Battleships-Clash](https://github.com/user-attachments/assets/9b31433a-e72b-439d-b57f-1674e0e3e598)
+![Pink-is-The-New-Evil](https://github.com/user-attachments/assets/2a6991bf-ff35-416d-b717-07eddb238bc4)
 
 ## Releases
 
